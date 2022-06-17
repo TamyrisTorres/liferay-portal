@@ -2589,7 +2589,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		SiteNavigationMenu siteNavigationMenu =
 			_siteNavigationMenuLocalService.addSiteNavigationMenu(
 				serviceContext.getUserId(), serviceContext.getScopeGroupId(),
-				jsonObject.getString("name"), serviceContext);
+				jsonObject.getString("name"), serviceContext.getType(),serviceContext);
 
 		_addSiteNavigationMenuItems(
 			jsonObject, siteNavigationMenu, 0, serviceContext,
