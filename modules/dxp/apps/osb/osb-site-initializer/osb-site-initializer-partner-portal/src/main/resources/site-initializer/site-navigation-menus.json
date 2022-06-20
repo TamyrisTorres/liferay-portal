@@ -22,6 +22,7 @@
 				"type": "layout"
 			}
 		],
-		"name": "Navigation Menu"
+		"name": "Navigation Menu",
+		"typeSite": 1
 	}
 ]
