@@ -1,10 +1,17 @@
 {
 	"deletionType": "cascade",
 	"label": {
+<<<<<<< HEAD
 		"en-US": "Company"
 	},
 	"name": "accountToMDFRequests",
 	"objectDefinitionId1": "[$OBJECT_DEFINITION_ID:AccountEntry$]",
+=======
+		"en-US": "Account"
+	},
+	"name": "accountToMDFRequests",
+	"objectDefinitionId1": "[$OBJECT_DEFINITION_ID:Account$]",
+>>>>>>> 9c408b7 (LPS-159028 Add Objects and Entities)
 	"objectDefinitionId2": "[$OBJECT_DEFINITION_ID:MDFRequest$]",
 	"objectDefinitionName2": "MDFRequest",
 	"type": "oneToMany"

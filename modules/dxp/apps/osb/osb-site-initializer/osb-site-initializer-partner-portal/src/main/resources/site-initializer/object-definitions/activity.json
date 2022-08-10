@@ -1,10 +1,15 @@
 {
 	"label": {
+<<<<<<< HEAD
 		"en_US": "Activity"
+=======
+		"en-US": "Activity"
+>>>>>>> 9c408b7 (LPS-159028 Add Objects and Entities)
 	},
 	"name": "Activity",
 	"objectFields": [
 		{
+<<<<<<< HEAD
 			"DBType": "Clob",
 			"businessType": "LongText",
 			"indexed": true,
@@ -288,12 +293,63 @@
 			"name": "targetofLeads",
 			"required": false,
 			"type": "String"
+=======
+			"DBType": "String",
+			"indexed": true,
+			"indexedAsKeyword": false,
+			"label": {
+				"en-US": "Name"
+			},
+			"name": "name",
+			"required": false
+		},
+		{
+			"DBType": "Date",
+			"indexed": true,
+			"indexedAsKeyword": false,
+			"label": {
+				"en-US": "Start Date"
+			},
+			"name": "startDate",
+			"required": false
+		},
+		{
+			"DBType": "Date",
+			"indexed": true,
+			"indexedAsKeyword": false,
+			"label": {
+				"en-US": "End Date"
+			},
+			"name": "endDate",
+			"required": false
+		},
+		{
+			"DBType": "String",
+			"indexed": true,
+			"indexedAsKeyword": false,
+			"label": {
+				"en-US": "Total Cost of Expense"
+			},
+			"name": "totalCostOfExpense",
+			"required": false
+		},
+		{
+			"DBType": "String",
+			"indexed": true,
+			"indexedAsKeyword": false,
+			"label": {
+				"en-US": "MDF Requested Amount"
+			},
+			"name": "mdfRequestAmount",
+			"required": false
+>>>>>>> 9c408b7 (LPS-159028 Add Objects and Entities)
 		},
 		{
 			"DBType": "Boolean",
 			"indexed": true,
 			"indexedAsKeyword": false,
 			"label": {
+<<<<<<< HEAD
 				"en_US": "Lead Generated?"
 			},
 			"name": "leadGenerated",
@@ -323,10 +379,41 @@
 			"name": "detailsLeadFollowUp",
 			"required": false,
 			"type": "Clob"
+=======
+				"en-US": "Lead Generated?"
+			},
+			"name": "leadGenerated",
+			"required": false
+		},
+		{
+			"DBType": "String",
+			"indexed": true,
+			"indexedAsKeyword": false,
+			"label": {
+				"en-US": "Lead Follow Up Strategies"
+			},
+			"name": "leadFollowUpStrategies",
+			"required": false
+		},
+		{
+			"DBType": "String",
+			"indexed": true,
+			"indexedAsKeyword": false,
+			"label": {
+				"en-US": "Details on Lead Follow Up"
+			},
+			"name": "detailsLeadFollowUp",
+			"required": false
+>>>>>>> 9c408b7 (LPS-159028 Add Objects and Entities)
 		}
 	],
 	"pluralLabel": {
 		"en_US": "Activities"
 	},
+<<<<<<< HEAD
 	"scope": "company"
+=======
+	"scope": "company",
+	"system": false
+>>>>>>> 9c408b7 (LPS-159028 Add Objects and Entities)
 }

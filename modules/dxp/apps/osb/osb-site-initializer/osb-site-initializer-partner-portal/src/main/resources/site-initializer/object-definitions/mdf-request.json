@@ -1,6 +1,10 @@
 {
 	"label": {
+<<<<<<< HEAD
 		"en_US": "MDF Request"
+=======
+		"en-US": "MDF Request"
+>>>>>>> 9c408b7 (LPS-159028 Add Objects and Entities)
 	},
 	"name": "MDFRequest",
 	"objectFields": [
@@ -12,12 +16,17 @@
 			"label": {
 				"en_US": "Country"
 			},
+<<<<<<< HEAD
 			"listTypeDefinitionId": "[$LIST_TYPE_DEFINITION_ID:Regions$]",
+=======
+			"listTypeDefinitionId": "[$LIST_TYPE_DEFINITION_ID:Countries$]",
+>>>>>>> 9c408b7 (LPS-159028 Add Objects and Entities)
 			"name": "country",
 			"required": false,
 			"type": "String"
 		},
 		{
+<<<<<<< HEAD
 			"DBType": "Clob",
 			"businessType": "LongText",
 			"indexed": true,
@@ -52,6 +61,36 @@
 			"name": "targetMarkets",
 			"required": false,
 			"type": "Clob"
+=======
+			"DBType": "String",
+			"indexed": true,
+			"indexedAsKeyword": false,
+			"label": {
+				"en-US": "Overall Campaign"
+			},
+			"name": "overallCampaign",
+			"required": false
+		},
+		{
+			"DBType": "String",
+			"indexed": true,
+			"indexedAsKeyword": false,
+			"label": {
+				"en-US": "Liferay Business/Sales Goals"
+			},
+			"name": "liferayBusinessSalesGoals",
+			"required": false
+		},
+		{
+			"DBType": "String",
+			"indexed": true,
+			"indexedAsKeyword": false,
+			"label": {
+				"en-US": "Target Markets"
+			},
+			"name": "targetMarkets",
+			"required": false
+>>>>>>> 9c408b7 (LPS-159028 Add Objects and Entities)
 		},
 		{
 			"DBType": "String",
@@ -61,12 +100,17 @@
 			"label": {
 				"en_US": "Additional Option"
 			},
+<<<<<<< HEAD
 			"listTypeDefinitionId": "[$LIST_TYPE_DEFINITION_ID:MDF Request: Additional Options$]",
+=======
+			"listTypeDefinitionId": "[$LIST_TYPE_DEFINITION_ID:AdditionalOptions$]",
+>>>>>>> 9c408b7 (LPS-159028 Add Objects and Entities)
 			"name": "additionalOption",
 			"required": false,
 			"type": "String"
 		},
 		{
+<<<<<<< HEAD
 			"DBType": "Clob",
 			"businessType": "LongText",
 			"indexed": true,
@@ -77,10 +121,25 @@
 			"name": "targetAudienceRoles",
 			"required": false,
 			"type": "Clob"
+=======
+			"DBType": "String",
+			"indexed": true,
+			"indexedAsKeyword": false,
+			"label": {
+				"en-US": "Target Audience/Roles"
+			},
+			"name": "targetAudienceRoles",
+			"required": false
+>>>>>>> 9c408b7 (LPS-159028 Add Objects and Entities)
 		}
 	],
 	"pluralLabel": {
 		"en_US": "MDF Requests"
 	},
+<<<<<<< HEAD
 	"scope": "company"
+=======
+	"scope": "company",
+	"system": false
+>>>>>>> 9c408b7 (LPS-159028 Add Objects and Entities)
 }

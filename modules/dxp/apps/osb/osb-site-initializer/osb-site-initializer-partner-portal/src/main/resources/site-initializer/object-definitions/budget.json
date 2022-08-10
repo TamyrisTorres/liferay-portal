@@ -1,16 +1,27 @@
 {
 	"label": {
+<<<<<<< HEAD
 		"en_US": "Budget"
+=======
+		"en-US": "Budget"
+>>>>>>> 9c408b7 (LPS-159028 Add Objects and Entities)
 	},
 	"name": "Budget",
 	"objectFields": [
 		{
 			"DBType": "String",
+<<<<<<< HEAD
 			"businessType": "Text",
 			"indexed": true,
 			"indexedAsKeyword": false,
 			"label": {
 				"en_US": "Cost"
+=======
+			"indexed": true,
+			"indexedAsKeyword": false,
+			"label": {
+				"en-US": "Cost"
+>>>>>>> 9c408b7 (LPS-159028 Add Objects and Entities)
 			},
 			"name": "cost",
 			"required": false,
@@ -24,7 +35,11 @@
 			"label": {
 				"en_US": "Expense"
 			},
+<<<<<<< HEAD
 			"listTypeDefinitionId": "[$LIST_TYPE_DEFINITION_ID:Budget Expenses$]",
+=======
+			"listTypeDefinitionId": "[$LIST_TYPE_DEFINITION_ID:BudgetExpenses$]",
+>>>>>>> 9c408b7 (LPS-159028 Add Objects and Entities)
 			"name": "expense",
 			"required": false,
 			"type": "String"
@@ -33,5 +48,11 @@
 	"pluralLabel": {
 		"en_US": "Budgets"
 	},
+<<<<<<< HEAD
 	"scope": "company"
 }
+=======
+	"scope": "company",
+	"system": false
+}
+>>>>>>> 9c408b7 (LPS-159028 Add Objects and Entities)

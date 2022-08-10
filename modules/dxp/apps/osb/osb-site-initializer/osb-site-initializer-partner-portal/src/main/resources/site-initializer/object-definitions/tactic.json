@@ -1,11 +1,16 @@
 {
 	"label": {
+<<<<<<< HEAD
 		"en_US": "Tactic"
+=======
+		"en-US": "Tactic"
+>>>>>>> 9c408b7 (LPS-159028 Add Objects and Entities)
 	},
 	"name": "Tactic",
 	"objectFields": [
 		{
 			"DBType": "String",
+<<<<<<< HEAD
 			"businessType": "Text",
 			"indexed": true,
 			"indexedAsKeyword": false,
@@ -15,10 +20,24 @@
 			"name": "name",
 			"required": true,
 			"type": "String"
+=======
+			"indexed": true,
+			"indexedAsKeyword": false,
+			"label": {
+				"en-US": "Name"
+			},
+			"name": "name",
+			"required": true
+>>>>>>> 9c408b7 (LPS-159028 Add Objects and Entities)
 		}
 	],
 	"pluralLabel": {
 		"en_US": "Tactics"
 	},
+<<<<<<< HEAD
 	"scope": "company"
+=======
+	"scope": "company",
+	"system": false
+>>>>>>> 9c408b7 (LPS-159028 Add Objects and Entities)
 }

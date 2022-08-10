@@ -1,5 +1,6 @@
 {
 	"label": {
+<<<<<<< HEAD
 		"en_US": "Type of Activity"
 	},
 	"name": "TypeActivity",
@@ -15,10 +16,30 @@
 			"name": "name",
 			"required": true,
 			"type": "String"
+=======
+		"en-US": "Type Of Activity"
+	},
+	"name": "TypeOfActivity",
+	"objectFields": [
+		{
+			"DBType": "String",
+			"indexed": true,
+			"indexedAsKeyword": false,
+			"label": {
+				"en-US": "Name"
+			},
+			"name": "name",
+			"required": true
+>>>>>>> 9c408b7 (LPS-159028 Add Objects and Entities)
 		}
 	],
 	"pluralLabel": {
 		"en_US": "Type of Activities"
 	},
+<<<<<<< HEAD
 	"scope": "company"
+=======
+	"scope": "company",
+	"system": false
+>>>>>>> 9c408b7 (LPS-159028 Add Objects and Entities)
 }

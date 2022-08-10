@@ -3,7 +3,11 @@
 	"label": {
 		"en-US": "Activity"
 	},
+<<<<<<< HEAD
 	"name": "activityToBudgets",
+=======
+	"name": "ActivityToBudgets",
+>>>>>>> 9c408b7 (LPS-159028 Add Objects and Entities)
 	"objectDefinitionId1": "[$OBJECT_DEFINITION_ID:Activity$]",
 	"objectDefinitionId2": "[$OBJECT_DEFINITION_ID:Budget$]",
 	"objectDefinitionName2": "Budget",

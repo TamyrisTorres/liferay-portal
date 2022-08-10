@@ -1,10 +1,15 @@
 {
 	"label": {
+<<<<<<< HEAD
 		"en_US": "Company Extender"
+=======
+		"en-US": "Company Extender"
+>>>>>>> 9c408b7 (LPS-159028 Add Objects and Entities)
 	},
 	"name": "CompanyExtender",
 	"objectFields": [
 		{
+<<<<<<< HEAD
 			"DBType": "BigDecimal",
 			"businessType": "PrecisionDecimal",
 			"indexed": true,
@@ -17,6 +22,8 @@
 			"type": "BigDecimal"
 		},
 		{
+=======
+>>>>>>> 9c408b7 (LPS-159028 Add Objects and Entities)
 			"DBType": "String",
 			"businessType": "Picklist",
 			"indexed": true,
@@ -24,7 +31,11 @@
 			"label": {
 				"en_US": "Country"
 			},
+<<<<<<< HEAD
 			"listTypeDefinitionId": "[$LIST_TYPE_DEFINITION_ID:Regions$]",
+=======
+			"listTypeDefinitionId": "[$LIST_TYPE_DEFINITION_ID:Countries$]",
+>>>>>>> 9c408b7 (LPS-159028 Add Objects and Entities)
 			"name": "country",
 			"required": false,
 			"type": "String"
@@ -37,7 +48,11 @@
 			"label": {
 				"en_US": "Partner Level"
 			},
+<<<<<<< HEAD
 			"listTypeDefinitionId": "[$LIST_TYPE_DEFINITION_ID:Partner Levels$]",
+=======
+			"listTypeDefinitionId": "[$LIST_TYPE_DEFINITION_ID:PartnerLevels$]",
+>>>>>>> 9c408b7 (LPS-159028 Add Objects and Entities)
 			"name": "partnerLevel",
 			"required": false,
 			"type": "String"
@@ -46,5 +61,10 @@
 	"pluralLabel": {
 		"en_US": "Company Extenders"
 	},
+<<<<<<< HEAD
 	"scope": "company"
+=======
+	"scope": "company",
+	"system": false
+>>>>>>> 9c408b7 (LPS-159028 Add Objects and Entities)
 }

@@ -17,5 +17,9 @@
 			"name": "Miscellaneous Marketing"
 		}
 	],
+<<<<<<< HEAD
 	"objectDefinitionName": "TypeActivity"
+=======
+	"objectDefinitionName": "TypeOfActivity"
+>>>>>>> 9c408b7 (LPS-159028 Add Objects and Entities)
 }
