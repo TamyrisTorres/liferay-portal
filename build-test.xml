@@ -5228,7 +5228,7 @@ upgrade.report.enabled=true</echo>
 		<sequential>
 			<if>
 				<not>
-					<isset property="skip.rebuild-database" />
+					<isset property="skip.rebuild.database" />
 				</not>
 				<then>
 					<get-testcase-property property.name="database.hypersonic.embedded" />
@@ -7192,7 +7192,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 										<catch>
 											<sleep seconds="5" />
 
-											<fail message="Server failed to fully shut down." />
+											<echo append="true" file="${test.poshi.warnings.file.name}"><![CDATA[${line.separator}<value>SHUT_DOWN_WARNING: Server failed to fully shut down.</value>]]></echo>
 										</catch>
 									</trycatch>
 								</sequential>
@@ -7229,24 +7229,49 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 								</then>
 							</if>
 
-							<fail message="Server is still available at ${app.server.waiting.url}.">
-								<condition>
-									<equals arg1="@{app.server.explicit.stop.count}" arg2="3" />
-								</condition>
-							</fail>
+							<if>
+								<equals arg1="@{app.server.explicit.stop.count}" arg2="3" />
+								<then>
+									<local name="app.server.waiting.url" />
 
-							<math
-								datatype="int"
-								operand1="@{app.server.explicit.stop.count}"
-								operand2="1"
-								operation="+"
-								result="app.server.explicit.stop.count"
-							/>
+									<get-operating-system-property property.name="operating.system.docker.image" />
+									<get-testcase-property property.name="portal.context" />
 
-							<stop-app-server
-								app.server.bundle.index="@{app.server.bundle.index}"
-								app.server.explicit.stop.count="${app.server.explicit.stop.count}"
-							/>
+									<if>
+										<isset property="portal.context" />
+										<then>
+											<property name="app.server.waiting.url" value="http://localhost:${test.app.server.leading.port.number}080/${portal.context}/web/guest" />
+										</then>
+										<elseif>
+											<isset property="operating.system.docker.image" />
+											<then>
+												<get-operating-system-property property.name="operating.system.host" />
+
+												<property name="app.server.waiting.url" value="http://${operating.system.host}:${test.app.server.leading.port.number}080/web/guest" />
+											</then>
+										</elseif>
+										<else>
+											<property name="app.server.waiting.url" value="http://localhost:${test.app.server.leading.port.number}080/web/guest" />
+										</else>
+									</if>
+
+									<echo append="true" file="${test.poshi.warnings.file.name}"><![CDATA[${line.separator}<value>SHUT_DOWN_WARNING: Server is still available at ${app.server.waiting.url}.</value>]]></echo>
+								</then>
+								<else>
+									<math
+										datatype="int"
+										operand1="@{app.server.explicit.stop.count}"
+										operand2="1"
+										operation="+"
+										result="app.server.explicit.stop.count"
+									/>
+
+									<stop-app-server
+										app.server.bundle.index="@{app.server.bundle.index}"
+										app.server.explicit.stop.count="${app.server.explicit.stop.count}"
+									/>
+								</else>
+							</if>
 						</then>
 					</if>
 				</sequential>
@@ -11422,7 +11447,7 @@ auto.deploy.dest.dir=C:/WINDOWS/system32/config/systemprofile/liferay/websphere-
 			test.console.shut.down.file.name=${project.dir}/console-shut-down
 			test.csv.report.property.names=${test.csv.report.property.names}
 			test.dependencies.dir.name=dependencies
-			test.poshi.warnings.file.name=${project.dir}/poshi-warnings.xml
+			test.poshi.warnings.file.name=${test.poshi.warnings.file.name}
 			test.retry.command.wait.time=${test.retry.command.wait.time}
 		</echo>
 
@@ -14951,6 +14976,61 @@ url=${short.hostname}:8080</echo>
 
 	<target name="start-docker-database">
 		<start-docker-database />
+	</target>
+
+	<target name="start-docker-database-postgresql">
+		<if>
+			<not>
+				<isset property="database.version" />
+			</not>
+			<then>
+				<var name="database.version" value="14.4" />
+			</then>
+		</if>
+
+		<get-database-property property.name="database.host" />
+
+		<antcall target="stop-docker-database">
+			<param name="database.postgresql.host" value="${database.host}_postgresql" />
+			<param name="database.type" value="postgresql" />
+		</antcall>
+
+		<antcall inheritAll="false" target="start-docker-database">
+			<param name="database.postgresql.docker.image" value="postgres:${database.version}" />
+			<param name="database.postgresql.docker.run.options" value="--env=POSTGRES_USER=root --expose=5432 -p 5432:5432 --env=POSTGRES_HOST_AUTH_METHOD=trust" />
+			<param name="database.postgresql.host" value="${database.host}_postgresql" />
+			<param name="database.postgresql.name" value="PostgreSQL" />
+			<param name="database.type" value="postgresql" />
+			<param name="database.version" value="${database.version}" />
+		</antcall>
+
+		<if>
+			<not>
+				<isset property="skip.prepare.portal.ext.properties" />
+			</not>
+			<then>
+				<antcall inheritAll="false" target="prepare-portal-ext-properties">
+					<param name="database.postgresql.schema" value="lportal" />
+					<param name="database.postgresql.url" value="jdbc:postgresql://localhost:5432/${database.postgresql.schema}" />
+					<param name="database.type" value="postgresql" />
+				</antcall>
+			</then>
+		</if>
+
+		<if>
+			<not>
+				<isset property="skip.rebuild.database" />
+			</not>
+			<then>
+				<antcall target="rebuild-database">
+					<param name="database.postgresql.docker.image" value="postgres:${database.version}" />
+					<param name="database.postgresql.host" value="${database.host}_postgresql" />
+					<param name="database.type" value="postgresql" />
+					<param name="sql.dir" value="sql/create-bare/" />
+					<param name="sql.file" value="create-bare-postgresql.sql" />
+				</antcall>
+			</then>
+		</if>
 	</target>
 
 	<target name="start-test-smtp-server">

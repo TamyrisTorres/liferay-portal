@@ -12,33 +12,18 @@
  * details.
  */
 
-import {openModal} from 'frontend-js-web';
+import {isLayoutDataItemDeleted} from './isLayoutDataItemDeleted';
 
-export default function openWarningModal({
-	action,
-	actionLabel,
-	message,
-	title,
-}) {
-	openModal({
-		bodyHTML: `<p class="text-secondary">${message}</p>`,
-		buttons: [
-			{
-				displayType: 'secondary',
-				label: Liferay.Language.get('cancel'),
-				type: 'cancel',
-			},
-			{
-				displayType: 'warning',
-				label: actionLabel,
-				onClick: ({processClose}) => {
-					action();
+export function getDescendantIds(layoutData, itemId) {
+	const item = layoutData.items[itemId];
 
-					processClose();
-				},
-			},
-		],
-		status: 'warning',
-		title,
+	const descendantIds = [...item.children];
+
+	item.children.forEach((childId) => {
+		if (!isLayoutDataItemDeleted(layoutData, childId)) {
+			descendantIds.push(...getDescendantIds(layoutData, childId));
+		}
 	});
+
+	return descendantIds;
 }

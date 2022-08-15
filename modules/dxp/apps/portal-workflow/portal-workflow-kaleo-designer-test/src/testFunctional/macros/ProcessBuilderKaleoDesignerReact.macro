@@ -314,6 +314,12 @@ definition {
 			locator1 = "ProcessBuilderKaleoDesignerReact#RESTORE_VERSION_ICON");
 	}
 
+	macro searchLanguage {
+		Type(
+			locator1 = "ProcessBuilderKaleoDesignerReact#SEARCH_BAR_INPUT",
+			value1 = "${languageName}");
+	}
+
 	macro selectConnector {
 		Click(
 			key_connectorLabel = "${connectorLabel}",
@@ -1138,6 +1144,10 @@ definition {
 			locator1 = "ManageTranslations#LIST_ITEM_LANGUAGE");
 	}
 
+	macro viewManageTranslationButton {
+		AssertElementPresent(locator1 = "ProcessBuilderKaleoDesignerReact#MANAGE_TRANSLATIONS_BUTTON");
+	}
+
 	macro viewModalNotPresent {
 		AssertElementNotPresent(
 			key_modalTitle = "${modalTitle}",
@@ -1431,6 +1441,12 @@ definition {
 
 	macro viewSaveButtonPresent {
 		AssertElementPresent(locator1 = "KaleoDesigner#SAVE_BUTTON");
+	}
+
+	macro viewSearchTranslationResultPresent {
+		AssertElementPresent(
+			key_result = "${result}",
+			locator1 = "ProcessBuilderKaleoDesignerReact#LANGUAGE_NAME_RESULT");
 	}
 
 	macro viewSelectedAssignments {

@@ -266,12 +266,25 @@ definition {
 	}
 
 	@description = "Verify that is possible to add new languages"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test CanAddNewLanguages {
+		property test.name.skip.portal.instance = "ProcessBuilderKaleoDesignerReact#CanAddNewLanguages";
 
-		// TODO CanAddNewLanguages pending implementation
+		Workflow.openWorkflowListView();
 
+		Workflow.addNewDefinition(workflowDefinitionTitle = "New Workflow Definition");
+
+		ProcessBuilderKaleoDesignerReact.viewTranslationDropdown(translationOptionSelected = "en-us");
+
+		ProcessBuilderKaleoDesignerReact.gotoManageTranslations();
+
+		ProcessBuilderKaleoDesignerReact.deleteLanguage(translationOption = "Catalan");
+
+		ProcessBuilderKaleoDesignerReact.viewLanguageOptionNotPresent(languageOption = "Catalan");
+
+		ProcessBuilderKaleoDesignerReact.addLanguage(translationOptionSelected = "ca-es");
+
+		ProcessBuilderKaleoDesignerReact.viewLanguageOptionPresent(languageOption = "Catalan");
 	}
 
 	@description = "Verify that Notification can be added"
@@ -1706,12 +1719,17 @@ definition {
 	}
 
 	@description = "Verify that the link to Manage Translations component is displayed"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test CanManageTranslations {
+		property test.name.skip.portal.instance = "ProcessBuilderKaleoDesignerReact#CanManageTranslations";
 
-		// TODO CanManageTranslations pending implementation
+		Workflow.openWorkflowListView();
 
+		Workflow.addNewDefinition(workflowDefinitionTitle = "New Workflow Definition");
+
+		ProcessBuilderKaleoDesignerReact.viewTranslationDropdown(translationOptionSelected = "en-us");
+
+		ProcessBuilderKaleoDesignerReact.viewManageTranslationButton();
 	}
 
 	@description = "Verify that the user can move nodes in diagram by drag&drop in the middle of node"
@@ -2289,9 +2307,19 @@ definition {
 	@ignore = "Test Stub"
 	@priority = "3"
 	test CanSearchLanguages {
+		property test.name.skip.portal.instance = "ProcessBuilderKaleoDesignerReact#CanSearchLanguages";
 
-		// TODO CanSearchLanguages pending implementation
+		Workflow.openWorkflowListView();
 
+		Workflow.addNewDefinition(workflowDefinitionTitle = "New Workflow Definition");
+
+		ProcessBuilderKaleoDesignerReact.viewTranslationDropdown(translationOptionSelected = "en-us");
+
+		ProcessBuilderKaleoDesignerReact.gotoManageTranslations();
+
+		ProcessBuilderKaleoDesignerReact.searchLanguage(languageName = "Netherlands");
+
+		ProcessBuilderKaleoDesignerReact.viewSearchTranslationResultPresent(result = "Dutch (Netherlands)");
 	}
 
 	@description = "LPS-139387 - Verify that the user is able to see the Start and End nodes on the Diagram when creating a New Process"

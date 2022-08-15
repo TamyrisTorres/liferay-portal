@@ -10,6 +10,7 @@
  */
 
 export const INPUT_TYPES = {
+	CATEGORY_SELECTOR: 'categorySelector',
 	DATE: 'date',
 	FIELD_MAPPING: 'fieldMapping',
 	FIELD_MAPPING_LIST: 'fieldMappingList',

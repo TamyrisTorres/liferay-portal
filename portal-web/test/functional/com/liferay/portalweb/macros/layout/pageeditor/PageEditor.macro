@@ -1341,12 +1341,6 @@ definition {
 				checkboxName = "Hide Fragment",
 				locator1 = "Checkbox#ANY_CHECKBOX");
 
-			if ((IsElementPresent(locator1 = "Modal#BODY")) && (IsTextEqual(locator1 = "Modal#BODY", value1 = "This fragment contains a required form field or a submit element. Are you sure you want to hide it?"))) {
-				Click(
-					key_text = "Hide",
-					locator1 = "Modal#MODAL_FOOTER_BUTTON");
-			}
-
 			AssertChecked.assertCheckedNotVisible(
 				checkboxName = "Hide Fragment",
 				locator1 = "Checkbox#ANY_CHECKBOX");
@@ -3891,12 +3885,6 @@ return	Array.from(getWebElement("(//div[@aria-label='${fragmentName}'])[${index}
 			key_nodeName = "${fragmentName}",
 			locator1 = "Treeview#PAGE_STRUCTURE_TREE_NODE_HIDE_INDEX");
 
-		if ((IsElementPresent(locator1 = "Modal#BODY")) && (IsTextEqual(locator1 = "Modal#BODY", value1 = "This fragment contains a required form field or a submit element. Are you sure you want to hide it?"))) {
-			Click(
-				key_text = "Hide",
-				locator1 = "Modal#MODAL_FOOTER_BUTTON");
-		}
-
 		PageEditor.waitForAutoSave();
 	}
 
@@ -3951,10 +3939,25 @@ return	Array.from(getWebElement("(//div[@aria-label='${fragmentName}'])[${index}
 				action = "${action}",
 				warningMessage = "Some of the fields have invalid values. If you continue publishing, the latest valid values will display.");
 		}
-		else if ((IsElementPresent(locator1 = "Modal#BODY")) && (IsTextEqual(locator1 = "Modal#HEADER", value1 = "Required Form Components"))) {
+		else if ((IsElementPresent(locator1 = "Modal#BODY")) && (IsTextEqual(locator1 = "Modal#HEADER", value1 = "Form Errors"))) {
 			Modal.publish(
 				action = "${action}",
-				warningMessage = "This page contains one or several forms with missing or hidden form components. Are you sure you want to publish it?");
+				warningMessage = "The following errors have been found in the page forms. Publishing without fixing these errors may affect form performance. Are you sure you want to publish?");
+		}
+		else if ((IsElementPresent(locator1 = "Modal#BODY")) && (IsTextEqual(locator1 = "Modal#HEADER", value1 = "Submit Button Missing"))) {
+			Modal.publish(
+				action = "${action}",
+				warningMessage = "${objectName} form has a hidden or missing submit button. If you continue, your users may not be able to submit the form. Are you sure you want to publish it?");
+		}
+		else if ((IsElementPresent(locator1 = "Modal#BODY")) && (IsTextEqual(locator1 = "Modal#HEADER", value1 = "Fragment Mapping Missing"))) {
+			Modal.publish(
+				action = "${action}",
+				warningMessage = "${objectName} form has some fragments not mapped to object fields. Unmapped fragments data will not be stored. Are you sure you want to publish?");
+		}
+		else if ((IsElementPresent(locator1 = "Modal#BODY")) && (IsTextEqual(locator1 = "Modal#HEADER", value1 = "Required Fields Hidden"))) {
+			Modal.publish(
+				action = "${action}",
+				warningMessage = "${objectName} form contains one or more hidden fragments mapped to required fields. A form with missing required fields will not generate a valid entry. Are you sure you want to publish it?");
 		}
 		else {
 			Alert.viewSuccessMessage();

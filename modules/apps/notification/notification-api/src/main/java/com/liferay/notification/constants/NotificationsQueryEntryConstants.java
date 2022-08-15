@@ -12,30 +12,17 @@
  * details.
  */
 
-import {Action} from '../types';
+package com.liferay.notification.constants;
 
-type PermissionObj = {
-	href: string;
-	method: string;
-};
+/**
+ * @author Mateus Santana
+ */
+public class NotificationsQueryEntryConstants {
 
-type ObjectPermission = {
-	delete?: PermissionObj;
-	get?: PermissionObj;
-	update?: PermissionObj;
-};
+	public static final int STATUS_FAILED = 0;
 
-export class Security {
-	static filterActions(
-		actions: Action[],
-		permissions: ObjectPermission = {}
-	) {
-		return actions.filter((action) =>
-			typeof action.permission === 'boolean'
-				? action.permission
-				: action.permission
-				? !!(permissions as any)[action?.permission?.toLowerCase()]
-				: true
-		);
-	}
+	public static final int STATUS_SENT = 1;
+
+	public static final int STATUS_UNSENT = 2;
+
 }
