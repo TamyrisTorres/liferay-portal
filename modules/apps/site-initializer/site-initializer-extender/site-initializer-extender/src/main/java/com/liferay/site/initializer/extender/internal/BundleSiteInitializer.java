@@ -434,12 +434,15 @@ public class BundleSiteInitializer implements SiteInitializer {
 			_invoke(() -> _addKnowledgeBaseArticles(serviceContext));
 			_invoke(() -> _addOrganizations(serviceContext));
 			_invoke(() -> _addSAPEntries(serviceContext));
-			_invoke(() -> _addSegmentsEntries(serviceContext));
 			_invoke(() -> _addSiteConfiguration(serviceContext));
 			_invoke(() -> _addSiteSettings(serviceContext));
 			_invoke(() -> _addStyleBookEntries(serviceContext));
 			_invoke(() -> _addUserGroups(serviceContext));
 
+			Map<String, String> segmentsEntriesIdsStringUtilReplaceValues =
+				_invoke(
+					() -> _addSegmentsEntries(
+						serviceContext));
 
 			Map<String, String> taxonomyCategoryIdsStringUtilReplaceValues =
 				_invoke(
@@ -505,7 +508,9 @@ public class BundleSiteInitializer implements SiteInitializer {
 
 			Map<String, String> segmentsExperiencesIdsStringUtilReplaceValues =
 				_invoke(
-					() -> _addSegmentsExperiences(serviceContext));
+					() -> _addSegmentsExperiences(
+						serviceContext,
+						segmentsEntriesIdsStringUtilReplaceValues));
 
 			// TODO Review order/dependency
 
@@ -2911,14 +2916,18 @@ public class BundleSiteInitializer implements SiteInitializer {
 		}
 	}
 
-	private void _addSegmentsEntries(ServiceContext serviceContext)
+	private Map<String, String> _addSegmentsEntries(
+		ServiceContext serviceContext)
 		throws Exception {
+
+		Map<String, String> segmentsEntriesIdsStringUtilReplaceValues =
+			new HashMap<>();
 
 		String json = SiteInitializerUtil.read(
 			"/site-initializer/segments-entries.json", _servletContext);
 
 		if (json == null) {
-			return;
+			Collections.emptyMap();
 		}
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray(json);
@@ -2932,28 +2941,36 @@ public class BundleSiteInitializer implements SiteInitializer {
 					jsonObject.getString("segmentsEntryKey"), true);
 
 			if (segmentsEntry == null) {
-				_segmentsEntryLocalService.addSegmentsEntry(
-					jsonObject.getString("segmentsEntryKey"),
-					SiteInitializerUtil.toMap(
-						jsonObject.getString("name_i18n")),
-					null, jsonObject.getBoolean("active", true),
-					jsonObject.getString("criteria"),
-					jsonObject.getString("type"), serviceContext);
+				segmentsEntry =
+					_segmentsEntryLocalService.addSegmentsEntry(
+						jsonObject.getString("segmentsEntryKey"),
+						SiteInitializerUtil.toMap(
+							jsonObject.getString("name_i18n")),
+						null, jsonObject.getBoolean("active", true),
+						jsonObject.getString("criteria"),
+						jsonObject.getString("type"), serviceContext);
 			}
 			else {
-				_segmentsEntryLocalService.updateSegmentsEntry(
-					segmentsEntry.getSegmentsEntryId(),
-					jsonObject.getString("segmentsEntryKey"),
-					SiteInitializerUtil.toMap(
-						jsonObject.getString("name_i18n")),
-					null, jsonObject.getBoolean("active", true),
-					jsonObject.getString("criteria"), serviceContext);
+				segmentsEntry =
+					_segmentsEntryLocalService.updateSegmentsEntry(
+						segmentsEntry.getSegmentsEntryId(),
+						jsonObject.getString("segmentsEntryKey"),
+						SiteInitializerUtil.toMap(
+							jsonObject.getString("name_i18n")),
+						null, jsonObject.getBoolean("active", true),
+						jsonObject.getString("criteria"), serviceContext);
 			}
+			segmentsEntriesIdsStringUtilReplaceValues.put(
+				"SEGMENTS_ENTRY_ID:" + segmentsEntry.getSegmentsEntryKey(),
+				String.valueOf(segmentsEntry.getSegmentsEntryId()));
 		}
+		return segmentsEntriesIdsStringUtilReplaceValues;
 	}
 
 	private Map<String, String> _addSegmentsExperiences(
-		ServiceContext serviceContext) throws Exception {
+		ServiceContext serviceContext,
+		Map<String, String> segmentsEntriesIdsStringUtilReplaceValues)
+		throws Exception {
 
 		Map<String, String> segmentsExperiencesIdsStringUtilReplaceValues =
 			new HashMap<>();
@@ -2967,7 +2984,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 
 		json = _replace(
 			json, "\"[$", "$]\"",
-			segmentsExperiencesIdsStringUtilReplaceValues);
+			segmentsExperiencesIdsStringUtilReplaceValues,
+			segmentsEntriesIdsStringUtilReplaceValues);
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray(json);
 
