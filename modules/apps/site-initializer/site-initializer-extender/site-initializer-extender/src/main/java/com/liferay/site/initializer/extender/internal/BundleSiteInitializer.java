@@ -1740,7 +1740,9 @@ public class BundleSiteInitializer implements SiteInitializer {
 					draftLayout, settingsJSONObject);
 			}
 
-			layout = _layoutCopyHelper.copyLayout(draftLayout, layout);
+			layout = _layoutCopyHelper.copyLayout(
+				jsonObject.getLong("segmentsExperienceID"), draftLayout,
+				layout);
 
 			_layoutLocalService.updateStatus(
 				layout.getUserId(), draftLayout.getPlid(),
@@ -2992,37 +2994,50 @@ public class BundleSiteInitializer implements SiteInitializer {
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-			/*Layout layout = _layoutLocalService.getLayoutByFriendlyURL(
-				serviceContext.getScopeGroupId(), false, jsonObject.getString("friendlyURL"));
-			*/
+			Layout layout = _layoutLocalService.getLayoutByFriendlyURL(
+				serviceContext.getScopeGroupId(), false,
+				jsonObject.getString("friendlyURL"));
+
+			Layout draftLayout = layout.fetchDraftLayout();
+
+			Long classPK = draftLayout.getClassPK();
 
 			SegmentsExperience segmentsExperience =
 				_segmentsExperienceLocalService.fetchSegmentsExperience(
 					serviceContext.getScopeGroupId(),
+					jsonObject.getString("segmentsExperienceKey"),
 					jsonObject.getLong("classNameId"),
-					jsonObject.getLong("classPK"),
-					jsonObject.getInt("priority"));
+					classPK);
 
 			if (segmentsExperience == null) {
-				_segmentsExperienceLocalService.addSegmentsExperience(
-					serviceContext.getUserId(),
-					serviceContext.getScopeGroupId(),
-					jsonObject.getLong("segmentsEntryId"),
-					jsonObject.getLong("classNameId"),
-					jsonObject.getLong("classPK"),
-					SiteInitializerUtil.toMap(
-						jsonObject.getString("name_i18n")),
-					jsonObject.getBoolean("active", true),
-					new UnicodeProperties(true), serviceContext);
+				segmentsExperience =
+					_segmentsExperienceLocalService.addSegmentsExperience(
+						serviceContext.getUserId(),
+						serviceContext.getScopeGroupId(),
+						jsonObject.getLong("segmentsEntryId"),
+						jsonObject.getString("segmentsExperienceKey"),
+						jsonObject.getLong("classNameId"),
+						classPK,
+						SiteInitializerUtil.toMap(
+							jsonObject.getString("name_i18n")),
+						jsonObject.getInt("priority"),
+						jsonObject.getBoolean("active", true),
+						new UnicodeProperties(true), serviceContext);
 			}
 			else {
-				_segmentsExperienceLocalService.updateSegmentsExperience(
-					segmentsExperience.getSegmentsExperienceId(),
-					segmentsExperience.getSegmentsEntryId(),
-					SiteInitializerUtil.toMap(
-						jsonObject.getString("name_i18n")),
-					jsonObject.getBoolean("active", true));
+				segmentsExperience =
+					_segmentsExperienceLocalService.updateSegmentsExperience(
+						segmentsExperience.getSegmentsExperienceId(),
+						segmentsExperience.getSegmentsEntryId(),
+						SiteInitializerUtil.toMap(
+							jsonObject.getString("name_i18n")),
+						jsonObject.getBoolean("active", true));
 			}
+
+			segmentsExperiencesIdsStringUtilReplaceValues.put(
+				"SEGMENTS_EXPERIENCE_ID:" +
+				segmentsExperience.getSegmentsExperienceKey(),
+				String.valueOf(segmentsExperience.getSegmentsExperienceId()));
 		}
 		return segmentsExperiencesIdsStringUtilReplaceValues;
 	}
@@ -4237,7 +4252,6 @@ public class BundleSiteInitializer implements SiteInitializer {
 	private final RoleLocalService _roleLocalService;
 	private final SAPEntryLocalService _sapEntryLocalService;
 	private final SegmentsEntryLocalService _segmentsEntryLocalService;
-
 	private final SegmentsExperienceLocalService
 		_segmentsExperienceLocalService;
 	private ServletContext _servletContext;
