@@ -417,7 +417,7 @@ public class SiteInitializerExtender
 
 	@Reference
 	private SegmentsEntryLocalService _segmentsEntryLocalService;
-
+	@Reference
 	private SegmentsExperienceLocalService _segmentsExperienceLocalService;
 
 	@Reference

@@ -10,7 +10,6 @@
 		"privateLayout": false,
 		"segmentsEntryId": "[$SEGMENTS_ENTRY_ID:AFRICA$]",
 		"segmentsExperienceID": "[$SEGMENTS_EXPERIENCE_ID:SEGMENTS-EXPERIENCE$]",
-		"segmentsExperienceKey": "SEGMENTS-EXPERIENCE",
-		"type": "content"
+		"segmentsExperienceKey": "SEGMENTS-EXPERIENCE"
 	}
 ]
