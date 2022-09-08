@@ -1,11 +1,11 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
+ * <p>
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation; either version 2.1 of the License, or (at your option)
  * any later version.
- *
+ * <p>
  * This library is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
@@ -68,6 +68,7 @@ import com.liferay.headless.admin.workflow.dto.v1_0.WorkflowDefinition;
 import com.liferay.headless.admin.workflow.resource.v1_0.WorkflowDefinitionResource;
 import com.liferay.headless.commerce.admin.catalog.dto.v1_0.ProductSpecification;
 import com.liferay.headless.commerce.admin.catalog.resource.v1_0.ProductSpecificationResource;
+import com.liferay.headless.delivery.dto.v1_0.ClassPKReference;
 import com.liferay.headless.delivery.dto.v1_0.SitePage;
 import com.liferay.headless.delivery.resource.v1_0.SitePageResource;
 import com.liferay.journal.model.JournalArticle;
@@ -98,6 +99,7 @@ import com.liferay.petra.io.StreamUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.Layout;
@@ -148,7 +150,9 @@ import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 import com.liferay.segments.model.SegmentsEntry;
+import com.liferay.segments.model.SegmentsExperience;
 import com.liferay.segments.service.SegmentsEntryLocalService;
+import com.liferay.segments.service.SegmentsExperienceLocalService;
 import com.liferay.site.initializer.SiteInitializer;
 import com.liferay.site.initializer.SiteInitializerRegistry;
 import com.liferay.site.navigation.menu.item.layout.constants.SiteNavigationMenuItemTypeConstants;
@@ -263,6 +267,7 @@ public class BundleSiteInitializerTest {
 			_assertClientExtension(group);
 			_assertSAPEntries(group);
 			_assertSegmentsEntries(group.getGroupId());
+			_assertSegmentsExperience(group.getGroupId());
 			_assertSiteConfiguration(group.getGroupId());
 			_assertSiteSettings(group.getGroupId());
 			_assertSiteNavigationMenu(group);
@@ -456,7 +461,7 @@ public class BundleSiteInitializerTest {
 		Assert.assertNotNull(clientExtensionEntry);
 
 		CustomElementCET customElementCET =
-			(CustomElementCET)_cetFactory.create(clientExtensionEntry);
+			(CustomElementCET) _cetFactory.create(clientExtensionEntry);
 
 		Assert.assertEquals(
 			"liferay-test-remote-app", customElementCET.getHTMLElementName());
@@ -514,7 +519,7 @@ public class BundleSiteInitializerTest {
 	}
 
 	private void _assertCommerceNotificationTemplate(
-			CommerceChannel commerceChannel, Group group)
+		CommerceChannel commerceChannel, Group group)
 		throws Exception {
 
 		ObjectDefinition objectDefinition =
@@ -528,7 +533,7 @@ public class BundleSiteInitializerTest {
 				getCommerceNotificationTemplates(
 					commerceChannel.getGroupId(),
 					"com.liferay.object.model.ObjectDefinition#" +
-						objectDefinition.getObjectDefinitionId() + "#create",
+					objectDefinition.getObjectDefinitionId() + "#create",
 					true);
 
 		CommerceNotificationTemplate commerceNotificationTemplate =
@@ -541,7 +546,7 @@ public class BundleSiteInitializerTest {
 	}
 
 	private void _assertCommerceSpecificationProducts(
-			ServiceContext serviceContext)
+		ServiceContext serviceContext)
 		throws Exception {
 
 		CPSpecificationOption cpSpecificationOption =
@@ -559,7 +564,7 @@ public class BundleSiteInitializerTest {
 
 		ProductSpecificationResource.Builder
 			productSpecificationResourceBuilder =
-				_productSpecificationResourceFactory.create();
+			_productSpecificationResourceFactory.create();
 
 		ProductSpecificationResource productSpecificationResource =
 			productSpecificationResourceBuilder.user(
@@ -677,7 +682,7 @@ public class BundleSiteInitializerTest {
 	}
 
 	private void _assertDefaultCPDisplayLayout(
-			CommerceChannel commerceChannel, Group group)
+		CommerceChannel commerceChannel, Group group)
 		throws Exception {
 
 		Settings settings = _settingsFactory.getSettings(
@@ -730,7 +735,7 @@ public class BundleSiteInitializerTest {
 	}
 
 	private void _assertFragmentEntries(
-			Group group, ServiceContext serviceContext)
+		Group group, ServiceContext serviceContext)
 		throws Exception {
 
 		Group companyGroup = _groupLocalService.getCompanyGroup(
@@ -937,7 +942,7 @@ public class BundleSiteInitializerTest {
 
 		NotificationTemplateResource.Builder
 			notificationTemplateResourceBuilder =
-				_notificationTemplateResourceFactory.create();
+			_notificationTemplateResourceFactory.create();
 
 		NotificationTemplateResource notificationTemplateResource =
 			notificationTemplateResourceBuilder.user(
@@ -977,14 +982,14 @@ public class BundleSiteInitializerTest {
 				objectAction.getParametersUnicodeProperties();
 
 			if (objectActionExecutorKey.equals(
-					ObjectActionExecutorConstants.KEY_GROOVY)) {
+				ObjectActionExecutorConstants.KEY_GROOVY)) {
 
 				String script = parametersUnicodeProperties.get("script");
 
 				Assert.assertNotNull(script);
 			}
 			else if (objectActionExecutorKey.equals(
-						ObjectActionExecutorConstants.KEY_WEBHOOK)) {
+				ObjectActionExecutorConstants.KEY_WEBHOOK)) {
 
 				String secret = parametersUnicodeProperties.get("secret");
 				String url = parametersUnicodeProperties.get("url");
@@ -996,7 +1001,7 @@ public class BundleSiteInitializerTest {
 	}
 
 	private void _assertObjectDefinitions(
-			Group group, ServiceContext serviceContext)
+		Group group, ServiceContext serviceContext)
 		throws Exception {
 
 		ObjectDefinition objectDefinition1 =
@@ -1038,8 +1043,8 @@ public class BundleSiteInitializerTest {
 	}
 
 	private void _assertObjectEntries(
-			long groupId, ObjectDefinition objectDefinition,
-			int objectEntriesCount)
+		long groupId, ObjectDefinition objectDefinition,
+		int objectEntriesCount)
 		throws Exception {
 
 		Assert.assertEquals(
@@ -1049,7 +1054,7 @@ public class BundleSiteInitializerTest {
 	}
 
 	private void _assertObjectRelationships(
-			ObjectDefinition objectDefinition, ServiceContext serviceContext)
+		ObjectDefinition objectDefinition, ServiceContext serviceContext)
 		throws Exception {
 
 		ObjectRelationshipResource.Builder objectRelationshipResourceBuilder =
@@ -1205,7 +1210,7 @@ public class BundleSiteInitializerTest {
 	}
 
 	private void _assertPublicLayouts(
-			Group group, ServiceContext serviceContext)
+		Group group, ServiceContext serviceContext)
 		throws Exception {
 
 		int publicLayoutsCount = _layoutLocalService.getLayoutsCount(
@@ -1420,6 +1425,31 @@ public class BundleSiteInitializerTest {
 			"com.liferay.portal.kernel.model.User", segmentsEntry2.getType());
 	}
 
+	private void _assertSegmentsExperience(Long groupId)
+		throws PortalException {
+	/*Assert.assertEquals(
+			2,
+			_segmentsExperienceLocalService.getSegmentsExperience(groupId, "SEGMENTS-EXPERIENCE",));*/
+
+		Layout layout = _layoutLocalService.getFriendlyURLLayout(
+			groupId, false,
+			"/home");
+
+		Layout draftLayout = layout.fetchDraftLayout();
+
+		Long classPK = draftLayout.getClassPK();
+
+		List<SegmentsExperience> segmentsExperience =
+			_segmentsExperienceLocalService.getSegmentsExperiences(
+				groupId, _portal.getClassNameId(
+					"com.liferay.portal.kernel.model.Layout"), classPK);
+
+		Assert.assertEquals(
+			segmentsExperience.toString(), 1, segmentsExperience.size());
+
+
+	}
+
 	private void _assertSiteConfiguration(Long groupId) {
 		Group group = _groupLocalService.fetchGroup(groupId);
 
@@ -1523,8 +1553,8 @@ public class BundleSiteInitializerTest {
 	}
 
 	private void _assertUserAccounts(
-			Long accountId, int totalCount,
-			UserAccountResource userAccountResource)
+		Long accountId, int totalCount,
+		UserAccountResource userAccountResource)
 		throws Exception {
 
 		Page<UserAccount> page = userAccountResource.getAccountUserAccountsPage(
@@ -1556,8 +1586,8 @@ public class BundleSiteInitializerTest {
 	}
 
 	private void _assertUserOrganizations(
-			String organizationId, int totalCount,
-			UserAccountResource userAccountResource)
+		String organizationId, int totalCount,
+		UserAccountResource userAccountResource)
 		throws Exception {
 
 		Page<UserAccount> page =
@@ -1605,7 +1635,7 @@ public class BundleSiteInitializerTest {
 	}
 
 	private void _assertWorkflowDefinitions(
-			Group group, ServiceContext serviceContext)
+		Group group, ServiceContext serviceContext)
 		throws Exception {
 
 		WorkflowDefinitionResource.Builder workflowDefinitionResourceBuilder =
@@ -1664,8 +1694,8 @@ public class BundleSiteInitializerTest {
 	}
 
 	private Configuration _getFactoryConfiguration(
-			String factoryPid, ExtendedObjectClassDefinition.Scope scope,
-			Serializable scopePK)
+		String factoryPid, ExtendedObjectClassDefinition.Scope scope,
+		Serializable scopePK)
 		throws Exception {
 
 		try {
@@ -1693,7 +1723,8 @@ public class BundleSiteInitializerTest {
 		throws Exception {
 
 		try (InputStream inputStream =
-				BundleSiteInitializerTest.class.getResourceAsStream(location)) {
+				 BundleSiteInitializerTest.class.getResourceAsStream(
+					 location)) {
 
 			return bundleContext.installBundle(location, inputStream);
 		}
@@ -1826,6 +1857,8 @@ public class BundleSiteInitializerTest {
 
 	@Inject
 	private SegmentsEntryLocalService _segmentsEntryLocalService;
+	@Inject
+	SegmentsExperienceLocalService _segmentsExperienceLocalService;
 
 	@Inject
 	private ServletContext _servletContext;
