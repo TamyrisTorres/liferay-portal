@@ -1449,17 +1449,17 @@ public class BundleSiteInitializerTest {
 					"com.liferay.portal.kernel.model.Layout"),
 				classPK);
 
-		Assert.assertTrue(segmentsExperience1.isActive());
-
 		Assert.assertNotNull(segmentsExperience1);
 
-		Assert.assertEquals(
-			_portal.getClassNameId("com.liferay.portal.kernel.model.Layout"),
-			segmentsExperience1.getClassNameId());
+		Assert.assertTrue(segmentsExperience1.isActive());
 
 		Assert.assertEquals(
 			"Test Segments Experience 1",
 			segmentsExperience1.getName(LocaleUtil.getSiteDefault()));
+
+		Assert.assertEquals(
+			_portal.getClassNameId("com.liferay.portal.kernel.model.Layout"),
+			segmentsExperience1.getClassNameId());
 
 		SegmentsExperience segmentsExperience2 =
 			_segmentsExperienceLocalService.fetchSegmentsExperience(
@@ -1468,13 +1468,9 @@ public class BundleSiteInitializerTest {
 					"com.liferay.portal.kernel.model.Layout"),
 				classPK);
 
-		Assert.assertTrue(segmentsExperience2.isActive());
-
 		Assert.assertNotNull(segmentsExperience2);
 
-		Assert.assertEquals(
-			"Test Segments Experience 2",
-			segmentsExperience2.getName(LocaleUtil.getSiteDefault()));
+		Assert.assertTrue(segmentsExperience2.isActive());
 
 		Assert.assertEquals(
 			_portal.getClassNameId("com.liferay.portal.kernel.model.Layout"),
@@ -1483,7 +1479,8 @@ public class BundleSiteInitializerTest {
 		Assert.assertEquals(
 			"Test Segments Experience 2",
 			segmentsExperience2.getName(LocaleUtil.getSiteDefault()));
-	}
+
+		}
 
 	private void _assertSiteConfiguration(Long groupId) {
 		Group group = _groupLocalService.fetchGroup(groupId);
