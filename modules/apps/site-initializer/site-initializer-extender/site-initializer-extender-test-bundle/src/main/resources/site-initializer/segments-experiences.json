@@ -9,7 +9,20 @@
 		"priority": -1,
 		"privateLayout": false,
 		"segmentsEntryId": "[$SEGMENTS_ENTRY_ID:TEST-SEGMENTS-ENTRY-1$]",
-		"segmentsExperienceID": "[$SEGMENTS_EXPERIENCE_ID:SEGMENTS-EXPERIENCE-1$]",
+		"segmentsExperienceID": "[$SEGMENTS_EXPERIENCE_ID:TEST-SEGMENTS-EXPERIENCE-1$]",
 		"segmentsExperienceKey": "TEST-SEGMENTS-EXPERIENCE-1"
+	},
+	{
+		"active": "true",
+		"classNameId": "[$CLASS_NAME_ID:com.liferay.portal.kernel.model.Layout$]",
+		"friendlyURL": "/home",
+		"name_i18n": {
+			"en-US": "Test Segments Experience 2"
+		},
+		"priority": -2,
+		"privateLayout": false,
+		"segmentsEntryId": "[$SEGMENTS_ENTRY_ID:TEST-SEGMENTS-ENTRY-2$]",
+		"segmentsExperienceID": "[$SEGMENTS_EXPERIENCE_ID:TEST-SEGMENTS-EXPERIENCE-2$]",
+		"segmentsExperienceKey": "TEST-SEGMENTS-EXPERIENCE-2"
 	}
 ]

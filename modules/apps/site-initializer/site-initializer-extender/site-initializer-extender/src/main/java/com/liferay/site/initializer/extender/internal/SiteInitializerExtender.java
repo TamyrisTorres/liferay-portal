@@ -204,7 +204,7 @@ public class SiteInitializerExtender
 		_files.clear();
 
 		for (SiteInitializerExtension siteInitializerExtension :
-			_fileSiteInitializerExtensions) {
+				_fileSiteInitializerExtensions) {
 
 			siteInitializerExtension.destroy();
 		}
@@ -417,6 +417,7 @@ public class SiteInitializerExtender
 
 	@Reference
 	private SegmentsEntryLocalService _segmentsEntryLocalService;
+
 	@Reference
 	private SegmentsExperienceLocalService _segmentsExperienceLocalService;
 
