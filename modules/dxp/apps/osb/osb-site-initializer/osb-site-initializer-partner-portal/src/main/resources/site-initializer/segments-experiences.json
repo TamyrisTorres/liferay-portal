@@ -1,0 +1,15 @@
+[
+	{
+		"active": "true",
+		"classNameId": "[$CLASS_NAME_ID:com.liferay.portal.kernel.model.Layout$]",
+		"friendlyURL": "/home",
+		"name_i18n": {
+			"en-US": "Segments Experience"
+		},
+		"priority": -1,
+		"privateLayout": false,
+		"segmentsEntryId": "[$SEGMENTS_ENTRY_ID:AFRICA$]",
+		"segmentsExperienceID": "[$SEGMENTS_EXPERIENCE_ID:Segments Experience$]",
+		"segmentsExperienceKey": "Segments Experience"
+	}
+]
