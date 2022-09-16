@@ -2988,7 +2988,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray(
 			_replace(
-				json, "[$", "$]",
+				json, "\"[$", "$]\"",
 				segmentsExperiencesIdsStringUtilReplaceValues,
 				segmentsEntriesIdsStringUtilReplaceValues
 			));
@@ -3058,12 +3058,11 @@ public class BundleSiteInitializer implements SiteInitializer {
 			_layoutCopyHelper.copySegmentsExperienceData(
 				draftLayout.getPlid(),
 				_commentManager,
-				draftLayout.getGroupId(), _portletRegistry,
+				serviceContext.getScopeGroupId(), _portletRegistry,
 				dfl.getSegmentsExperienceId(),
 				segmentsExperience.getSegmentsExperienceId(),
-				className -> serviceContext, draftLayout.getUserId());
+				className -> serviceContext, serviceContext.getUserId());
 		}
-
 		return segmentsExperiencesIdsStringUtilReplaceValues;
 	}
 
