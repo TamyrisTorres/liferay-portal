@@ -19,12 +19,15 @@ import com.liferay.asset.kernel.service.AssetTagLocalService;
 import com.liferay.client.extension.model.ClientExtensionEntryRel;
 import com.liferay.client.extension.service.ClientExtensionEntryRelLocalService;
 import com.liferay.counter.kernel.service.CounterLocalService;
+import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
 import com.liferay.fragment.model.FragmentEntryLink;
 import com.liferay.fragment.processor.PortletRegistry;
 import com.liferay.fragment.service.FragmentEntryLinkLocalService;
+import com.liferay.fragment.service.FragmentEntryLinkLocalServiceUtil;
 import com.liferay.layout.model.LayoutClassedModelUsage;
 import com.liferay.layout.page.template.model.LayoutPageTemplateStructure;
 import com.liferay.layout.page.template.service.LayoutPageTemplateStructureLocalService;
+import com.liferay.layout.page.template.service.LayoutPageTemplateStructureLocalServiceUtil;
 import com.liferay.layout.seo.model.LayoutSEOEntry;
 import com.liferay.layout.seo.service.LayoutSEOEntryLocalService;
 import com.liferay.layout.service.LayoutClassedModelUsageLocalService;
@@ -60,8 +63,11 @@ import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.ImageLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.PortletLocalService;
+import com.liferay.portal.kernel.service.PortletLocalServiceUtil;
 import com.liferay.portal.kernel.service.PortletPreferenceValueLocalService;
+import com.liferay.portal.kernel.service.PortletPreferenceValueLocalServiceUtil;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalService;
+import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -112,32 +118,6 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true, service = LayoutCopyHelper.class)
 public class LayoutCopyHelperImpl implements LayoutCopyHelper {
-
-	public void copySegmentsExperienceData(
-			long plid, CommentManager commentManager, long groupId,
-			PortletRegistry portletRegistry, long sourceSegmentsExperienceId,
-			long targetSegmentsExperienceId,
-			Function<String, ServiceContext> serviceContextFunction,
-			long userId)
-		throws PortalException {
-
-		boolean copyLayout = CopyLayoutThreadLocal.isCopyLayout();
-
-		try {
-			CopyLayoutThreadLocal.setCopyLayout(true);
-
-			_copyLayoutData(
-				plid, commentManager, groupId, portletRegistry,
-				sourceSegmentsExperienceId, targetSegmentsExperienceId,
-				serviceContextFunction, userId);
-		}
-		catch (Throwable throwable) {
-			throw new PortalException(throwable);
-		}
-		finally {
-			CopyLayoutThreadLocal.setCopyLayout(copyLayout);
-		}
-	}
 
 	@Override
 	public Layout copyLayout(Layout sourceLayout, Layout targetLayout)
@@ -624,6 +604,21 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 				targetLayout.getCompanyId(), resourceName,
 				ResourceConstants.SCOPE_INDIVIDUAL, targetResourcePrimKey,
 				targetRoleIdsToActionIds);
+		}
+	}
+
+	private void _copyPortletPreferences(
+		FragmentEntryLink fragmentEntryLink,
+		FragmentEntryLink newFragmentEntryLink, long plid,
+		PortletRegistry portletRegistry) {
+
+		for (String portletId :
+				portletRegistry.getFragmentEntryLinkPortletIds(
+					fragmentEntryLink)) {
+
+			_getNewPortletPreferencesOptional(
+				fragmentEntryLink.getNamespace(),
+				newFragmentEntryLink.getNamespace(), plid, portletId);
 		}
 	}
 
