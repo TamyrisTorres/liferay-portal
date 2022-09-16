@@ -1,11 +1,11 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
+ * <p>
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation; either version 2.1 of the License, or (at your option)
  * any later version.
- *
+ * <p>
  * This library is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
@@ -23,6 +23,7 @@ import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMTemplateLocalService;
 import com.liferay.dynamic.data.mapping.util.DefaultDDMStructureHelper;
 import com.liferay.fragment.importer.FragmentsImporter;
+import com.liferay.fragment.processor.PortletRegistry;
 import com.liferay.headless.admin.list.type.resource.v1_0.ListTypeDefinitionResource;
 import com.liferay.headless.admin.list.type.resource.v1_0.ListTypeEntryResource;
 import com.liferay.headless.admin.taxonomy.resource.v1_0.TaxonomyCategoryResource;
@@ -48,6 +49,7 @@ import com.liferay.object.admin.rest.resource.v1_0.ObjectRelationshipResource;
 import com.liferay.object.service.ObjectActionLocalService;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
+import com.liferay.portal.kernel.comment.CommentManager;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.service.GroupLocalService;
@@ -69,6 +71,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.security.service.access.policy.service.SAPEntryLocalService;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.segments.service.SegmentsEntryLocalService;
+import com.liferay.segments.service.SegmentsExperienceLocalService;
 import com.liferay.site.initializer.extender.internal.file.backed.osgi.FileBackedBundleDelegate;
 import com.liferay.site.initializer.extender.internal.file.backed.servlet.FileBackedServletContextDelegate;
 import com.liferay.site.navigation.service.SiteNavigationMenuItemLocalService;
@@ -142,12 +145,14 @@ public class SiteInitializerExtender
 				_organizationLocalService, _organizationResourceFactory,
 				_portal, _resourceActionLocalService,
 				_resourcePermissionLocalService, _roleLocalService,
-				_sapEntryLocalService, _segmentsEntryLocalService, null,
+				_sapEntryLocalService, _segmentsEntryLocalService,
+				_segmentsExperienceLocalService, null,
 				_settingsFactory, _siteNavigationMenuItemLocalService,
 				_siteNavigationMenuItemTypeRegistry,
 				_siteNavigationMenuLocalService,
 				_structuredContentFolderResourceFactory,
-				_styleBookEntryZipProcessor, _taxonomyCategoryResourceFactory,
+				_styleBookEntryZipProcessor,
+				_taxonomyCategoryResourceFactory,
 				_taxonomyVocabularyResourceFactory, _themeLocalService,
 				_userAccountResourceFactory, _userGroupLocalService,
 				_userLocalService, _workflowDefinitionLinkLocalService,
@@ -202,7 +207,7 @@ public class SiteInitializerExtender
 		_files.clear();
 
 		for (SiteInitializerExtension siteInitializerExtension :
-				_fileSiteInitializerExtensions) {
+			_fileSiteInitializerExtensions) {
 
 			siteInitializerExtension.destroy();
 		}
@@ -252,6 +257,7 @@ public class SiteInitializerExtender
 				_portal, _resourceActionLocalService,
 				_resourcePermissionLocalService, _roleLocalService,
 				_sapEntryLocalService, _segmentsEntryLocalService,
+				_segmentsExperienceLocalService,
 				ProxyUtil.newDelegateProxyInstance(
 					ServletContext.class.getClassLoader(), ServletContext.class,
 					new FileBackedServletContextDelegate(
@@ -261,7 +267,8 @@ public class SiteInitializerExtender
 				_siteNavigationMenuItemTypeRegistry,
 				_siteNavigationMenuLocalService,
 				_structuredContentFolderResourceFactory,
-				_styleBookEntryZipProcessor, _taxonomyCategoryResourceFactory,
+				_styleBookEntryZipProcessor,
+				_taxonomyCategoryResourceFactory,
 				_taxonomyVocabularyResourceFactory, _themeLocalService,
 				_userAccountResourceFactory, _userGroupLocalService,
 				_userLocalService, _workflowDefinitionLinkLocalService,
@@ -414,6 +421,9 @@ public class SiteInitializerExtender
 
 	@Reference
 	private SegmentsEntryLocalService _segmentsEntryLocalService;
+
+	@Reference
+	private SegmentsExperienceLocalService _segmentsExperienceLocalService;
 
 	@Reference
 	private SettingsFactory _settingsFactory;
