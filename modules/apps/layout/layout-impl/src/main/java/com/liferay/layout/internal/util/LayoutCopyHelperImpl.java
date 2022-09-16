@@ -37,6 +37,9 @@ import com.liferay.portal.kernel.comment.CommentManager;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONException;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -74,6 +77,8 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.PortletKeys;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUID;
 import com.liferay.portlet.exportimport.staging.StagingAdvicesThreadLocal;
@@ -90,9 +95,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -105,6 +112,32 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true, service = LayoutCopyHelper.class)
 public class LayoutCopyHelperImpl implements LayoutCopyHelper {
+
+	public static void copySegmentsExperienceData(
+			long plid, CommentManager commentManager, long groupId,
+			PortletRegistry portletRegistry, long sourceSegmentsExperienceId,
+			long targetSegmentsExperienceId,
+			Function<String, ServiceContext> serviceContextFunction,
+			long userId)
+		throws PortalException {
+
+		boolean copyLayout = CopyLayoutThreadLocal.isCopyLayout();
+
+		try {
+			CopyLayoutThreadLocal.setCopyLayout(true);
+
+			_copyLayoutData(
+				plid, commentManager, groupId, portletRegistry,
+				sourceSegmentsExperienceId, targetSegmentsExperienceId,
+				serviceContextFunction, userId);
+		}
+		catch (Throwable throwable) {
+			throw new PortalException(throwable);
+		}
+		finally {
+			CopyLayoutThreadLocal.setCopyLayout(copyLayout);
+		}
+	}
 
 	@Override
 	public Layout copyLayout(Layout sourceLayout, Layout targetLayout)
