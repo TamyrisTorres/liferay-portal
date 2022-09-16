@@ -113,7 +113,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = LayoutCopyHelper.class)
 public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 
-	public static void copySegmentsExperienceData(
+	public void copySegmentsExperienceData(
 			long plid, CommentManager commentManager, long groupId,
 			PortletRegistry portletRegistry, long sourceSegmentsExperienceId,
 			long targetSegmentsExperienceId,
