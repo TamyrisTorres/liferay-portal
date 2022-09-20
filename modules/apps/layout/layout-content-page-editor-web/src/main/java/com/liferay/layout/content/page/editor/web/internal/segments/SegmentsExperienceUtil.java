@@ -43,20 +43,6 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class SegmentsExperienceUtil {
 
-	public static void copySegmentsExperienceData(
-			long plid, CommentManager commentManager, long groupId,
-			PortletRegistry portletRegistry, long sourceSegmentsExperienceId,
-			long targetSegmentsExperienceId,
-			Function<String, ServiceContext> serviceContextFunction,
-			long userId)
-		throws PortalException {
-
-		_copyLayoutData(
-			plid, commentManager, groupId, portletRegistry,
-			sourceSegmentsExperienceId, targetSegmentsExperienceId,
-			serviceContextFunction, userId);
-	}
-
 	public static Map<String, Object> getAvailableSegmentsExperiences(
 			HttpServletRequest httpServletRequest)
 		throws Exception {

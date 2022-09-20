@@ -125,6 +125,7 @@ public class SiteInitializerExtender
 				_accountResourceFactory, _accountRoleLocalService,
 				_accountRoleResourceFactory, _assetCategoryLocalService,
 				_assetListEntryLocalService, bundle,
+				_commentManager,
 				_clientExtensionEntryLocalService, _configurationProvider,
 				_ddmStructureLocalService, _ddmTemplateLocalService,
 				_defaultDDMStructureHelper, _dlURLHelper,
@@ -152,6 +153,7 @@ public class SiteInitializerExtender
 				_siteNavigationMenuLocalService,
 				_structuredContentFolderResourceFactory,
 				_styleBookEntryZipProcessor,
+				_portletRegistry,
 				_taxonomyCategoryResourceFactory,
 				_taxonomyVocabularyResourceFactory, _themeLocalService,
 				_userAccountResourceFactory, _userGroupLocalService,
@@ -235,7 +237,7 @@ public class SiteInitializerExtender
 					Bundle.class.getClassLoader(), Bundle.class,
 					new FileBackedBundleDelegate(
 						_bundleContext, file, _jsonFactory, symbolicName),
-					null),
+					null),_commentManager,
 				_clientExtensionEntryLocalService, _configurationProvider,
 				_ddmStructureLocalService, _ddmTemplateLocalService,
 				_defaultDDMStructureHelper, _dlURLHelper,
@@ -267,7 +269,7 @@ public class SiteInitializerExtender
 				_siteNavigationMenuItemTypeRegistry,
 				_siteNavigationMenuLocalService,
 				_structuredContentFolderResourceFactory,
-				_styleBookEntryZipProcessor,
+				_styleBookEntryZipProcessor,_portletRegistry,
 				_taxonomyCategoryResourceFactory,
 				_taxonomyVocabularyResourceFactory, _themeLocalService,
 				_userAccountResourceFactory, _userGroupLocalService,
@@ -296,6 +298,9 @@ public class SiteInitializerExtender
 
 	private BundleContext _bundleContext;
 	private BundleTracker<?> _bundleTracker;
+
+	@Reference
+	private CommentManager _commentManager;
 
 	@Reference
 	private ClientExtensionEntryLocalService _clientExtensionEntryLocalService;
@@ -445,6 +450,9 @@ public class SiteInitializerExtender
 
 	@Reference
 	private StyleBookEntryZipProcessor _styleBookEntryZipProcessor;
+
+	@Reference
+	private PortletRegistry _portletRegistry;
 
 	@Reference
 	private TaxonomyCategoryResource.Factory _taxonomyCategoryResourceFactory;

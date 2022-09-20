@@ -213,6 +213,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		AccountRoleResource.Factory accountRoleResourceFactory,
 		AssetCategoryLocalService assetCategoryLocalService,
 		AssetListEntryLocalService assetListEntryLocalService, Bundle bundle,
+		CommentManager commentManager,
 		ClientExtensionEntryLocalService clientExtensionEntryLocalService,
 		ConfigurationProvider configurationProvider,
 		DDMStructureLocalService ddmStructureLocalService,
@@ -261,6 +262,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		StructuredContentFolderResource.Factory
 			structuredContentFolderResourceFactory,
 		StyleBookEntryZipProcessor styleBookEntryZipProcessor,
+		PortletRegistry portletRegistry,
 		TaxonomyCategoryResource.Factory taxonomyCategoryResourceFactory,
 		TaxonomyVocabularyResource.Factory taxonomyVocabularyResourceFactory,
 		ThemeLocalService themeLocalService,
@@ -276,6 +278,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		_assetCategoryLocalService = assetCategoryLocalService;
 		_assetListEntryLocalService = assetListEntryLocalService;
 		_bundle = bundle;
+		_commentManager = commentManager;
 		_clientExtensionEntryLocalService = clientExtensionEntryLocalService;
 		_configurationProvider = configurationProvider;
 		_ddmStructureLocalService = ddmStructureLocalService;
@@ -329,6 +332,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		_structuredContentFolderResourceFactory =
 			structuredContentFolderResourceFactory;
 		_styleBookEntryZipProcessor = styleBookEntryZipProcessor;
+		_portletRegistry = portletRegistry;
 		_taxonomyCategoryResourceFactory = taxonomyCategoryResourceFactory;
 		_taxonomyVocabularyResourceFactory = taxonomyVocabularyResourceFactory;
 		_themeLocalService = themeLocalService;
@@ -1695,7 +1699,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 				String json = StringUtil.read(url.openStream());
 
 				json = _replace(
-					json, "\"[$", "$]\"",
+					json, "[$", "$]",
 					assetListEntryIdsStringUtilReplaceValues,
 					documentsStringUtilReplaceValues,
 					taxonomyCategoryIdsStringUtilReplaceValues);
@@ -2984,23 +2988,27 @@ public class BundleSiteInitializer implements SiteInitializer {
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray(
 			_replace(
-				json, "\"[$", "$]\"",
+				json, "[$", "$]",
 				segmentsExperiencesIdsStringUtilReplaceValues,
 				segmentsEntriesIdsStringUtilReplaceValues
 			));
 
+		Layout layout = null;
+		Layout draftLayout = null;
+		SegmentsExperience segmentsExperience = null;
+
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-			Layout layout = _layoutLocalService.fetchLayoutByFriendlyURL(
+			layout = _layoutLocalService.fetchLayoutByFriendlyURL(
 				serviceContext.getScopeGroupId(), false,
 				jsonObject.getString("friendlyURL"));
 
-			Layout draftLayout = layout.fetchDraftLayout();
+			draftLayout = layout.fetchDraftLayout();
 
 			Long classPK = draftLayout.getClassPK();
 
-			SegmentsExperience segmentsExperience =
+			segmentsExperience =
 				_segmentsExperienceLocalService.fetchSegmentsExperience(
 					serviceContext.getScopeGroupId(),
 					jsonObject.getLong("classNameId"),
@@ -3034,6 +3042,28 @@ public class BundleSiteInitializer implements SiteInitializer {
 				"SEGMENTS_EXPERIENCE_ID:" +
 				segmentsExperience.getName("Segments Experience"),
 				String.valueOf(segmentsExperience.getSegmentsExperienceId()));
+		}
+
+		String layoutName = layout.getFriendlyURL();
+
+		if( layoutName == "/home"){
+
+			SegmentsExperience dfl =
+				_segmentsExperienceLocalService.fetchSegmentsExperience(
+					serviceContext.getScopeGroupId(),
+					_portal.getClassNameId(Layout.class),
+					draftLayout.getClassPK(),
+					0);
+
+			_layoutCopyHelper.copySegmentsExperienceData(
+				draftLayout.getPlid(),
+				_commentManager,
+				draftLayout.getGroupId(), _portletRegistry,
+				dfl.getSegmentsExperienceId(),
+				segmentsExperience.getSegmentsExperienceId(),
+				className -> serviceContext, draftLayout.getUserId());
+
+
 		}
 
 		return segmentsExperiencesIdsStringUtilReplaceValues;
@@ -4198,6 +4228,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 	private final AssetListEntryLocalService _assetListEntryLocalService;
 	private final Bundle _bundle;
 
+	private final CommentManager _commentManager;
+
 	private final ClassLoader _classLoader;
 	private final Map<String, String> _classNameIdStringUtilReplaceValues;
 	private final ClientExtensionEntryLocalService
@@ -4263,6 +4295,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 	private final StructuredContentFolderResource.Factory
 		_structuredContentFolderResourceFactory;
 	private final StyleBookEntryZipProcessor _styleBookEntryZipProcessor;
+
+	private final PortletRegistry _portletRegistry;
 
 	private final TaxonomyCategoryResource.Factory
 		_taxonomyCategoryResourceFactory;
