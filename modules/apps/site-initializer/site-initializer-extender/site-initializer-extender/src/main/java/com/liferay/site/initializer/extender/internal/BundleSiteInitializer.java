@@ -3062,8 +3062,6 @@ public class BundleSiteInitializer implements SiteInitializer {
 				dfl.getSegmentsExperienceId(),
 				segmentsExperience.getSegmentsExperienceId(),
 				className -> serviceContext, draftLayout.getUserId());
-
-
 		}
 
 		return segmentsExperiencesIdsStringUtilReplaceValues;
