@@ -171,7 +171,8 @@ public class ObjectRelationshipLocalServiceImpl
 			objectRelationshipPersistence.findByPrimaryKey(
 				objectRelationshipId);
 
-		return deleteObjectRelationship(objectRelationship);
+		return objectRelationshipLocalService.deleteObjectRelationship(
+			objectRelationship);
 	}
 
 	@Indexable(type = IndexableType.DELETE)
@@ -295,6 +296,19 @@ public class ObjectRelationshipLocalServiceImpl
 					pkObjectFieldDBColumnNames.get(
 						"pkObjectFieldDBColumnName2"),
 					" = ", primaryKey2));
+		}
+	}
+
+	@Override
+	public void deleteObjectRelationships(long objectDefinitionId1)
+		throws PortalException {
+
+		for (ObjectRelationship objectRelationship :
+				objectRelationshipPersistence.findByObjectDefinitionId1(
+					objectDefinitionId1)) {
+
+			objectRelationshipLocalService.deleteObjectRelationship(
+				objectRelationship);
 		}
 	}
 

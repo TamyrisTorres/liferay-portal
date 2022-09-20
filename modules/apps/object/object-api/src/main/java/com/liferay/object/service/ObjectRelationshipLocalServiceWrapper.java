@@ -166,6 +166,14 @@ public class ObjectRelationshipLocalServiceWrapper
 				objectRelationshipId, primaryKey1, primaryKey2);
 	}
 
+	@Override
+	public void deleteObjectRelationships(long objectDefinitionId1)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		_objectRelationshipLocalService.deleteObjectRelationships(
+			objectDefinitionId1);
+	}
+
 	/**
 	 * @throws PortalException
 	 */

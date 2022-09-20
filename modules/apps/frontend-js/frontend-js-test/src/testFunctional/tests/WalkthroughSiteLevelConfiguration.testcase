@@ -17,6 +17,17 @@ definition {
 
 			ApplicationsMenu.gotoSite(site = "Site Name");
 		}
+
+		task ("And Given a walkthrough sample portlet") {
+			JSONLayout.addPublicLayout(
+				groupName = "Site Name",
+				layoutName = "Walkthrough Page 1");
+
+			JSONLayout.addWidgetToPublicLayout(
+				groupName = "Site Name",
+				layoutName = "Walkthrough Page 1",
+				widgetName = "JS Walkthrough Sample");
+		}
 	}
 
 	tearDown {
@@ -27,6 +38,34 @@ definition {
 		}
 		else {
 			JSONGroup.deleteGroupByName(groupName = "Site Name");
+		}
+	}
+
+	@description = "LPS-159841. Walkthrough does not show when disabled."
+	@priority = "5"
+	test CanBeDisabled {
+		property portal.acceptance = "true";
+
+		var portalURL = PropsUtil.get("portal.url");
+
+		task ("Given walkthrough enabled site-level") {
+			Walkthrough.addWalkthrough(fileName = "walkthrough_configuration.json");
+		}
+
+		task ("When walkthrough is disabled") {
+			SystemSettings.configureSystemSetting(
+				enableSetting = "false",
+				settingFieldName = "Enable Walkthrough");
+
+			SystemSettings.saveConfiguration();
+		}
+
+		task ("Then hotspot element is not present on site") {
+			Navigator.openSitePage(
+				pageName = "Walkthrough Page 1",
+				siteName = "Site Name");
+
+			AssertElementNotPresent(locator1 = "Walkthrough#HOTSPOT");
 		}
 	}
 
@@ -69,6 +108,36 @@ definition {
 
 		task ("Then success message appears") {
 			Alert.viewSuccessMessage();
+		}
+	}
+
+	@description = "LPS-159840. JSON can be updated."
+	@priority = "5"
+	test JSONCanBeUpdated {
+		property portal.acceptance = "true";
+
+		var portalURL = PropsUtil.get("portal.url");
+
+		task ("Given walkthrough enabled site-level") {
+			Walkthrough.addWalkthrough(fileName = "walkthrough_configuration.json");
+		}
+
+		task ("When step 1 title is modified") {
+			Walkthrough._editWalkthroughJSON(fileName = "edit_walkthrough_configuration.json");
+
+			SystemSettings.saveConfiguration();
+		}
+
+		task ("Then step 1 title is updated") {
+			Navigator.openSitePage(
+				pageName = "Walkthrough Page 1",
+				siteName = "Site Name");
+
+			Walkthrough.enablePopoverMode();
+
+			AssertElementPresent(
+				key_title = "Step 1 of 2: EDIT: Click the Button",
+				locator1 = "Walkthrough#POPOVER_TITLE");
 		}
 	}
 

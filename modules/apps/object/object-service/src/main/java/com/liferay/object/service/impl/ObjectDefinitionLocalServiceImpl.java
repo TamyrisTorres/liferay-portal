@@ -162,6 +162,45 @@ public class ObjectDefinitionLocalServiceImpl
 
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
+	public ObjectDefinition addObjectDefinition(
+			String externalReferenceCode, long userId)
+		throws PortalException {
+
+		ObjectDefinition objectDefinition = objectDefinitionPersistence.create(
+			counterLocalService.increment());
+
+		objectDefinition.setExternalReferenceCode(externalReferenceCode);
+
+		User user = _userLocalService.getUser(userId);
+
+		objectDefinition.setCompanyId(user.getCompanyId());
+		objectDefinition.setUserId(user.getUserId());
+		objectDefinition.setUserName(user.getFullName());
+
+		objectDefinition.setActive(false);
+		objectDefinition.setName(externalReferenceCode);
+		objectDefinition.setStorageType(
+			ObjectDefinitionConstants.STORAGE_TYPE_DEFAULT);
+		objectDefinition.setSystem(false);
+		objectDefinition.setStatus(WorkflowConstants.STATUS_DRAFT);
+
+		objectDefinition = objectDefinitionPersistence.update(objectDefinition);
+
+		_resourceLocalService.addResources(
+			objectDefinition.getCompanyId(), 0, objectDefinition.getUserId(),
+			ObjectDefinition.class.getName(),
+			objectDefinition.getObjectDefinitionId(), false, true, true);
+
+		_addSystemObjectFields(
+			ObjectEntryTable.INSTANCE.getTableName(), objectDefinition,
+			ObjectEntryTable.INSTANCE.objectEntryId.getName(),
+			objectDefinition.isSystem(), userId);
+
+		return objectDefinition;
+	}
+
+	@Indexable(type = IndexableType.REINDEX)
+	@Override
 	public ObjectDefinition addOrUpdateSystemObjectDefinition(
 			long companyId,
 			SystemObjectDefinitionMetadata systemObjectDefinitionMetadata)
@@ -647,6 +686,19 @@ public class ObjectDefinitionLocalServiceImpl
 			panelCategoryKey, portlet, null, null, pluralLabelMap, scope);
 	}
 
+	@Override
+	public ObjectDefinition updateExternalReferenceCode(
+			long objectDefinitionId, String externalReferenceCode)
+		throws PortalException {
+
+		ObjectDefinition objectDefinition =
+			objectDefinitionPersistence.findByPrimaryKey(objectDefinitionId);
+
+		objectDefinition.setExternalReferenceCode(externalReferenceCode);
+
+		return objectDefinitionPersistence.update(objectDefinition);
+	}
+
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public ObjectDefinition updateTitleObjectFieldId(
@@ -778,6 +830,52 @@ public class ObjectDefinitionLocalServiceImpl
 			dbTableName = "ObjectEntry";
 		}
 
+		_addSystemObjectFields(
+			dbTableName, objectDefinition, pkObjectFieldName, system, userId);
+
+		if (objectFields != null) {
+			for (ObjectField objectField : objectFields) {
+				if (system || objectField.isSystem()) {
+					_objectFieldLocalService.addOrUpdateSystemObjectField(
+						userId, objectDefinition.getObjectDefinitionId(),
+						objectField.getBusinessType(),
+						objectField.getDBColumnName(),
+						objectDefinition.getDBTableName(),
+						objectField.getDBType(), objectField.getDefaultValue(),
+						objectField.isIndexed(),
+						objectField.isIndexedAsKeyword(),
+						objectField.getIndexedLanguageId(),
+						objectField.getLabelMap(), objectField.getName(),
+						objectField.isRequired(), objectField.isState());
+				}
+				else {
+					_objectFieldLocalService.addCustomObjectField(
+						userId, objectField.getListTypeDefinitionId(),
+						objectDefinition.getObjectDefinitionId(),
+						objectField.getBusinessType(), objectField.getDBType(),
+						objectField.getDefaultValue(), objectField.isIndexed(),
+						objectField.isIndexedAsKeyword(),
+						objectField.getIndexedLanguageId(),
+						objectField.getLabelMap(), objectField.getName(),
+						objectField.isRequired(), objectField.isState(),
+						objectField.getObjectFieldSettings());
+				}
+			}
+		}
+
+		if (system) {
+			_createTable(
+				objectDefinition.getExtensionDBTableName(), objectDefinition);
+		}
+
+		return objectDefinition;
+	}
+
+	private void _addSystemObjectFields(
+			String dbTableName, ObjectDefinition objectDefinition,
+			String pkObjectFieldName, boolean system, long userId)
+		throws PortalException {
+
 		_objectFieldLocalService.addSystemObjectField(
 			userId, objectDefinition.getObjectDefinitionId(),
 			ObjectFieldConstants.BUSINESS_TYPE_TEXT,
@@ -841,43 +939,6 @@ public class ObjectDefinitionLocalServiceImpl
 			LocalizedMapUtil.getLocalizedMap(
 				_language.get(LocaleUtil.getDefault(), "status")),
 			"status", false, false);
-
-		if (objectFields != null) {
-			for (ObjectField objectField : objectFields) {
-				if (system || objectField.isSystem()) {
-					_objectFieldLocalService.addOrUpdateSystemObjectField(
-						userId, objectDefinition.getObjectDefinitionId(),
-						objectField.getBusinessType(),
-						objectField.getDBColumnName(),
-						objectDefinition.getDBTableName(),
-						objectField.getDBType(), objectField.getDefaultValue(),
-						objectField.isIndexed(),
-						objectField.isIndexedAsKeyword(),
-						objectField.getIndexedLanguageId(),
-						objectField.getLabelMap(), objectField.getName(),
-						objectField.isRequired(), objectField.isState());
-				}
-				else {
-					_objectFieldLocalService.addCustomObjectField(
-						userId, objectField.getListTypeDefinitionId(),
-						objectDefinition.getObjectDefinitionId(),
-						objectField.getBusinessType(), objectField.getDBType(),
-						objectField.getDefaultValue(), objectField.isIndexed(),
-						objectField.isIndexedAsKeyword(),
-						objectField.getIndexedLanguageId(),
-						objectField.getLabelMap(), objectField.getName(),
-						objectField.isRequired(), objectField.isState(),
-						objectField.getObjectFieldSettings());
-				}
-			}
-		}
-
-		if (system) {
-			_createTable(
-				objectDefinition.getExtensionDBTableName(), objectDefinition);
-		}
-
-		return objectDefinition;
 	}
 
 	private void _createTable(
