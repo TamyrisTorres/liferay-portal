@@ -1,11 +1,11 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
- *
+ * <p>
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation; either version 2.1 of the License, or (at your option)
  * any later version.
- *
+ * <p>
  * This library is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
@@ -161,7 +161,9 @@ import com.liferay.portal.vulcan.multipart.MultipartBody;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.util.ObjectMapperUtil;
 import com.liferay.segments.model.SegmentsEntry;
+import com.liferay.segments.model.SegmentsExperience;
 import com.liferay.segments.service.SegmentsEntryLocalService;
+import com.liferay.segments.service.SegmentsExperienceLocalService;
 import com.liferay.site.exception.InitializationException;
 import com.liferay.site.initializer.SiteInitializer;
 import com.liferay.site.initializer.extender.internal.util.SiteInitializerUtil;
@@ -249,6 +251,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		RoleLocalService roleLocalService,
 		SAPEntryLocalService sapEntryLocalService,
 		SegmentsEntryLocalService segmentsEntryLocalService,
+		SegmentsExperienceLocalService segmentsExperienceLocalService,
 		SettingsFactory settingsFactory,
 		SiteNavigationMenuItemLocalService siteNavigationMenuItemLocalService,
 		SiteNavigationMenuItemTypeRegistry siteNavigationMenuItemTypeRegistry,
@@ -314,6 +317,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		_roleLocalService = roleLocalService;
 		_sapEntryLocalService = sapEntryLocalService;
 		_segmentsEntryLocalService = segmentsEntryLocalService;
+		_segmentsExperienceLocalService = segmentsExperienceLocalService;
 		_settingsFactory = settingsFactory;
 		_siteNavigationMenuItemLocalService =
 			siteNavigationMenuItemLocalService;
@@ -430,11 +434,13 @@ public class BundleSiteInitializer implements SiteInitializer {
 			_invoke(() -> _addKnowledgeBaseArticles(serviceContext));
 			_invoke(() -> _addOrganizations(serviceContext));
 			_invoke(() -> _addSAPEntries(serviceContext));
-			_invoke(() -> _addSegmentsEntries(serviceContext));
 			_invoke(() -> _addSiteConfiguration(serviceContext));
 			_invoke(() -> _addSiteSettings(serviceContext));
 			_invoke(() -> _addStyleBookEntries(serviceContext));
 			_invoke(() -> _addUserGroups(serviceContext));
+
+			Map<String, String> segmentsEntriesIdsStringUtilReplaceValues =
+				_invoke(() -> _addSegmentsEntries(serviceContext));
 
 			Map<String, String> taxonomyCategoryIdsStringUtilReplaceValues =
 				_invoke(
@@ -498,6 +504,12 @@ public class BundleSiteInitializer implements SiteInitializer {
 					objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
 					serviceContext));
 
+			Map<String, String> segmentsExperiencesIdsStringUtilReplaceValues =
+				_invoke(
+					() -> _addSegmentsExperiences(
+						serviceContext,
+						segmentsEntriesIdsStringUtilReplaceValues));
+
 			// TODO Review order/dependency
 
 			Map<String, String> clientExtensionEntryIdsStringUtilReplaceValues =
@@ -512,6 +524,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 					ddmStructureEntryIdsStringUtilReplaceValues,
 					documentsStringUtilReplaceValues, layouts,
 					objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
+					segmentsExperiencesIdsStringUtilReplaceValues,
 					serviceContext,
 					siteNavigationMenuItemSettingsBuilder.build(),
 					taxonomyCategoryIdsStringUtilReplaceValues));
@@ -1559,7 +1572,9 @@ public class BundleSiteInitializer implements SiteInitializer {
 			Map<String, String> documentsStringUtilReplaceValues,
 			Map<String, String>
 				objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
-			Layout layout, String resourcePath, ServiceContext serviceContext,
+			Layout layout, String resourcePath,
+			Map<String, String> segmentsExperiencesIdsStringUtilReplaceValues,
+			ServiceContext serviceContext,
 			Map<String, String> taxonomyCategoryIdsStringUtilReplaceValues)
 		throws Exception {
 
@@ -1592,6 +1607,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 			ddmStructureEntryIdsStringUtilReplaceValues,
 			documentsStringUtilReplaceValues,
 			objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
+			segmentsExperiencesIdsStringUtilReplaceValues,
 			taxonomyCategoryIdsStringUtilReplaceValues);
 
 		JSONObject pageDefinitionJSONObject = JSONFactoryUtil.createJSONObject(
@@ -1675,7 +1691,9 @@ public class BundleSiteInitializer implements SiteInitializer {
 					draftLayout, settingsJSONObject);
 			}
 
-			layout = _layoutCopyHelper.copyLayout(draftLayout, layout);
+			layout = _layoutCopyHelper.copyLayout(
+				jsonObject.getLong("segmentsExperienceID"), draftLayout,
+				layout);
 
 			_layoutLocalService.updateStatus(
 				layout.getUserId(), draftLayout.getPlid(),
@@ -1812,6 +1830,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 			Map<String, Layout> layouts,
 			Map<String, String>
 				objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
+			Map<String, String> segmentsExperiencesIdsStringUtilReplaceValues,
 			ServiceContext serviceContext,
 			Map<String, SiteNavigationMenuItemSetting>
 				siteNavigationMenuItemSettings,
@@ -1825,7 +1844,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 				ddmStructureEntryIdsStringUtilReplaceValues,
 				documentsStringUtilReplaceValues,
 				objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
-				entry.getValue(), entry.getKey(), serviceContext,
+				entry.getValue(), entry.getKey(),
+				segmentsExperiencesIdsStringUtilReplaceValues, serviceContext,
 				taxonomyCategoryIdsStringUtilReplaceValues);
 		}
 
@@ -2977,14 +2997,18 @@ public class BundleSiteInitializer implements SiteInitializer {
 		}
 	}
 
-	private void _addSegmentsEntries(ServiceContext serviceContext)
+	private Map<String, String> _addSegmentsEntries(
+			ServiceContext serviceContext)
 		throws Exception {
+
+		Map<String, String> segmentsEntriesIdsStringUtilReplaceValues =
+			new HashMap<>();
 
 		String json = SiteInitializerUtil.read(
 			"/site-initializer/segments-entries.json", _servletContext);
 
 		if (json == null) {
-			return;
+			Collections.emptyMap();
 		}
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray(json);
@@ -2998,7 +3022,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 					jsonObject.getString("segmentsEntryKey"), true);
 
 			if (segmentsEntry == null) {
-				_segmentsEntryLocalService.addSegmentsEntry(
+				segmentsEntry = _segmentsEntryLocalService.addSegmentsEntry(
 					jsonObject.getString("segmentsEntryKey"),
 					SiteInitializerUtil.toMap(
 						jsonObject.getString("name_i18n")),
@@ -3007,7 +3031,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 					jsonObject.getString("type"), serviceContext);
 			}
 			else {
-				_segmentsEntryLocalService.updateSegmentsEntry(
+				segmentsEntry = _segmentsEntryLocalService.updateSegmentsEntry(
 					segmentsEntry.getSegmentsEntryId(),
 					jsonObject.getString("segmentsEntryKey"),
 					SiteInitializerUtil.toMap(
@@ -3015,7 +3039,84 @@ public class BundleSiteInitializer implements SiteInitializer {
 					null, jsonObject.getBoolean("active", true),
 					jsonObject.getString("criteria"), serviceContext);
 			}
+
+			segmentsEntriesIdsStringUtilReplaceValues.put(
+				"SEGMENTS_ENTRY_ID:" + segmentsEntry.getSegmentsEntryKey(),
+				String.valueOf(segmentsEntry.getSegmentsEntryId()));
 		}
+
+		return segmentsEntriesIdsStringUtilReplaceValues;
+	}
+
+	private Map<String, String> _addSegmentsExperiences(
+			ServiceContext serviceContext,
+			Map<String, String> segmentsEntriesIdsStringUtilReplaceValues)
+		throws Exception {
+
+		Map<String, String> segmentsExperiencesIdsStringUtilReplaceValues =
+			new HashMap<>();
+
+		String json = SiteInitializerUtil.read(
+			"/site-initializer/segments-experiences.json", _servletContext);
+
+		if (json == null) {
+			Collections.emptyMap();
+		}
+
+		json = _replace(
+			json, "\"[$", "$]\"", segmentsExperiencesIdsStringUtilReplaceValues,
+			segmentsEntriesIdsStringUtilReplaceValues);
+
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray(json);
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			Layout layout = _layoutLocalService.getLayoutByFriendlyURL(
+				serviceContext.getScopeGroupId(), false,
+				jsonObject.getString("friendlyURL"));
+
+			Layout draftLayout = layout.fetchDraftLayout();
+
+			Long classPK = draftLayout.getClassPK();
+
+			SegmentsExperience segmentsExperience =
+				_segmentsExperienceLocalService.fetchSegmentsExperience(
+					serviceContext.getScopeGroupId(),
+					jsonObject.getString("segmentsExperienceKey"),
+					jsonObject.getLong("classNameId"), classPK);
+
+			if (segmentsExperience == null) {
+				segmentsExperience =
+					_segmentsExperienceLocalService.addSegmentsExperience(
+						serviceContext.getUserId(),
+						serviceContext.getScopeGroupId(),
+						jsonObject.getLong("segmentsEntryId"),
+						jsonObject.getString("segmentsExperienceKey"),
+						jsonObject.getLong("classNameId"), classPK,
+						SiteInitializerUtil.toMap(
+							jsonObject.getString("name_i18n")),
+						jsonObject.getInt("priority"),
+						jsonObject.getBoolean("active", true),
+						new UnicodeProperties(true), serviceContext);
+			}
+			else {
+				segmentsExperience =
+					_segmentsExperienceLocalService.updateSegmentsExperience(
+						segmentsExperience.getSegmentsExperienceId(),
+						segmentsExperience.getSegmentsEntryId(),
+						SiteInitializerUtil.toMap(
+							jsonObject.getString("name_i18n")),
+						jsonObject.getBoolean("active", true));
+			}
+
+			segmentsExperiencesIdsStringUtilReplaceValues.put(
+				"SEGMENTS_EXPERIENCE_ID:" +
+					segmentsExperience.getSegmentsExperienceKey(),
+				String.valueOf(segmentsExperience.getSegmentsExperienceId()));
+		}
+
+		return segmentsExperiencesIdsStringUtilReplaceValues;
 	}
 
 	private void _addSiteConfiguration(ServiceContext serviceContext)
@@ -3826,7 +3927,9 @@ public class BundleSiteInitializer implements SiteInitializer {
 	private Map<String, String> _getClassNameIdStringUtilReplaceValues() {
 		Map<String, String> map = new HashMap<>();
 
-		Class<?>[] classes = {DDMStructure.class, JournalArticle.class};
+		Class<?>[] classes = {
+			DDMStructure.class, JournalArticle.class, Layout.class
+		};
 
 		for (Class<?> clazz : classes) {
 			map.put(
@@ -4186,6 +4289,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 	private final RoleLocalService _roleLocalService;
 	private final SAPEntryLocalService _sapEntryLocalService;
 	private final SegmentsEntryLocalService _segmentsEntryLocalService;
+	private final SegmentsExperienceLocalService
+		_segmentsExperienceLocalService;
 	private ServletContext _servletContext;
 	private final SettingsFactory _settingsFactory;
 	private final SiteNavigationMenuItemLocalService
