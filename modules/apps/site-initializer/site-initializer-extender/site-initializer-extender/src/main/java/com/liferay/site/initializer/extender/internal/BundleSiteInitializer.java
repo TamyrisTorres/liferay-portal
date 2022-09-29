@@ -413,7 +413,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 			_invoke(() -> _addAccounts(serviceContext));
 
 			Map<String, String> ddmStructureEntryIdsStringUtilReplaceValues =
-				_invoke(() -> _addDDMStructures(serviceContext));
+				_invoke(() -> _addOrUpdateDDMStructures(serviceContext));
 
 			_invoke(() -> _addExpandoColumns(serviceContext));
 
@@ -649,7 +649,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 			serviceContext, _servletContext);
 	}
 
-	private Map<String, String> _addDDMStructures(ServiceContext serviceContext)
+	private Map<String, String> _addOrUpdateDDMStructures(ServiceContext serviceContext)
 		throws Exception {
 
 		Map<String, String> ddmStructuresIdsStringUtilReplaceValues =
@@ -662,21 +662,40 @@ public class BundleSiteInitializer implements SiteInitializer {
 			return ddmStructuresIdsStringUtilReplaceValues;
 		}
 
+		DDMStructure ddmStructure = null;
+
 		for (String resourcePath : resourcePaths) {
+
+		 ddmStructure = _ddmStructureLocalService.fetchStructure(
+			serviceContext.getScopeGroupId(), _portal.getClassNameId(
+				JournalArticle.class),resourcePath.toLowerCase());
+
+		if (ddmStructure == null) {
 			_defaultDDMStructureHelper.addDDMStructures(
 				serviceContext.getUserId(), serviceContext.getScopeGroupId(),
 				_portal.getClassNameId(JournalArticle.class), _classLoader,
 				resourcePath, serviceContext);
 		}
+		else{
+			ddmStructure =
+				_ddmStructureLocalService.updateStructure(
+				serviceContext.getUserId(), serviceContext.getScopeGroupId(),
+				ddmStructure.getStructureId(),_portal.getClassNameId(
+					JournalArticle.class), ddmStructure.getStructureKey(),
+				ddmStructure.getNameMap(),ddmStructure.getDescriptionMap(),
+				ddmStructure.getDDMForm(), ddmStructure.getDDMFormLayout(),
+					serviceContext);
 
+			}
+		}
 		List<DDMStructure> ddmStructures =
 			_ddmStructureLocalService.getStructures(
-				serviceContext.getScopeGroupId());
+				ddmStructure.getStructureId());
 
-		for (DDMStructure ddmStructure : ddmStructures) {
+		for (DDMStructure ddmStructure1 : ddmStructures) {
 			ddmStructuresIdsStringUtilReplaceValues.put(
-				"DDM_STRUCTURE_ID:" + ddmStructure.getStructureKey(),
-				String.valueOf(ddmStructure.getStructureId()));
+				"DDM_STRUCTURE_ID:" + ddmStructure1.getStructureKey(),
+				String.valueOf(ddmStructure1.getStructureId()));
 		}
 
 		return ddmStructuresIdsStringUtilReplaceValues;
