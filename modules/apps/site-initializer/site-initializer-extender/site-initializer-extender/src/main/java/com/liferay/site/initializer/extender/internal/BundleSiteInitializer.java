@@ -676,7 +676,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 				_portal.getClassNameId(JournalArticle.class), _classLoader,
 				resourcePath, serviceContext);
 		}
-		else{
+		/*else{
 			ddmStructure =
 				_ddmStructureLocalService.updateStructure(
 				serviceContext.getUserId(), serviceContext.getScopeGroupId(),
@@ -686,7 +686,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 				ddmStructure.getDDMForm(), ddmStructure.getDDMFormLayout(),
 					serviceContext);
 
-			}
+			}*/
 		}
 		List<DDMStructure> ddmStructures =
 			_ddmStructureLocalService.getStructures(
