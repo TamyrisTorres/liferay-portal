@@ -668,7 +668,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 
 		 ddmStructure = _ddmStructureLocalService.fetchStructure(
 			serviceContext.getScopeGroupId(), _portal.getClassNameId(
-				JournalArticle.class),resourcePath.toLowerCase());
+				JournalArticle.class),
+			 resourcePath.substring("name"));
 
 		if (ddmStructure == null) {
 			_defaultDDMStructureHelper.addDDMStructures(
@@ -676,7 +677,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 				_portal.getClassNameId(JournalArticle.class), _classLoader,
 				resourcePath, serviceContext);
 		}
-		/*else{
+		else{
 			ddmStructure =
 				_ddmStructureLocalService.updateStructure(
 				serviceContext.getUserId(), serviceContext.getScopeGroupId(),
@@ -686,11 +687,11 @@ public class BundleSiteInitializer implements SiteInitializer {
 				ddmStructure.getDDMForm(), ddmStructure.getDDMFormLayout(),
 					serviceContext);
 
-			}*/
+			}
 		}
 		List<DDMStructure> ddmStructures =
 			_ddmStructureLocalService.getStructures(
-				ddmStructure.getStructureId());
+				serviceContext.getScopeGroupId());
 
 		for (DDMStructure ddmStructure1 : ddmStructures) {
 			ddmStructuresIdsStringUtilReplaceValues.put(
