@@ -650,6 +650,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 			serviceContext, _servletContext);
 	}
 
+<<<<<<< HEAD
 	private Map<String, String> _addOrUpdateDDMStructures(ServiceContext serviceContext)
 		throws Exception {
 
@@ -703,6 +704,356 @@ public class BundleSiteInitializer implements SiteInitializer {
 		}
 
 		return ddmStructuresIdsStringUtilReplaceValues;
+=======
+	private void _addDDMTemplates(
+			DDMStructureLocalService ddmStructureLocalService,
+			ServiceContext serviceContext)
+		throws Exception {
+
+		Enumeration<URL> enumeration = _bundle.findEntries(
+			"/site-initializer/ddm-templates", "ddm-template.json", true);
+
+		if (enumeration == null) {
+			return;
+		}
+
+		while (enumeration.hasMoreElements()) {
+			URL url = enumeration.nextElement();
+
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+				StringUtil.read(url.openStream()));
+
+			long resourceClassNameId = _portal.getClassNameId(
+				jsonObject.getString(
+					"resourceClassName", JournalArticle.class.getName()));
+
+			long ddmStructureId = 0;
+
+			String ddmStructureKey = jsonObject.getString("ddmStructureKey");
+
+			if (Validator.isNotNull(ddmStructureKey)) {
+				DDMStructure ddmStructure =
+					ddmStructureLocalService.fetchStructure(
+						serviceContext.getScopeGroupId(), resourceClassNameId,
+						ddmStructureKey);
+
+				ddmStructureId = ddmStructure.getStructureId();
+			}
+
+			DDMTemplate ddmTemplate = _ddmTemplateLocalService.fetchTemplate(
+				serviceContext.getScopeGroupId(),
+				_portal.getClassNameId(
+					jsonObject.getString(
+						"className", DDMStructure.class.getName())),
+				jsonObject.getString("ddmTemplateKey"));
+
+			if (ddmTemplate == null) {
+				_ddmTemplateLocalService.addTemplate(
+					serviceContext.getUserId(),
+					serviceContext.getScopeGroupId(),
+					_portal.getClassNameId(
+						jsonObject.getString(
+							"className", DDMStructure.class.getName())),
+					ddmStructureId, resourceClassNameId,
+					jsonObject.getString("ddmTemplateKey"),
+					HashMapBuilder.put(
+						LocaleUtil.getSiteDefault(),
+						jsonObject.getString("name")
+					).build(),
+					null, DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY, null,
+					TemplateConstants.LANG_TYPE_FTL,
+					SiteInitializerUtil.read(_bundle, "ddm-template.ftl", url),
+					false, false, null, null, serviceContext);
+			}
+			else {
+				_ddmTemplateLocalService.updateTemplate(
+					serviceContext.getUserId(), ddmTemplate.getTemplateId(),
+					ddmStructureId,
+					HashMapBuilder.put(
+						LocaleUtil.getSiteDefault(),
+						jsonObject.getString("name")
+					).build(),
+					null, DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY, null,
+					TemplateConstants.LANG_TYPE_FTL,
+					SiteInitializerUtil.read(_bundle, "ddm-template.ftl", url),
+					false, false, null, null, serviceContext);
+			}
+		}
+	}
+
+	private Long _addDocumentFolder(
+			Long documentFolderId, long groupId, String resourcePath,
+			ServiceContext serviceContext)
+		throws Exception {
+
+		DocumentFolderResource.Builder documentFolderResourceBuilder =
+			_documentFolderResourceFactory.create();
+
+		DocumentFolderResource documentFolderResource =
+			documentFolderResourceBuilder.user(
+				serviceContext.fetchUser()
+			).build();
+
+		DocumentFolder documentFolder = null;
+
+		resourcePath = resourcePath.substring(0, resourcePath.length() - 1);
+
+		String json = SiteInitializerUtil.read(
+			resourcePath + ".metadata.json", _servletContext);
+
+		if (json != null) {
+			documentFolder = DocumentFolder.toDTO(json);
+		}
+		else {
+			documentFolder = DocumentFolder.toDTO(
+				JSONUtil.put(
+					"name", FileUtil.getShortFileName(resourcePath)
+				).put(
+					"viewableBy", "Anyone"
+				).toString());
+		}
+
+		Page<DocumentFolder> documentFoldersPage =
+			documentFolderResource.getSiteDocumentFoldersPage(
+				groupId, true, null, null,
+				documentFolderResource.toFilter(
+					StringBundler.concat(
+						"name eq '", documentFolder.getName(), "'")),
+				null, null);
+
+		DocumentFolder existingDocumentFolder =
+			documentFoldersPage.fetchFirstItem();
+
+		if (existingDocumentFolder == null) {
+			if (documentFolderId != null) {
+				documentFolder =
+					documentFolderResource.postDocumentFolderDocumentFolder(
+						documentFolderId, documentFolder);
+			}
+			else {
+				documentFolder = documentFolderResource.postSiteDocumentFolder(
+					groupId, documentFolder);
+			}
+		}
+		else {
+			documentFolder = documentFolderResource.putDocumentFolder(
+				existingDocumentFolder.getId(), documentFolder);
+		}
+
+		return documentFolder.getId();
+	}
+
+	private Map<String, String> _addDocuments(
+			Long documentFolderId, long groupId, String parentResourcePath,
+			ServiceContext serviceContext,
+			SiteNavigationMenuItemSettingsBuilder
+				siteNavigationMenuItemSettingsBuilder)
+		throws Exception {
+
+		Map<String, String> documentsStringUtilReplaceValues = new HashMap<>();
+
+		Set<String> resourcePaths = _servletContext.getResourcePaths(
+			parentResourcePath);
+
+		if (SetUtil.isEmpty(resourcePaths)) {
+			return documentsStringUtilReplaceValues;
+		}
+
+		DocumentResource.Builder documentResourceBuilder =
+			_documentResourceFactory.create();
+
+		DocumentResource documentResource = documentResourceBuilder.user(
+			serviceContext.fetchUser()
+		).build();
+
+		for (String resourcePath : resourcePaths) {
+			if (resourcePath.endsWith("/")) {
+				documentsStringUtilReplaceValues.putAll(
+					_addDocuments(
+						_addDocumentFolder(
+							documentFolderId, groupId, resourcePath,
+							serviceContext),
+						groupId, resourcePath, serviceContext,
+						siteNavigationMenuItemSettingsBuilder));
+
+				continue;
+			}
+
+			if (resourcePath.endsWith(".gitkeep") ||
+				resourcePath.endsWith(".metadata.json")) {
+
+				continue;
+			}
+
+			String fileName = FileUtil.getShortFileName(resourcePath);
+
+			URL url = _servletContext.getResource(resourcePath);
+
+			URLConnection urlConnection = url.openConnection();
+
+			Map<String, String> values = new HashMap<>();
+
+			String json = SiteInitializerUtil.read(
+				resourcePath + ".metadata.json", _servletContext);
+
+			if (json != null) {
+				values = Collections.singletonMap("document", json);
+			}
+			else {
+				values = Collections.singletonMap(
+					"document",
+					JSONUtil.put(
+						"viewableBy", "Anyone"
+					).toString());
+			}
+
+			Document document = null;
+
+			if (documentFolderId != null) {
+				Page<Document> documentsPage =
+					documentResource.getDocumentFolderDocumentsPage(
+						documentFolderId, false, null, null,
+						documentResource.toFilter(
+							StringBundler.concat("title eq '", fileName, "'")),
+						null, null);
+
+				Document existingDocument = documentsPage.fetchFirstItem();
+
+				if (existingDocument == null) {
+					document = documentResource.postDocumentFolderDocument(
+						documentFolderId,
+						MultipartBody.of(
+							Collections.singletonMap(
+								"file",
+								new BinaryFile(
+									MimeTypesUtil.getContentType(fileName),
+									fileName, urlConnection.getInputStream(),
+									urlConnection.getContentLength())),
+							__ -> _objectMapper, values));
+				}
+				else {
+					document = documentResource.putDocument(
+						existingDocument.getId(),
+						MultipartBody.of(
+							Collections.singletonMap(
+								"file",
+								new BinaryFile(
+									MimeTypesUtil.getContentType(fileName),
+									fileName, urlConnection.getInputStream(),
+									urlConnection.getContentLength())),
+							__ -> _objectMapper, values));
+				}
+			}
+			else {
+				Page<Document> documentsPage =
+					documentResource.getSiteDocumentsPage(
+						groupId, false, null, null,
+						documentResource.toFilter(
+							StringBundler.concat("title eq '", fileName, "'")),
+						null, null);
+
+				Document existingDocument = documentsPage.fetchFirstItem();
+
+				if (existingDocument == null) {
+					document = documentResource.postSiteDocument(
+						groupId,
+						MultipartBody.of(
+							Collections.singletonMap(
+								"file",
+								new BinaryFile(
+									MimeTypesUtil.getContentType(fileName),
+									fileName, urlConnection.getInputStream(),
+									urlConnection.getContentLength())),
+							__ -> _objectMapper, values));
+				}
+				else {
+					document = documentResource.putDocument(
+						existingDocument.getId(),
+						MultipartBody.of(
+							Collections.singletonMap(
+								"file",
+								new BinaryFile(
+									MimeTypesUtil.getContentType(fileName),
+									fileName, urlConnection.getInputStream(),
+									urlConnection.getContentLength())),
+							__ -> _objectMapper, values));
+				}
+			}
+
+			String key = resourcePath;
+
+			FileEntry fileEntry = DLAppLocalServiceUtil.getFileEntry(
+				document.getId());
+
+			documentsStringUtilReplaceValues.put(
+				"DOCUMENT_FILE_ENTRY_ID:" + key,
+				String.valueOf(fileEntry.getFileEntryId()));
+
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+				JSONFactoryUtil.looseSerialize(fileEntry));
+
+			jsonObject.put("alt", StringPool.BLANK);
+
+			documentsStringUtilReplaceValues.put(
+				"DOCUMENT_JSON:" + key, jsonObject.toString());
+
+			documentsStringUtilReplaceValues.put(
+				"DOCUMENT_URL:" + key,
+				_dlURLHelper.getPreviewURL(
+					fileEntry, fileEntry.getFileVersion(), null,
+					StringPool.BLANK, false, false));
+
+			long fileEntryTypeId = 0;
+
+			if (fileEntry.getModel() instanceof DLFileEntry) {
+				DLFileEntry dlFileEntry = (DLFileEntry)fileEntry.getModel();
+
+				DLFileEntryType dlFileEntryType =
+					dlFileEntry.getDLFileEntryType();
+
+				fileEntryTypeId = dlFileEntryType.getFileEntryTypeId();
+			}
+
+			String fileEntryTypeIdString = String.valueOf(fileEntryTypeId);
+
+			siteNavigationMenuItemSettingsBuilder.put(
+				key,
+				new SiteNavigationMenuItemSetting() {
+					{
+						className = FileEntry.class.getName();
+						classPK = String.valueOf(fileEntry.getFileEntryId());
+						classTypeId = fileEntryTypeIdString;
+						title = fileEntry.getTitle();
+						type = ResourceActionsUtil.getModelResource(
+							serviceContext.getLocale(),
+							FileEntry.class.getName());
+					}
+				});
+		}
+
+		return documentsStringUtilReplaceValues;
+	}
+
+	private Map<String, String> _addDocuments(
+			ServiceContext serviceContext,
+			SiteNavigationMenuItemSettingsBuilder
+				siteNavigationMenuItemSettingsBuilder)
+		throws Exception {
+
+		Group group = _groupLocalService.getCompanyGroup(
+			serviceContext.getCompanyId());
+
+		return HashMapBuilder.putAll(
+			_addDocuments(
+				null, group.getGroupId(), "/site-initializer/documents/company",
+				serviceContext, siteNavigationMenuItemSettingsBuilder)
+		).putAll(
+			_addDocuments(
+				null, serviceContext.getScopeGroupId(),
+				"/site-initializer/documents/group", serviceContext,
+				siteNavigationMenuItemSettingsBuilder)
+		).build();
+>>>>>>> c33332b (LPS-164394 FormatSource)
 	}
 
 	private void _addExpandoColumns(ServiceContext serviceContext)
@@ -1378,6 +1729,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		}
 	}
 
+<<<<<<< HEAD
 	private Map<String, String> _addOrUpdateClientExtensionEntries(
 			Map<String, String> documentsStringUtilReplaceValues,
 			ServiceContext serviceContext)
@@ -1812,6 +2164,65 @@ public class BundleSiteInitializer implements SiteInitializer {
 				"/site-initializer/documents/group", serviceContext,
 				siteNavigationMenuItemSettingsBuilder)
 		).build();
+=======
+	private Map<String, String> _addOrUpdateDDMStructures(
+			ServiceContext serviceContext)
+		throws Exception {
+
+		Map<String, String> ddmStructuresIdsStringUtilReplaceValues =
+			new HashMap<>();
+
+		Set<String> resourcePaths = _servletContext.getResourcePaths(
+			"/site-initializer/ddm-structures");
+
+		if (SetUtil.isEmpty(resourcePaths)) {
+			return ddmStructuresIdsStringUtilReplaceValues;
+		}
+
+		for (String resourcePath : resourcePaths) {
+			List<String> parts = Arrays.asList(
+				StringUtil.split(resourcePath, '/'));
+
+			String ddmStructureKey = StringUtil.upperCase(
+				_replace(parts.get(parts.size() - 1), ".xml", ""));
+
+			DDMStructure ddmStructure =
+				_ddmStructureLocalService.fetchStructure(
+					serviceContext.getScopeGroupId(),
+					_portal.getClassNameId(JournalArticle.class),
+					ddmStructureKey);
+
+			if (ddmStructure == null) {
+				_defaultDDMStructureHelper.addDDMStructures(
+					serviceContext.getUserId(),
+					serviceContext.getScopeGroupId(),
+					_portal.getClassNameId(JournalArticle.class), _classLoader,
+					resourcePath, serviceContext);
+			}
+			else {
+				_ddmStructureLocalService.updateStructure(
+					serviceContext.getUserId(),
+					serviceContext.getScopeGroupId(),
+					ddmStructure.getStructureId(),
+					_portal.getClassNameId(JournalArticle.class),
+					ddmStructure.getStructureKey(), ddmStructure.getNameMap(),
+					ddmStructure.getDescriptionMap(), ddmStructure.getDDMForm(),
+					ddmStructure.getDDMFormLayout(), serviceContext);
+			}
+		}
+
+		List<DDMStructure> ddmStructures =
+			_ddmStructureLocalService.getStructures(
+				serviceContext.getScopeGroupId());
+
+		for (DDMStructure ddmStructure : ddmStructures) {
+			ddmStructuresIdsStringUtilReplaceValues.put(
+				"DDM_STRUCTURE_ID:" + ddmStructure.getStructureKey(),
+				String.valueOf(ddmStructure.getStructureId()));
+		}
+
+		return ddmStructuresIdsStringUtilReplaceValues;
+>>>>>>> c33332b (LPS-164394 FormatSource)
 	}
 
 	private void _addOrUpdateJournalArticles(
