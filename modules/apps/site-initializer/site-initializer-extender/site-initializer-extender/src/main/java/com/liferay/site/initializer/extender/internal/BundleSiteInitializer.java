@@ -37,6 +37,7 @@ import com.liferay.dynamic.data.mapping.util.DefaultDDMStructureHelper;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.fragment.importer.FragmentsImporter;
+import com.liferay.fragment.processor.PortletRegistry;
 import com.liferay.headless.admin.list.type.dto.v1_0.ListTypeDefinition;
 import com.liferay.headless.admin.list.type.dto.v1_0.ListTypeEntry;
 import com.liferay.headless.admin.list.type.resource.v1_0.ListTypeDefinitionResource;
@@ -93,6 +94,7 @@ import com.liferay.petra.function.UnsafeRunnable;
 import com.liferay.petra.function.UnsafeSupplier;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.comment.CommentManager;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -162,7 +164,9 @@ import com.liferay.portal.vulcan.multipart.MultipartBody;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.util.ObjectMapperUtil;
 import com.liferay.segments.model.SegmentsEntry;
+import com.liferay.segments.model.SegmentsExperience;
 import com.liferay.segments.service.SegmentsEntryLocalService;
+import com.liferay.segments.service.SegmentsExperienceLocalService;
 import com.liferay.site.exception.InitializationException;
 import com.liferay.site.initializer.SiteInitializer;
 import com.liferay.site.initializer.extender.internal.util.SiteInitializerUtil;
@@ -210,6 +214,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		AccountRoleResource.Factory accountRoleResourceFactory,
 		AssetCategoryLocalService assetCategoryLocalService,
 		AssetListEntryLocalService assetListEntryLocalService, Bundle bundle,
+		CommentManager commentManager,
 		ClientExtensionEntryLocalService clientExtensionEntryLocalService,
 		ConfigurationProvider configurationProvider,
 		DDMStructureLocalService ddmStructureLocalService,
@@ -251,6 +256,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		RoleLocalService roleLocalService,
 		SAPEntryLocalService sapEntryLocalService,
 		SegmentsEntryLocalService segmentsEntryLocalService,
+		SegmentsExperienceLocalService segmentsExperienceLocalService,
 		SettingsFactory settingsFactory,
 		SiteNavigationMenuItemLocalService siteNavigationMenuItemLocalService,
 		SiteNavigationMenuItemTypeRegistry siteNavigationMenuItemTypeRegistry,
@@ -258,6 +264,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		StructuredContentFolderResource.Factory
 			structuredContentFolderResourceFactory,
 		StyleBookEntryZipProcessor styleBookEntryZipProcessor,
+		PortletRegistry portletRegistry,
 		TaxonomyCategoryResource.Factory taxonomyCategoryResourceFactory,
 		TaxonomyVocabularyResource.Factory taxonomyVocabularyResourceFactory,
 		ThemeLocalService themeLocalService,
@@ -273,6 +280,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		_assetCategoryLocalService = assetCategoryLocalService;
 		_assetListEntryLocalService = assetListEntryLocalService;
 		_bundle = bundle;
+		_commentManager = commentManager;
 		_clientExtensionEntryLocalService = clientExtensionEntryLocalService;
 		_configurationProvider = configurationProvider;
 		_ddmStructureLocalService = ddmStructureLocalService;
@@ -317,6 +325,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		_roleLocalService = roleLocalService;
 		_sapEntryLocalService = sapEntryLocalService;
 		_segmentsEntryLocalService = segmentsEntryLocalService;
+		_segmentsExperienceLocalService = segmentsExperienceLocalService;
 		_settingsFactory = settingsFactory;
 		_siteNavigationMenuItemLocalService =
 			siteNavigationMenuItemLocalService;
@@ -326,6 +335,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		_structuredContentFolderResourceFactory =
 			structuredContentFolderResourceFactory;
 		_styleBookEntryZipProcessor = styleBookEntryZipProcessor;
+		_portletRegistry = portletRegistry;
 		_taxonomyCategoryResourceFactory = taxonomyCategoryResourceFactory;
 		_taxonomyVocabularyResourceFactory = taxonomyVocabularyResourceFactory;
 		_themeLocalService = themeLocalService;
@@ -433,7 +443,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 			_invoke(() -> _addOrUpdateKnowledgeBaseArticles(serviceContext));
 			_invoke(() -> _addOrUpdateOrganizations(serviceContext));
 			_invoke(() -> _addOrUpdateSAPEntries(serviceContext));
-			_invoke(() -> _addOrUpdateSegmentsEntries(serviceContext));
+			Map<String, String> segmentsEntriesIdsStringUtilReplaceValues =
+				_invoke(() -> _addOrUpdateSegmentsEntries(serviceContext));
 			_invoke(() -> _addSiteConfiguration(serviceContext));
 			_invoke(() -> _addSiteSettings(serviceContext));
 			_invoke(() -> _addStyleBookEntries(serviceContext));
@@ -518,6 +529,16 @@ public class BundleSiteInitializer implements SiteInitializer {
 					objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
 					serviceContext,
 					siteNavigationMenuItemSettingsBuilder.build(),
+					taxonomyCategoryIdsStringUtilReplaceValues));
+
+			_invoke(
+				() -> _addSegmentsExperiences(
+					assetListEntryIdsStringUtilReplaceValues,
+					clientExtensionEntryIdsStringUtilReplaceValues,
+					ddmStructureEntryIdsStringUtilReplaceValues,
+					documentsStringUtilReplaceValues, layouts,
+					objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
+					serviceContext,segmentsEntriesIdsStringUtilReplaceValues,
 					taxonomyCategoryIdsStringUtilReplaceValues));
 
 			_invoke(() -> _addWorkflowDefinitions(serviceContext));
@@ -818,7 +839,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 			Map<String, String>
 				objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
 			Layout layout, String resourcePath, ServiceContext serviceContext,
-			Map<String, String> taxonomyCategoryIdsStringUtilReplaceValues)
+			Map<String, String> taxonomyCategoryIdsStringUtilReplaceValues, long segmentExperienceId)
 		throws Exception {
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
@@ -891,7 +912,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 						_layoutPageTemplatesImporter.importPageElement(
 							draftLayout, layoutStructure,
 							layoutStructure.getMainItemId(),
-							jsonArray.getString(i), i);
+							jsonArray.getString(i), i, segmentExperienceId);
 					}
 				}
 			}
@@ -1055,7 +1076,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 				documentsStringUtilReplaceValues,
 				objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
 				entry.getValue(), entry.getKey(), serviceContext,
-				taxonomyCategoryIdsStringUtilReplaceValues);
+				taxonomyCategoryIdsStringUtilReplaceValues, 0l);
 		}
 
 		_addSiteNavigationMenus(serviceContext, siteNavigationMenuItemSettings);
@@ -2843,14 +2864,14 @@ public class BundleSiteInitializer implements SiteInitializer {
 		}
 	}
 
-	private void _addOrUpdateSegmentsEntries(ServiceContext serviceContext)
+	private Map<String, String> _addOrUpdateSegmentsEntries(ServiceContext serviceContext)
 		throws Exception {
 
 		String json = SiteInitializerUtil.read(
 			"/site-initializer/segments-entries.json", _servletContext);
 
 		if (json == null) {
-			return;
+			return null;
 		}
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray(json);
@@ -2882,7 +2903,9 @@ public class BundleSiteInitializer implements SiteInitializer {
 					jsonObject.getString("criteria"), serviceContext);
 			}
 		}
+		return null;
 	}
+
 
 	private Long _addOrUpdateStructuredContentFolders(
 			Long documentFolderId, String parentResourcePath,
@@ -3220,27 +3243,199 @@ public class BundleSiteInitializer implements SiteInitializer {
 	}
 
 	private void _addRoles(
-			Map<String, String>
-				objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
-			ServiceContext serviceContext)
+		Map<String, String>
+			objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
+		ServiceContext serviceContext)
 		throws Exception {
+
+		Map<String, String> segmentsEntriesIdsStringUtilReplaceValues =
+			new HashMap<>();
 
 		String json = SiteInitializerUtil.read(
 			"/site-initializer/roles.json", _servletContext);
 
 		if (json == null) {
-			return;
+			Collections.emptyMap();
 		}
 
 		JSONArray jsonArray = _jsonFactory.createJSONArray(json);
 
 		for (int i = 0; i < jsonArray.length(); i++) {
-			_addRole(jsonArray.getJSONObject(i), serviceContext);
-		}
+			_addRole(jsonArray.getJSONObject(i), serviceContext);}
 
 		_addOrUpdateResourcePermissions(
 			objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
 			"/site-initializer/resource-permissions.json", serviceContext);
+	}
+
+	private Map<String, String> _addSegmentsEntries(
+			ServiceContext serviceContext)
+		throws Exception {
+
+		Map<String, String> segmentsEntriesIdsStringUtilReplaceValues =
+			new HashMap<>();
+
+		String json = SiteInitializerUtil.read(
+			"/site-initializer/roles.json", _servletContext);
+
+		if (json == null) {
+			Collections.emptyMap();
+		}
+
+		JSONArray jsonArray = _jsonFactory.createJSONArray(json);
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			SegmentsEntry segmentsEntry =
+				_segmentsEntryLocalService.fetchSegmentsEntry(
+					serviceContext.getScopeGroupId(),
+					jsonObject.getString("segmentsEntryKey"), true);
+
+			if (segmentsEntry == null) {
+				segmentsEntry = _segmentsEntryLocalService.addSegmentsEntry(
+					jsonObject.getString("segmentsEntryKey"),
+					SiteInitializerUtil.toMap(
+						jsonObject.getString("name_i18n")),
+					null, jsonObject.getBoolean("active", true),
+					jsonObject.getString("criteria"),
+					jsonObject.getString("type"), serviceContext);
+			}
+			else {
+				segmentsEntry = _segmentsEntryLocalService.updateSegmentsEntry(
+					segmentsEntry.getSegmentsEntryId(),
+					jsonObject.getString("segmentsEntryKey"),
+					SiteInitializerUtil.toMap(
+						jsonObject.getString("name_i18n")),
+					null, jsonObject.getBoolean("active", true),
+					jsonObject.getString("criteria"), serviceContext);
+			}
+
+			segmentsEntriesIdsStringUtilReplaceValues.put(
+				"SEGMENTS_ENTRY_ID:" + segmentsEntry.getSegmentsEntryKey(),
+				String.valueOf(segmentsEntry.getSegmentsEntryId()));
+		}
+
+		return segmentsEntriesIdsStringUtilReplaceValues;
+	}
+
+	private void _addSegmentsExperience(
+		String resourcePath,
+		Map<String, String> assetListEntryIdsStringUtilReplaceValues,
+										Map<String, String> clientExtensionEntryIdsStringUtilReplaceValues,
+										Map<String, String> ddmStructureEntryIdsStringUtilReplaceValues,
+										Map<String, String> documentsStringUtilReplaceValues,
+										Map<String, String>
+											objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
+										ServiceContext serviceContext,
+										Map<String, String> segmentsEntriesIdsStringUtilReplaceValues,
+										Map<String, String> taxonomyCategoryIdsStringUtilReplaceValues) throws Exception{
+
+		String json = SiteInitializerUtil.read(
+			resourcePath + "page.json", _servletContext);
+
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray(
+			_replace(
+				json, "\"[$", "$]\"",
+				segmentsEntriesIdsStringUtilReplaceValues));
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			Layout layout = _layoutLocalService.getLayoutByFriendlyURL(
+				serviceContext.getScopeGroupId(), false,
+				jsonObject.getString("friendlyURL"));
+
+			Layout draftLayout = layout.fetchDraftLayout();
+
+			long classNameId = _portal.getClassNameId(Layout.class);
+
+			SegmentsExperience segmentsExperience =
+				_segmentsExperienceLocalService.fetchSegmentsExperience(
+					serviceContext.getScopeGroupId(),
+					jsonObject.getString("segmentsExperienceKey"), classNameId,
+					draftLayout.getClassPK());
+
+			if (segmentsExperience == null) {
+				segmentsExperience =
+					_segmentsExperienceLocalService.addSegmentsExperience(
+						serviceContext.getUserId(),
+						serviceContext.getScopeGroupId(),
+						jsonObject.getLong("segmentsEntryId"),
+						jsonObject.getString("segmentsExperienceKey"),
+						classNameId, draftLayout.getClassPK(),
+						SiteInitializerUtil.toMap(
+							jsonObject.getString("name_i18n")),
+						jsonObject.getInt("priority"),
+						jsonObject.getBoolean("active", true),
+						new UnicodeProperties(true), serviceContext);
+			}
+			else {
+				segmentsExperience =
+					_segmentsExperienceLocalService.updateSegmentsExperience(
+						segmentsExperience.getSegmentsExperienceId(),
+						segmentsExperience.getSegmentsEntryId(),
+						SiteInitializerUtil.toMap(
+							jsonObject.getString("name_i18n")),
+						jsonObject.getBoolean("active", true));
+			}
+
+			/*_layoutCopyHelper.copySegmentsExperienceData(
+				layout.getPlid(), _commentManager,
+				serviceContext.getScopeGroupId(), _portletRegistry,
+				_segmentsExperienceLocalService.
+					fetchDefaultSegmentsExperienceId(draftLayout.getClassPK()),
+				segmentsExperience.getSegmentsExperienceId(),
+				className -> serviceContext, serviceContext.getUserId());*/
+
+			_addLayoutContent(assetListEntryIdsStringUtilReplaceValues,
+				clientExtensionEntryIdsStringUtilReplaceValues,
+				ddmStructureEntryIdsStringUtilReplaceValues,
+				documentsStringUtilReplaceValues,
+				objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
+				layout, resourcePath, serviceContext,
+				taxonomyCategoryIdsStringUtilReplaceValues,
+				segmentsExperience.getSegmentsExperienceId());
+		}
+
+
+	}
+
+	private void _addSegmentsExperiences(
+			Map<String, String> assetListEntryIdsStringUtilReplaceValues,
+			Map<String, String> clientExtensionEntryIdsStringUtilReplaceValues,
+			Map<String, String> ddmStructureEntryIdsStringUtilReplaceValues,
+			Map<String, String> documentsStringUtilReplaceValues,
+			Map<String, Layout> layouts,
+			Map<String, String>
+				objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
+			ServiceContext serviceContext,
+			Map<String, String> segmentsEntriesIdsStringUtilReplaceValues,
+			Map<String, String> taxonomyCategoryIdsStringUtilReplaceValues)
+
+		throws Exception {
+
+		Set<String> resourcePaths = _servletContext.getResourcePaths(
+			"/site-initializer/segments-experiences");
+
+		//String json = SiteInitializerUtil.read(
+		//	"/site-initializer/segments-experiences.json", _servletContext);
+
+		if (resourcePaths == null) {
+			return;
+		}
+
+		for (String resourcePath : resourcePaths) {
+			if (resourcePath.endsWith("/")) {
+				_addSegmentsExperience(resourcePath, assetListEntryIdsStringUtilReplaceValues,
+					clientExtensionEntryIdsStringUtilReplaceValues,
+					ddmStructureEntryIdsStringUtilReplaceValues,
+					documentsStringUtilReplaceValues,
+					objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,serviceContext,
+					segmentsEntriesIdsStringUtilReplaceValues,
+					taxonomyCategoryIdsStringUtilReplaceValues);
+			}
+		}
 	}
 
 	private void _addSiteConfiguration(ServiceContext serviceContext)
@@ -4167,6 +4362,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 	private final Map<String, String> _classNameIdStringUtilReplaceValues;
 	private final ClientExtensionEntryLocalService
 		_clientExtensionEntryLocalService;
+	private final CommentManager _commentManager;
 	private CommerceSiteInitializer _commerceSiteInitializer;
 	private final ConfigurationProvider _configurationProvider;
 	private final DDMStructureLocalService _ddmStructureLocalService;
@@ -4210,6 +4406,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 	private final OrganizationLocalService _organizationLocalService;
 	private final OrganizationResource.Factory _organizationResourceFactory;
 	private final Portal _portal;
+	private final PortletRegistry _portletRegistry;
 	private final Map<String, String> _releaseInfoStringUtilReplaceValues;
 	private final ResourceActionLocalService _resourceActionLocalService;
 	private final ResourcePermissionLocalService
@@ -4217,6 +4414,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 	private final RoleLocalService _roleLocalService;
 	private final SAPEntryLocalService _sapEntryLocalService;
 	private final SegmentsEntryLocalService _segmentsEntryLocalService;
+	private final SegmentsExperienceLocalService
+		_segmentsExperienceLocalService;
 	private ServletContext _servletContext;
 	private final SettingsFactory _settingsFactory;
 	private final SiteNavigationMenuItemLocalService

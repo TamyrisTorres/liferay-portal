@@ -34,6 +34,9 @@ import com.liferay.layout.util.structure.FragmentStyledLayoutStructureItem;
 import com.liferay.layout.util.structure.LayoutStructure;
 import com.liferay.layout.util.structure.LayoutStructureItem;
 import com.liferay.portal.kernel.comment.CommentManager;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONException;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -69,7 +72,10 @@ import com.liferay.portal.kernel.util.CopyLayoutThreadLocal;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.PortletKeys;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.uuid.PortalUUID;
 import com.liferay.portlet.exportimport.staging.StagingAdvicesThreadLocal;
 import com.liferay.segments.constants.SegmentsExperienceConstants;
 import com.liferay.segments.model.SegmentsExperience;
@@ -83,9 +89,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -202,6 +210,32 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 		}
 	}
 
+	public void copySegmentsExperienceData(
+			long plid, CommentManager commentManager, long groupId,
+			PortletRegistry portletRegistry, long sourceSegmentsExperienceId,
+			long targetSegmentsExperienceId,
+			Function<String, ServiceContext> serviceContextFunction,
+			long userId)
+		throws PortalException {
+
+		boolean copyLayout = CopyLayoutThreadLocal.isCopyLayout();
+
+		try {
+			CopyLayoutThreadLocal.setCopyLayout(true);
+
+			_copyLayoutData(
+				plid, commentManager, groupId, portletRegistry,
+				sourceSegmentsExperienceId, targetSegmentsExperienceId,
+				serviceContextFunction, userId);
+		}
+		catch (Throwable throwable) {
+			throw new PortalException(throwable);
+		}
+		finally {
+			CopyLayoutThreadLocal.setCopyLayout(copyLayout);
+		}
+	}
+
 	private void _copyAssetCategoryIdsAndAssetTagNames(
 			Layout sourceLayout, Layout targetLayout)
 		throws Exception {
@@ -276,6 +310,32 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 				targetLayout.getPlid(),
 				ServiceContextThreadLocal.getServiceContext());
 		}
+	}
+
+	private void _copyLayoutData(
+			long plid, CommentManager commentManager, long groupId,
+			PortletRegistry portletRegistry, long sourceSegmentsExperienceId,
+			long targetSegmentsExperienceId,
+			Function<String, ServiceContext> serviceContextFunction,
+			long userId)
+		throws PortalException {
+
+		LayoutPageTemplateStructure layoutPageTemplateStructure =
+			_layoutPageTemplateStructureLocalService.
+				fetchLayoutPageTemplateStructure(groupId, plid, true);
+
+		LayoutStructure layoutStructure = LayoutStructure.of(
+			layoutPageTemplateStructure.getData(sourceSegmentsExperienceId));
+
+		JSONObject dataJSONObject = _updateLayoutDataJSONObject(
+			plid, commentManager, layoutStructure, groupId, portletRegistry,
+			sourceSegmentsExperienceId, serviceContextFunction,
+			targetSegmentsExperienceId, userId);
+
+		_layoutPageTemplateStructureLocalService.
+			updateLayoutPageTemplateStructureData(
+				groupId, plid, targetSegmentsExperienceId,
+				dataJSONObject.toString());
 	}
 
 	private void _copyLayoutPageTemplateStructure(
@@ -535,6 +595,21 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 	}
 
 	private void _copyPortletPreferences(
+		FragmentEntryLink fragmentEntryLink,
+		FragmentEntryLink newFragmentEntryLink, long plid,
+		PortletRegistry portletRegistry) {
+
+		for (String portletId :
+				portletRegistry.getFragmentEntryLinkPortletIds(
+					fragmentEntryLink)) {
+
+			_getNewPortletPreferencesOptional(
+				fragmentEntryLink.getNamespace(),
+				newFragmentEntryLink.getNamespace(), plid, portletId);
+		}
+	}
+
+	private void _copyPortletPreferences(
 		List<String> portletIds, Layout sourceLayout, Layout targetLayout) {
 
 		boolean stagingAdvicesThreadLocalEnabled =
@@ -654,6 +729,99 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 		}
 
 		return layoutPortletIds;
+	}
+
+	private String _getNewEditableValues(
+			String editableValues, String namespace, String newNamespace,
+			long plid)
+		throws JSONException {
+
+		JSONObject editableValuesJSONObject = JSONFactoryUtil.createJSONObject(
+			editableValues);
+
+		String instanceId = editableValuesJSONObject.getString("instanceId");
+		String portletId = editableValuesJSONObject.getString("portletId");
+
+		if (Validator.isNull(instanceId) || Validator.isNull(portletId)) {
+			return editableValues;
+		}
+
+		return _getNewPortletPreferencesOptional(
+			namespace, newNamespace, plid,
+			PortletIdCodec.encode(portletId, instanceId)
+		).map(
+			portletPreferences -> {
+				JSONObject newEditableValuesJSONObject =
+					editableValuesJSONObject.put(
+						"instanceId",
+						PortletIdCodec.decodeInstanceId(
+							portletPreferences.getPortletId()));
+
+				return newEditableValuesJSONObject.toString();
+			}
+		).orElse(
+			editableValues
+		);
+	}
+
+	private String _getNewPortletId(
+		String namespace, String newNamespace, String portletId) {
+
+		if (!portletId.contains(namespace)) {
+			return PortletIdCodec.encode(
+				PortletIdCodec.decodePortletName(portletId), newNamespace);
+		}
+
+		return StringUtil.replace(portletId, namespace, newNamespace);
+	}
+
+	private Optional<PortletPreferences> _getNewPortletPreferencesOptional(
+		String namespace, String newNamespace, long plid, String portletId) {
+
+		PortletPreferences portletPreferences =
+			_portletPreferencesLocalService.fetchPortletPreferences(
+				PortletKeys.PREFS_OWNER_ID_DEFAULT,
+				PortletKeys.PREFS_OWNER_TYPE_LAYOUT, plid, portletId);
+
+		if (portletPreferences == null) {
+			return Optional.empty();
+		}
+
+		Portlet portlet = _portletLocalService.getPortletById(portletId);
+
+		if ((portlet == null) || portlet.isUndeployedPortlet()) {
+			return Optional.empty();
+		}
+
+		String newPortletId = _getNewPortletId(
+			namespace, newNamespace, portletId);
+
+		PortletPreferences existingPortletPreferences =
+			_portletPreferencesLocalService.fetchPortletPreferences(
+				portletPreferences.getOwnerId(),
+				portletPreferences.getOwnerType(), plid, newPortletId);
+
+		javax.portlet.PortletPreferences jxPortletPreferences =
+			_portletPreferenceValueLocalService.getPreferences(
+				portletPreferences);
+
+		if (existingPortletPreferences == null) {
+			return Optional.of(
+				_portletPreferencesLocalService.addPortletPreferences(
+					portletPreferences.getCompanyId(),
+					portletPreferences.getOwnerId(),
+					portletPreferences.getOwnerType(), plid, newPortletId,
+					portlet,
+					PortletPreferencesFactoryUtil.toXML(jxPortletPreferences)));
+		}
+
+		return Optional.of(
+			_portletPreferencesLocalService.updatePreferences(
+				existingPortletPreferences.getOwnerId(),
+				existingPortletPreferences.getOwnerType(),
+				existingPortletPreferences.getPlid(),
+				existingPortletPreferences.getPortletId(),
+				jxPortletPreferences));
 	}
 
 	private Map<Long, Long> _getSegmentsExperienceIds(
@@ -832,6 +1000,95 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 		return layoutStructure.toJSONObject();
 	}
 
+	private JSONObject _updateLayoutDataJSONObject(
+			long plid, CommentManager commentManager,
+			LayoutStructure layoutStructure, long groupId,
+			PortletRegistry portletRegistry, long sourceSegmentsExperienceId,
+			Function<String, ServiceContext> serviceContextFunction,
+			long targetSegmentsExperienceId, long userId)
+		throws PortalException {
+
+		List<FragmentEntryLink> fragmentEntryLinks =
+			_fragmentEntryLinkLocalService.
+				getFragmentEntryLinksBySegmentsExperienceId(
+					groupId, sourceSegmentsExperienceId, plid);
+
+		Stream<FragmentEntryLink> stream = fragmentEntryLinks.stream();
+
+		Map<Long, FragmentEntryLink> fragmentEntryLinkMap = stream.collect(
+			Collectors.toMap(
+				FragmentEntryLink::getFragmentEntryLinkId,
+				fragmentEntryLink -> fragmentEntryLink));
+
+		for (LayoutStructureItem layoutStructureItem :
+				layoutStructure.getLayoutStructureItems()) {
+
+			if (!(layoutStructureItem instanceof
+					FragmentStyledLayoutStructureItem) ||
+				ListUtil.exists(
+					layoutStructure.getDeletedLayoutStructureItems(),
+					deletedLayoutStructureItem -> Objects.equals(
+						deletedLayoutStructureItem.getItemId(),
+						layoutStructureItem.getItemId()))) {
+
+				continue;
+			}
+
+			FragmentStyledLayoutStructureItem
+				fragmentStyledLayoutStructureItem =
+					(FragmentStyledLayoutStructureItem)layoutStructureItem;
+
+			FragmentEntryLink fragmentEntryLink = fragmentEntryLinkMap.get(
+				fragmentStyledLayoutStructureItem.getFragmentEntryLinkId());
+
+			if (fragmentEntryLink == null) {
+				continue;
+			}
+
+			FragmentEntryLink newFragmentEntryLink =
+				(FragmentEntryLink)fragmentEntryLink.clone();
+
+			newFragmentEntryLink.setUuid(_portalUUID.generate());
+			newFragmentEntryLink.setFragmentEntryLinkId(
+				_counterLocalService.increment());
+			newFragmentEntryLink.setCreateDate(new Date());
+			newFragmentEntryLink.setModifiedDate(new Date());
+			newFragmentEntryLink.setOriginalFragmentEntryLinkId(
+				fragmentEntryLink.getFragmentEntryLinkId());
+			newFragmentEntryLink.setSegmentsExperienceId(
+				targetSegmentsExperienceId);
+
+			String newNamespace = StringUtil.randomId();
+
+			newFragmentEntryLink.setEditableValues(
+				_getNewEditableValues(
+					fragmentEntryLink.getEditableValues(),
+					fragmentEntryLink.getNamespace(), newNamespace, plid));
+
+			newFragmentEntryLink.setNamespace(newNamespace);
+
+			newFragmentEntryLink.setLastPropagationDate(new Date());
+
+			newFragmentEntryLink =
+				_fragmentEntryLinkLocalService.addFragmentEntryLink(
+					newFragmentEntryLink);
+
+			fragmentStyledLayoutStructureItem.setFragmentEntryLinkId(
+				newFragmentEntryLink.getFragmentEntryLinkId());
+
+			commentManager.copyDiscussion(
+				userId, groupId, FragmentEntryLink.class.getName(),
+				fragmentEntryLink.getFragmentEntryLinkId(),
+				newFragmentEntryLink.getFragmentEntryLinkId(),
+				serviceContextFunction);
+
+			_copyPortletPreferences(
+				fragmentEntryLink, newFragmentEntryLink, plid, portletRegistry);
+		}
+
+		return layoutStructure.toJSONObject();
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		LayoutCopyHelperImpl.class);
 
@@ -877,6 +1134,9 @@ public class LayoutCopyHelperImpl implements LayoutCopyHelper {
 
 	@Reference
 	private Portal _portal;
+
+	@Reference
+	private PortalUUID _portalUUID;
 
 	@Reference
 	private PortletLocalService _portletLocalService;

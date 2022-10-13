@@ -23,6 +23,7 @@ import com.liferay.layout.content.page.editor.web.internal.util.FragmentEntryLin
 import com.liferay.layout.content.page.editor.web.internal.util.layout.structure.LayoutStructureUtil;
 import com.liferay.layout.page.template.model.LayoutPageTemplateStructure;
 import com.liferay.layout.page.template.service.LayoutPageTemplateStructureLocalService;
+import com.liferay.layout.util.LayoutCopyHelper;
 import com.liferay.layout.util.structure.LayoutStructure;
 import com.liferay.portal.kernel.comment.CommentManager;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -91,7 +92,7 @@ public class AddSegmentsExperienceMVCActionCommand
 		long baseSegmentsExperienceId = _getBaseSegmentsExperienceId(
 			plid, segmentsExperiment);
 
-		SegmentsExperienceUtil.copySegmentsExperienceData(
+		_layoutCopyHelper.copySegmentsExperienceData(
 			plid, _commentManager, groupId, _portletRegistry,
 			baseSegmentsExperienceId,
 			segmentsExperience.getSegmentsExperienceId(),
@@ -280,7 +281,7 @@ public class AddSegmentsExperienceMVCActionCommand
 		Layout draftLayout = _layoutLocalService.fetchDraftLayout(classPK);
 
 		if (draftLayout != null) {
-			SegmentsExperienceUtil.copySegmentsExperienceData(
+			_layoutCopyHelper.copySegmentsExperienceData(
 				draftLayout.getPlid(), _commentManager, groupId,
 				_portletRegistry, baseSegmentsExperienceId,
 				segmentsExperience.getSegmentsExperienceId(),
@@ -296,6 +297,9 @@ public class AddSegmentsExperienceMVCActionCommand
 
 	@Reference
 	private FragmentEntryLinkManager _fragmentEntryLinkManager;
+
+	@Reference
+	private LayoutCopyHelper _layoutCopyHelper;
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;
