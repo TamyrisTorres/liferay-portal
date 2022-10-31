@@ -85,6 +85,8 @@ import com.liferay.object.admin.rest.resource.v1_0.ObjectDefinitionResource;
 import com.liferay.object.admin.rest.resource.v1_0.ObjectRelationshipResource;
 import com.liferay.object.constants.ObjectDefinitionConstants;
 import com.liferay.object.model.ObjectEntry;
+import com.liferay.object.model.ObjectField;
+import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectActionLocalService;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
@@ -241,6 +243,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		ObjectActionLocalService objectActionLocalService,
 		ObjectDefinitionLocalService objectDefinitionLocalService,
 		ObjectDefinitionResource.Factory objectDefinitionResourceFactory,
+		ObjectFieldLocalService objectFieldLocalService,
 		ObjectRelationshipLocalService objectRelationshipLocalService,
 		ObjectRelationshipResource.Factory objectRelationshipResourceFactory,
 		ObjectEntryLocalService objectEntryLocalService,
@@ -306,6 +309,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		_objectActionLocalService = objectActionLocalService;
 		_objectDefinitionLocalService = objectDefinitionLocalService;
 		_objectDefinitionResourceFactory = objectDefinitionResourceFactory;
+		_objectFieldLocalService = objectFieldLocalService;
 		_objectRelationshipLocalService = objectRelationshipLocalService;
 		_objectRelationshipResourceFactory = objectRelationshipResourceFactory;
 		_objectEntryLocalService = objectEntryLocalService;
@@ -1039,6 +1043,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		Map<String, String> objectDefinitionIdsStringUtilReplaceValues =
 			new HashMap<>();
 
+
 		Set<String> resourcePaths = _servletContext.getResourcePaths(
 			"/site-initializer/object-definitions");
 
@@ -1057,6 +1062,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 			objectDefinitionIdsStringUtilReplaceValues.put(
 				"OBJECT_DEFINITION_ID:" + objectDefinition.getName(),
 				String.valueOf(objectDefinition.getObjectDefinitionId()));
+
+
 		}
 
 		for (String resourcePath : resourcePaths) {
@@ -1064,10 +1071,22 @@ public class BundleSiteInitializer implements SiteInitializer {
 				continue;
 			}
 
+
 			String json = SiteInitializerUtil.read(
 				resourcePath, _servletContext);
 
 			json = _replace(json, listTypeDefinitionIdsStringUtilReplaceValues);
+
+			JSONObject jsonObjects = _jsonFactory.createJSONObject(json);
+
+		Object json1 = jsonObjects.remove("accountEntryRestrictedObjectFieldId");
+		Object json2 = jsonObjects.remove("accountEntryRestricted");
+
+			//salvar o que eu removi em uma variavel
+
+
+			json = JSONUtil.toString(jsonObjects);
+
 
 			ObjectDefinition objectDefinition = ObjectDefinition.toDTO(json);
 
@@ -1089,23 +1108,75 @@ public class BundleSiteInitializer implements SiteInitializer {
 			ObjectDefinition existingObjectDefinition =
 				objectDefinitionsPage.fetchFirstItem();
 
-			if (existingObjectDefinition == null) {
+
+
+			if (existingObjectDefinition != null) {
+
+				objectDefinition =
+					objectDefinitionResource.patchObjectDefinition(
+						existingObjectDefinition.getId(), objectDefinition);
+
+				_invoke(
+					() -> _addOrUpdateObjectRelationships(
+						objectDefinitionIdsStringUtilReplaceValues, serviceContext));
+
+			}
+
+			else {
+
 				objectDefinition =
 					objectDefinitionResource.postObjectDefinition(
 						objectDefinition);
 
-				objectDefinitionResource.postObjectDefinitionPublish(
-					objectDefinition.getId());
-			}
-			else {
+
+				_invoke(
+					() -> _addOrUpdateObjectRelationships(
+						objectDefinitionIdsStringUtilReplaceValues, serviceContext));
+
+
+
+				jsonObjects =
+					jsonObjects.put("accountEntryRestrictedObjectFieldId", json1); //colocar de volta de onde salvei
+
+				json = JSONUtil.toString(jsonObjects.put("accountEntryRestricted", json2));
+
+				Map<String, String> objectFieldIdsStringUtilReplaceValues = //fazer um hashmap listando todos filds que foram criados
+					new HashMap<>();
+
+				List<ObjectField> objectFields = //pegar somente o que eu criei
+					_objectFieldLocalService.getObjectFields( //localServiceobjectFildLocalService.objectField
+						objectDefinition.getId());
+
+				for (ObjectField objectField :
+					objectFields) {
+
+					objectFieldIdsStringUtilReplaceValues.put(
+						"OBJECT_FIELD_ID:" + objectField.getDBColumnName(),
+						String.valueOf(
+							objectField.getObjectFieldId()));
+
+				}
+
+				json = _replace(json, objectFieldIdsStringUtilReplaceValues); //replace (preciso carregar com os caras q criei acima)
+
+				objectDefinition = ObjectDefinition.toDTO(json);
+
 				objectDefinition =
 					objectDefinitionResource.patchObjectDefinition(
 						existingObjectDefinition.getId(), objectDefinition);
-			}
+
+
+				objectDefinitionResource.postObjectDefinitionPublish(
+					objectDefinition.getId());
+
+
+				}
 
 			objectDefinitionIdsStringUtilReplaceValues.put(
 				"OBJECT_DEFINITION_ID:" + objectDefinition.getName(),
 				String.valueOf(objectDefinition.getId()));
+
+
 
 			if (Objects.equals(
 					objectDefinition.getScope(),
@@ -1127,6 +1198,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 			JSONArray jsonArray = JSONFactoryUtil.createJSONArray(
 				objectActionsJSON);
 
+
+
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject jsonObject = jsonArray.getJSONObject(i);
 
@@ -1144,15 +1217,17 @@ public class BundleSiteInitializer implements SiteInitializer {
 					ObjectActionUtil.toParametersUnicodeProperties(
 						parametersJSONObject.toMap()));
 			}
+
+
+
 		}
 
-		_invoke(
-			() -> _addOrUpdateObjectRelationships(
-				objectDefinitionIdsStringUtilReplaceValues, serviceContext));
 
 		Map<String, String> objectEntryIdsStringUtilReplaceValues = _invoke(
 			() -> _addOrUpdateObjectEntries(
 				serviceContext, siteNavigationMenuItemSettingsBuilder));
+
+
 
 		return HashMapBuilder.putAll(
 			objectDefinitionIdsStringUtilReplaceValues
@@ -4187,6 +4262,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 	private final ObjectDefinitionResource.Factory
 		_objectDefinitionResourceFactory;
 	private final ObjectEntryLocalService _objectEntryLocalService;
+
+	private final ObjectFieldLocalService _objectFieldLocalService;
 	private final ObjectRelationshipLocalService
 		_objectRelationshipLocalService;
 	private final ObjectRelationshipResource.Factory
