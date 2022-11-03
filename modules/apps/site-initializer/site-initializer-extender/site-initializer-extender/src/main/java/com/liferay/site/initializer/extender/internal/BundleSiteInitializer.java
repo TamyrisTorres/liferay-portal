@@ -95,6 +95,8 @@ import com.liferay.petra.function.UnsafeRunnable;
 import com.liferay.petra.function.UnsafeSupplier;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.dao.orm.Query;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -1091,29 +1093,39 @@ public class BundleSiteInitializer implements SiteInitializer {
 
 		}
 
+		String json = null;
+		Object json1 = null;
+		Object json2 = null;
+		ObjectDefinition objectDefinition = null;
+		Long objectDefinitionId = null;
+		ObjectDefinition existingObjectDefinition = null;
+
+
+
+
 		for (String resourcePath : resourcePaths) {
 			if (resourcePath.endsWith(".object-actions.json")) {
 				continue;
 			}
 
 
-			String json = SiteInitializerUtil.read(
+			json = SiteInitializerUtil.read(
 				resourcePath, _servletContext);
 
 			json = _replace(json, listTypeDefinitionIdsStringUtilReplaceValues);
 
 			JSONObject jsonObjects = _jsonFactory.createJSONObject(json);
 
-		Object json1 = jsonObjects.remove("accountEntryRestrictedObjectFieldId");
-		Object json2 = jsonObjects.remove("accountEntryRestricted");
+		json1 = jsonObjects.remove("accountEntryRestrictedObjectFieldId");
+		json2 = jsonObjects.remove("accountEntryRestricted");
 
-			//salvar o que eu removi em uma variavel
+
 
 
 			json = JSONUtil.toString(jsonObjects);
 
 
-			ObjectDefinition objectDefinition = ObjectDefinition.toDTO(json);
+			objectDefinition = ObjectDefinition.toDTO(json);
 
 			if (objectDefinition == null) {
 				_log.error(
@@ -1130,76 +1142,58 @@ public class BundleSiteInitializer implements SiteInitializer {
 							"name eq '", objectDefinition.getName(), "'")),
 					null, null);
 
-			ObjectDefinition existingObjectDefinition =
+			existingObjectDefinition =
 				objectDefinitionsPage.fetchFirstItem();
 
 
 
-			if (existingObjectDefinition != null) {
-
-				objectDefinition =
-					objectDefinitionResource.patchObjectDefinition(
-						existingObjectDefinition.getId(), objectDefinition);
-
-				_invoke(
-					() -> _addOrUpdateObjectRelationships(
-						objectDefinitionIdsStringUtilReplaceValues, serviceContext));
-
-			}
-
-			else {
+			if (existingObjectDefinition == null) {
 
 				objectDefinition =
 					objectDefinitionResource.postObjectDefinition(
 						objectDefinition);
 
-
 				_invoke(
 					() -> _addOrUpdateObjectRelationships(
 						objectDefinitionIdsStringUtilReplaceValues, serviceContext));
 
+					}
 
-
-				jsonObjects =
-					jsonObjects.put("accountEntryRestrictedObjectFieldId", json1); //colocar de volta de onde salvei
-
-				json = JSONUtil.toString(jsonObjects.put("accountEntryRestricted", json2));
-
-				Map<String, String> objectFieldIdsStringUtilReplaceValues = //fazer um hashmap listando todos filds que foram criados
-					new HashMap<>();
-
-				List<ObjectField> objectFields = //pegar somente o que eu criei
-					_objectFieldLocalService.getObjectFields( //localServiceobjectFildLocalService.objectField
-						objectDefinition.getId());
-
-				for (ObjectField objectField :
-					objectFields) {
-
-					objectFieldIdsStringUtilReplaceValues.put(
-						"OBJECT_FIELD_ID:" + objectField.getDBColumnName(),
-						String.valueOf(
-							objectField.getObjectFieldId()));
-
-				}
-
-				json = _replace(json, objectFieldIdsStringUtilReplaceValues); //replace (preciso carregar com os caras q criei acima)
-
-				objectDefinition = ObjectDefinition.toDTO(json);
+			else {
 
 				objectDefinition =
 					objectDefinitionResource.patchObjectDefinition(
 						existingObjectDefinition.getId(), objectDefinition);
 
-
-				objectDefinitionResource.postObjectDefinitionPublish(
-					objectDefinition.getId());
-
+				_invoke(
+					() -> _addOrUpdateObjectRelationships(
+						objectDefinitionIdsStringUtilReplaceValues, serviceContext));
 
 				}
 
 			objectDefinitionIdsStringUtilReplaceValues.put(
 				"OBJECT_DEFINITION_ID:" + objectDefinition.getName(),
 				String.valueOf(objectDefinition.getId()));
+
+
+
+//			jsonObjects =
+//				jsonObjects.put(
+//					"accountEntryRestrictedObjectFieldId",
+//					json1);
+//
+//			json = JSONUtil.toString(
+//				jsonObjects.put("accountEntryRestricted", json2));
+
+			json = JSONUtil.toString(
+				jsonObjects.put(
+					"accountEntryRestrictedObjectFieldId",
+					json1));
+
+			json = JSONUtil.toString(
+				jsonObjects.put("accountEntryRestricted", json2));
+
+
 
 
 
@@ -1244,6 +1238,66 @@ public class BundleSiteInitializer implements SiteInitializer {
 			}
 
 
+
+		}
+
+
+
+
+		Set<String> resourcePaths1 = _servletContext.getResourcePaths(
+			"/site-initializer/object-definitions");
+
+		for (String resourcePath2 : resourcePaths1) {
+			json = SiteInitializerUtil.read(
+				resourcePath2, _servletContext);
+
+			JSONObject jsonObjects = _jsonFactory.createJSONObject(json);
+
+			Long objectDefinitionId2 = null;
+
+			if (jsonObjects.getBoolean("accountEntryRestricted")  == true) {
+
+				Map<String, String> objectFieldIdsStringUtilReplaceValues =
+					new HashMap<>();
+
+				List<ObjectField> objectFields =
+					_objectFieldLocalService.getObjectFields(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+				for (ObjectField objectField :
+					objectFields) {
+
+					objectFieldIdsStringUtilReplaceValues.put(
+						"OBJECT_FIELD_ID:" + objectField.getDBTableName(),
+						String.valueOf(
+							objectField.getObjectFieldId()));
+				}
+
+				json =
+					_replace(json, objectFieldIdsStringUtilReplaceValues);
+
+				objectDefinition = ObjectDefinition.toDTO(json);
+
+				objectDefinition =
+					objectDefinitionResource.patchObjectDefinition(
+						objectDefinitionId, objectDefinition);
+
+				objectDefinitionId2 = objectDefinition.getId();
+
+   /* objectDefinitionResource.postObjectDefinitionPublish(
+         objectDefinitionId2);*/
+
+				objectDefinitionIdsStringUtilReplaceValues.put(
+					"OBJECT_DEFINITION_ID:" + objectDefinition.getName(),
+					String.valueOf(objectDefinitionId2));
+			}
+			else {
+				objectDefinitionResource.postObjectDefinitionPublish(
+					objectDefinition.getId());
+
+				objectDefinitionIdsStringUtilReplaceValues.put(
+					"OBJECT_DEFINITION_ID:" + objectDefinition.getName(),
+					String.valueOf(objectDefinition.getId()));
+			}
 
 		}
 
@@ -2676,17 +2730,17 @@ public class BundleSiteInitializer implements SiteInitializer {
 			if (objectRelationship == null) {
 				_log.error(
 					"Unable to transform object relationship from JSON: " +
-						json);
+					json);
 
 				continue;
 			}
 
 			com.liferay.object.model.ObjectRelationship
 				existingObjectRelationship =
-					_objectRelationshipLocalService.
-						fetchObjectRelationshipByObjectDefinitionId(
-							objectRelationship.getObjectDefinitionId1(),
-							objectRelationship.getName());
+				_objectRelationshipLocalService.
+					fetchObjectRelationshipByObjectDefinitionId(
+						objectRelationship.getObjectDefinitionId1(),
+						objectRelationship.getName());
 
 			if (existingObjectRelationship == null) {
 				objectRelationshipResource.
