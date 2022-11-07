@@ -1,5 +1,6 @@
-
 {
+	"accountEntryRestrictedObjectFieldId": "[#OBJECT_FIELD_ID:accountEntryId#]",
+	"accountEntryRestricted": true,
 
 	"label": {
 		"en-US": "Account Flag"
