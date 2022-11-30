@@ -1091,9 +1091,9 @@ public class BundleSiteInitializer implements SiteInitializer {
 			if (json.contains("accountEntryRestrictedObjectFieldName") &&
 				!objectDefinitionPublish.isAccountEntryRestricted()) {
 
-					objectDefinitionResource.patchObjectDefinition(
-						objectDefinitionPublish.getObjectDefinitionId(),
-						objectDefinition);
+				objectDefinitionResource.patchObjectDefinition(
+					objectDefinitionPublish.getObjectDefinitionId(),
+					objectDefinition);
 			}
 		}
 	}
