@@ -1088,14 +1088,12 @@ public class BundleSiteInitializer implements SiteInitializer {
 					serviceContext.getCompanyId(),
 					"C_" + objectDefinition.getName());
 
-			if (!objectDefinitionPublish.isApproved()) {
-				objectDefinition =
+			if (json.contains("accountEntryRestrictedObjectFieldName") &&
+				!objectDefinitionPublish.isAccountEntryRestricted()) {
+
 					objectDefinitionResource.patchObjectDefinition(
 						objectDefinitionPublish.getObjectDefinitionId(),
 						objectDefinition);
-
-				objectDefinitionResource.postObjectDefinitionPublish(
-					objectDefinition.getId());
 			}
 		}
 	}
@@ -1174,10 +1172,13 @@ public class BundleSiteInitializer implements SiteInitializer {
 					objectDefinitionResource.postObjectDefinition(
 						objectDefinition);
 
-				if (!json.contains("accountEntryRestrictedObjectFieldName")) {
+				objectDefinitionResource.postObjectDefinitionPublish(
+					objectDefinition.getId());
+
+				/*if (!json.contains("accountEntryRestrictedObjectFieldName")) {
 					objectDefinitionResource.postObjectDefinitionPublish(
 						objectDefinition.getId());
-				}
+				}*/
 			}
 			else {
 				objectDefinition =
