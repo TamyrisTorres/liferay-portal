@@ -1167,6 +1167,50 @@ public class MBMessageServiceHttp {
 		}
 	}
 
+	public static java.util.List<com.liferay.message.boards.model.MBMessage>
+			getSiteUserMessageBoardMessagesActivity(
+				HttpPrincipal httpPrincipal, long userId, long siteId,
+				int start, int end)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				MBMessageServiceUtil.class,
+				"getSiteUserMessageBoardMessagesActivity",
+				_getSiteUserMessageBoardMessagesActivityParameterTypes26);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, userId, siteId, start, end);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
+			}
+
+			return (java.util.List<com.liferay.message.boards.model.MBMessage>)
+				returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
+
+			_log.error(systemException, systemException);
+
+			throw systemException;
+		}
+	}
+
 	public static String[] getTempAttachmentNames(
 			HttpPrincipal httpPrincipal, long groupId, String folderName)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -1734,6 +1778,13 @@ public class MBMessageServiceHttp {
 	};
 	private static final Class<?>[] _getMessageDisplayParameterTypes26 =
 		new Class[] {long.class, int.class};
+<<<<<<< HEAD
+=======
+	private static final Class<?>[]
+		_getSiteUserMessageBoardMessagesActivityParameterTypes26 = new Class[] {
+			long.class, long.class, int.class, int.class
+		};
+>>>>>>> 1e29940 (LPS-166913 buildService)
 	private static final Class<?>[] _getTempAttachmentNamesParameterTypes27 =
 		new Class[] {long.class, String.class};
 	private static final Class<?>[] _getThreadAnswersCountParameterTypes28 =
