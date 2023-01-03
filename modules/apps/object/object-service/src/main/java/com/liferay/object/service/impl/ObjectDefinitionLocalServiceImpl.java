@@ -1360,8 +1360,7 @@ public class ObjectDefinitionLocalServiceImpl
 		}
 
 		if (objectDefinition.isApproved() &&
-			objectDefinition.isAccountEntryRestricted() &&
-			!accountEntryRestricted) {
+			objectDefinition.isAccountEntryRestricted()) {
 
 			throw new ObjectDefinitionAccountEntryRestrictedException(
 				"Account entry restriction cannot be disabled when the " +
