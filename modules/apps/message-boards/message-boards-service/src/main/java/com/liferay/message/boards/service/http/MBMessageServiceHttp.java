@@ -1819,8 +1819,7 @@ public class MBMessageServiceHttp {
 	};
 	private static final Class<?>[] _getMessageDisplayParameterTypes26 =
 		new Class[] {long.class, int.class};
-<<<<<<< HEAD
-=======
+
 	private static final Class<?>[]
 		_getSiteUserMessageBoardMessagesActivityParameterTypes26 = new Class[] {
 			long.class, long.class, int.class, int.class
@@ -1828,12 +1827,11 @@ public class MBMessageServiceHttp {
 <<<<<<< HEAD
 >>>>>>> 1e29940 (LPS-166913 buildService)
 	private static final Class<?>[] _getTempAttachmentNamesParameterTypes27 =
-=======
+
 	private static final Class<?>[]
 		_getSiteUserMessageBoardMessagesActivityCountParameterTypes27 =
 			new Class[] {long.class, long.class};
 	private static final Class<?>[] _getTempAttachmentNamesParameterTypes28 =
->>>>>>> 4ba10a9 (LPS-166913 Add getSiteUserMessageBoardMessagesActivityCount to Service)
 		new Class[] {long.class, String.class};
 	private static final Class<?>[] _getThreadAnswersCountParameterTypes29 =
 		new Class[] {long.class, long.class, long.class};
