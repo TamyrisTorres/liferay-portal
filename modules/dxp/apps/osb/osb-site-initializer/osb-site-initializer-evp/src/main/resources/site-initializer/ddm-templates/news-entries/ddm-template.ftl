@@ -41,7 +41,7 @@
 		<#list entries as curEntry>
 			<div class="border border-neutral-3 d-flex justify-content-between mb-3 p-3 rounded">
 				<div class="mr-4 pr-2 text-left text-wrap">
-					<h6 class="font-weight-bold mb-1 evp-news-title text-neutral-10" onclick="handleClick(this)">
+					<h6 class="evp-news-title font-weight-bold mb-1 text-neutral-10" onclick="handleClick(this)">
 						${htmlUtil.escape(curEntry.getTitle(locale))}
 					</h6>
 
