@@ -1,2005 +1,2065 @@
 {
-	"pageElement": {
-		"pageElements": [
-			{
-				"definition": {
-					"indexed": true,
-					"layout": {
-						"opacity": 100,
-						"widthType": "Fluid"
-					},
-					"name": "Home Container"
+	"definition": {
+		"indexed": true,
+		"layout": {
+			"borderWidth": 0,
+			"marginBottom": 0,
+			"marginLeft": 0,
+			"marginRight": 0,
+			"marginTop": 0,
+			"opacity": 100,
+			"paddingBottom": 0,
+			"paddingLeft": 0,
+			"paddingRight": 0,
+			"paddingTop": 0,
+			"widthType": "Fluid"
+		},
+		"name": "Home Container"
+	},
+	"pageElements": [
+		{
+			"definition": {
+				"fragment": {"key": "home-welcome-banner", "siteKey": "EVP"},
+				"fragmentConfig": {},
+				"fragmentFields": [],
+				"fragmentStyle": {"marginBottom": "5"},
+				"indexed": true
+			},
+			"type": "Fragment"
+		},
+		{
+			"definition": {
+				"fragmentStyle": {"marginBottom": "5"},
+				"indexed": true,
+				"layout": {
+					"borderWidth": 0,
+					"marginBottom": 4,
+					"marginLeft": 0,
+					"marginRight": 0,
+					"marginTop": 0,
+					"opacity": 100,
+					"paddingBottom": 0,
+					"paddingLeft": 0,
+					"paddingRight": 0,
+					"paddingTop": 0,
+					"widthType": "Fluid"
 				},
-				"pageElements": [
-					{
-						"definition": {
-							"fragment": {
-								"key": "home-welcome-banner",
-								"siteKey": "[$GROUP_KEY$]"
-							},
-							"fragmentConfig": {
-							},
-							"fragmentFields": [
-							],
-							"fragmentStyle": {
-								"marginBottom": "5"
-							},
-							"indexed": true
-						},
-						"type": "Fragment"
-					},
-					{
-						"definition": {
-							"fragmentStyle": {
-								"marginBottom": "5"
-							},
-							"indexed": true,
-							"layout": {
-								"marginBottom": 4,
-								"opacity": 100,
-								"widthType": "Fluid"
-							},
-							"name": "News Section"
-						},
-						"pageElements": [
+				"name": "News Section"
+			},
+			"pageElements": [
+				{
+					"definition": {
+						"gutters": true,
+						"indexed": true,
+						"modulesPerRow": 2,
+						"numberOfColumns": 2,
+						"reverseOrder": false,
+						"rowViewports": [
 							{
-								"definition": {
-									"gutters": true,
-									"indexed": true,
-									"modulesPerRow": 2,
-									"numberOfColumns": 2,
-									"reverseOrder": false,
-									"rowViewports": [
-										{
-											"id": "landscapeMobile",
-											"rowViewportDefinition": {
-												"modulesPerRow": 1
-											}
-										},
-										{
-											"id": "portraitMobile",
-											"rowViewportDefinition": {
-											}
-										},
-										{
-											"id": "tablet",
-											"rowViewportDefinition": {
-											}
-										}
-									],
-									"verticalAlignment": "top"
-								},
-								"pageElements": [
+								"id": "landscapeMobile",
+								"rowViewportDefinition": {"modulesPerRow": 1}
+							},
+							{
+								"id": "portraitMobile",
+								"rowViewportDefinition": {}
+							},
+							{"id": "tablet", "rowViewportDefinition": {}}
+						],
+						"verticalAlignment": "top"
+					},
+					"pageElements": [
+						{
+							"definition": {
+								"columnViewports": [
 									{
-										"definition": {
-											"columnViewports": [
-												{
-													"columnViewportDefinition": {
-														"size": 12
-													},
-													"id": "landscapeMobile"
-												},
-												{
-													"columnViewportDefinition": {
-													},
-													"id": "portraitMobile"
-												},
-												{
-													"columnViewportDefinition": {
-													},
-													"id": "tablet"
-												}
-											],
-											"size": 8
-										}
+										"columnViewportDefinition": {
+											"size": 12
+										},
+										"id": "landscapeMobile"
 									},
 									{
-										"definition": {
-											"indexed": true,
-											"layout": {
-												"borderWidth": 0,
-												"marginBottom": 0,
-												"marginLeft": 0,
-												"marginRight": 0,
-												"marginTop": 0,
-												"opacity": 100,
-												"paddingBottom": 0,
-												"paddingLeft": 0,
-												"paddingRight": 0,
-												"paddingTop": 0,
-												"widthType": "Fluid"
-											}
-										},
-										"pageElements": [
-											{
-												"definition": {
-													"fragment": {
-														"key": "news-fragment",
-														"siteKey": "[$GROUP_KEY$]"
-													},
-													"fragmentConfig": {
-													},
-													"fragmentFields": [
-														{
-															"id": "announcements-heading",
-															"value": {
-																"fragmentLink": {
-																},
-																"text": {
-																	"value_i18n": {
-																		"en_US": "News"
-																	}
-																}
-															}
-														}
-													],
-													"indexed": true,
-													"widgetInstances": [
-														{
-															"widgetConfig": {
-																"abstractLength": "200",
-																"anyAssetType": "41768",
-																"anyClassTypeDLFileEntryAssetRendererFactory": "true",
-																"anyClassTypeJournalArticleAssetRendererFactory": "44106",
-																"assetLinkBehavior": "viewInPortlet",
-																"assetVocabularyId": "",
-																"classNameIds": "41768",
-																"classTypeIds": "44106",
-																"classTypeIdsDLFileEntryAssetRendererFactory": "0,42913,42918",
-																"classTypeIdsJournalArticleAssetRendererFactory": "44106",
-																"customUserAttributes": "",
-																"ddmStructureDisplayFieldValue": "",
-																"ddmStructureFieldName": "",
-																"ddmStructureFieldValue": "",
-																"delta": "3",
-																"displayStyle": "ddmTemplate_NEWS-ENTRIES",
-																"displayStyleGroupId": "44102",
-																"emailAssetEntryAddedBody_ar_SA": "Dear [$TO_NAME$],<br /><br />\n\nThis is an autogenerated email for the [$PORTLET_NAME$] portlet.<br /><br />\n\nThe following asset entries have been added to [$PORTLET_TITLE$]: [$ASSET_ENTRIES$].<br /><br />\n\nSincerely,<br />\n[$FROM_NAME$]<br />\n[$FROM_ADDRESS$]",
-																"emailAssetEntryAddedBody_ca_ES": "Dear [$TO_NAME$],<br /><br />\n\nThis is an autogenerated email for the [$PORTLET_NAME$] portlet.<br /><br />\n\nThe following asset entries have been added to [$PORTLET_TITLE$]: [$ASSET_ENTRIES$].<br /><br />\n\nSincerely,<br />\n[$FROM_NAME$]<br />\n[$FROM_ADDRESS$]",
-																"emailAssetEntryAddedBody_de_DE": "Dear [$TO_NAME$],<br /><br />\n\nThis is an autogenerated email for the [$PORTLET_NAME$] portlet.<br /><br />\n\nThe following asset entries have been added to [$PORTLET_TITLE$]: [$ASSET_ENTRIES$].<br /><br />\n\nSincerely,<br />\n[$FROM_NAME$]<br />\n[$FROM_ADDRESS$]",
-																"emailAssetEntryAddedBody_en_US": "<p>Dear [$TO_NAME$],<br />\n<br />\nThis is an autogenerated email for the [$PORTLET_NAME$] portlet.<br />\n<br />\nThe following asset entries have been added to [$PORTLET_TITLE$]: [$ASSET_ENTRIES$].<br />\n<br />\nSincerely,<br />\n[$FROM_NAME$]<br />\n[$FROM_ADDRESS$]</p>\n",
-																"emailAssetEntryAddedBody_es_ES": "Dear [$TO_NAME$],<br /><br />\n\nThis is an autogenerated email for the [$PORTLET_NAME$] portlet.<br /><br />\n\nThe following asset entries have been added to [$PORTLET_TITLE$]: [$ASSET_ENTRIES$].<br /><br />\n\nSincerely,<br />\n[$FROM_NAME$]<br />\n[$FROM_ADDRESS$]",
-																"emailAssetEntryAddedBody_fi_FI": "Dear [$TO_NAME$],<br /><br />\n\nThis is an autogenerated email for the [$PORTLET_NAME$] portlet.<br /><br />\n\nThe following asset entries have been added to [$PORTLET_TITLE$]: [$ASSET_ENTRIES$].<br /><br />\n\nSincerely,<br />\n[$FROM_NAME$]<br />\n[$FROM_ADDRESS$]",
-																"emailAssetEntryAddedBody_fr_FR": "Dear [$TO_NAME$],<br /><br />\n\nThis is an autogenerated email for the [$PORTLET_NAME$] portlet.<br /><br />\n\nThe following asset entries have been added to [$PORTLET_TITLE$]: [$ASSET_ENTRIES$].<br /><br />\n\nSincerely,<br />\n[$FROM_NAME$]<br />\n[$FROM_ADDRESS$]",
-																"emailAssetEntryAddedBody_hu_HU": "Dear [$TO_NAME$],<br /><br />\n\nThis is an autogenerated email for the [$PORTLET_NAME$] portlet.<br /><br />\n\nThe following asset entries have been added to [$PORTLET_TITLE$]: [$ASSET_ENTRIES$].<br /><br />\n\nSincerely,<br />\n[$FROM_NAME$]<br />\n[$FROM_ADDRESS$]",
-																"emailAssetEntryAddedBody_ja_JP": "Dear [$TO_NAME$],<br /><br />\n\nThis is an autogenerated email for the [$PORTLET_NAME$] portlet.<br /><br />\n\nThe following asset entries have been added to [$PORTLET_TITLE$]: [$ASSET_ENTRIES$].<br /><br />\n\nSincerely,<br />\n[$FROM_NAME$]<br />\n[$FROM_ADDRESS$]",
-																"emailAssetEntryAddedBody_nl_NL": "Dear [$TO_NAME$],<br /><br />\n\nThis is an autogenerated email for the [$PORTLET_NAME$] portlet.<br /><br />\n\nThe following asset entries have been added to [$PORTLET_TITLE$]: [$ASSET_ENTRIES$].<br /><br />\n\nSincerely,<br />\n[$FROM_NAME$]<br />\n[$FROM_ADDRESS$]",
-																"emailAssetEntryAddedBody_pt_BR": "Dear [$TO_NAME$],<br /><br />\n\nThis is an autogenerated email for the [$PORTLET_NAME$] portlet.<br /><br />\n\nThe following asset entries have been added to [$PORTLET_TITLE$]: [$ASSET_ENTRIES$].<br /><br />\n\nSincerely,<br />\n[$FROM_NAME$]<br />\n[$FROM_ADDRESS$]",
-																"emailAssetEntryAddedBody_sv_SE": "Dear [$TO_NAME$],<br /><br />\n\nThis is an autogenerated email for the [$PORTLET_NAME$] portlet.<br /><br />\n\nThe following asset entries have been added to [$PORTLET_TITLE$]: [$ASSET_ENTRIES$].<br /><br />\n\nSincerely,<br />\n[$FROM_NAME$]<br />\n[$FROM_ADDRESS$]",
-																"emailAssetEntryAddedBody_zh_CN": "Dear [$TO_NAME$],<br /><br />\n\nThis is an autogenerated email for the [$PORTLET_NAME$] portlet.<br /><br />\n\nThe following asset entries have been added to [$PORTLET_TITLE$]: [$ASSET_ENTRIES$].<br /><br />\n\nSincerely,<br />\n[$FROM_NAME$]<br />\n[$FROM_ADDRESS$]",
-																"emailAssetEntryAddedEnabled": "true",
-																"emailAssetEntryAddedSubject_ar_SA": "New Asset Entries Added to [$PORTLET_TITLE$]",
-																"emailAssetEntryAddedSubject_ca_ES": "New Asset Entries Added to [$PORTLET_TITLE$]",
-																"emailAssetEntryAddedSubject_de_DE": "New Asset Entries Added to [$PORTLET_TITLE$]",
-																"emailAssetEntryAddedSubject_es_ES": "New Asset Entries Added to [$PORTLET_TITLE$]",
-																"emailAssetEntryAddedSubject_fi_FI": "New Asset Entries Added to [$PORTLET_TITLE$]",
-																"emailAssetEntryAddedSubject_fr_FR": "New Asset Entries Added to [$PORTLET_TITLE$]",
-																"emailAssetEntryAddedSubject_hu_HU": "New Asset Entries Added to [$PORTLET_TITLE$]",
-																"emailAssetEntryAddedSubject_ja_JP": "New Asset Entries Added to [$PORTLET_TITLE$]",
-																"emailAssetEntryAddedSubject_nl_NL": "New Asset Entries Added to [$PORTLET_TITLE$]",
-																"emailAssetEntryAddedSubject_pt_BR": "New Asset Entries Added to [$PORTLET_TITLE$]",
-																"emailAssetEntryAddedSubject_sv_SE": "New Asset Entries Added to [$PORTLET_TITLE$]",
-																"emailAssetEntryAddedSubject_zh_CN": "New Asset Entries Added to [$PORTLET_TITLE$]",
-																"emailFromAddress": "test@liferay.com",
-																"emailFromName": "Test Test",
-																"enableCommentRatings": "false",
-																"enableComments": "false",
-																"enableFlags": "false",
-																"enablePermissions": "true",
-																"enablePrint": "false",
-																"enableRatings": "false",
-																"enableRelatedAssets": "false",
-																"enableRss": "false",
-																"enableSubscriptions": "false",
-																"enableViewCountIncrement": "false",
-																"mergeUrlTags": "true",
-																"metadataFields": "author,modified-date",
-																"orderByColumn1": "publishDate",
-																"orderByColumn2": "title",
-																"orderByType1": "DESC",
-																"orderByType2": "ASC",
-																"paginationType": "none",
-																"queryAndOperator0": "true",
-																"queryContains0": "true",
-																"queryName0": "assetTags",
-																"rssDelta": "20",
-																"rssDisplayStyle": "abstract",
-																"rssFeedType": "atom_1.0",
-																"rssName": "Asset Publisher",
-																"selectionStyle": "dynamic",
-																"showAddContentButton": "true",
-																"showAssetTitle": "true",
-																"showAvailableLocales": "false",
-																"showContextLink": "true",
-																"showExtraInfo": "true",
-																"showMetadataDescriptions": "true",
-																"showOnlyLayoutAssets": "false",
-																"socialBookmarksDisplayStyle": "inline",
-																"socialBookmarksTypes": "",
-																"subtypeFieldsFilterEnabled": "false",
-																"subtypeFieldsFilterEnabledDLFileEntryAssetRendererFactory": "false",
-																"subtypeFieldsFilterEnabledJournalArticleAssetRendererFactory": "false"
-															},
-															"widgetName": "com_liferay_asset_publisher_web_portlet_AssetPublisherPortlet"
-														}
-													]
-												},
-												"type": "Fragment"
-											},
-											{
-												"definition": {
-													"fragment": {
-														"key": "DIALECT-dialect-button"
-													},
-													"fragmentConfig": {
-														"buttonSize": "",
-														"inverted": false,
-														"style": "primary",
-														"type": "borderless",
-														"uppercase": false
-													},
-													"fragmentFields": [
-														{
-															"id": "link",
-															"value": {
-																"fragmentLink": {
-																	"value": {
-																		"href": {
-																			"mapping": {
-																				"itemReference": {
-																					"className": "com.liferay.portal.kernel.model.Layout",
-																					"fields": [
-																						{
-																							"fieldName": "friendlyURL",
-																							"fieldValue": "/all-news"
-																						},
-																						{
-																							"fieldName": "privatePage",
-																							"fieldValue": "false"
-																						},
-																						{
-																							"fieldName": "siteKey",
-																							"fieldValue": "EVP"
-																						}
-																					]
-																				}
-																			}
-																		}
-																	}
-																},
-																"text": {
-																	"value_i18n": {
-																		"en_US": "View All News"
-																	}
-																}
-															}
-														}
-													],
-													"fragmentStyle": {
-														"textAlign": "center"
-													},
-													"indexed": true
-												},
-												"type": "Fragment"
-											}
-										],
-										"type": "Section"
+										"columnViewportDefinition": {},
+										"id": "portraitMobile"
 									},
 									{
-										"definition": {
-											"columnViewports": [
-												{
-													"columnViewportDefinition": {
-														"size": 12
-													},
-													"id": "landscapeMobile"
-												},
-												{
-													"columnViewportDefinition": {
-													},
-													"id": "portraitMobile"
-												},
-												{
-													"columnViewportDefinition": {
-													},
-													"id": "tablet"
-												}
-											],
-											"size": 4
-										},
-										"pageElements": [
-											{
-												"definition": {
-													"fragment": {
-														"key": "DIALECT-dialect-text"
-													},
-													"fragmentConfig": {
-														"textType": "h3",
-														"truncateText": false
-													},
-													"fragmentFields": [
-														{
-															"id": "element-text",
-															"value": {
-																"fragmentLink": {
-																},
-																"text": {
-																	"value_i18n": {
-																		"en_US": "Gallery"
-																	}
-																}
-															}
-														}
-													],
-													"fragmentStyle": {
-														"fontWeight": "fontWeightBold",
-														"marginBottom": "3",
-														"textColor": "colorNeutral10"
-													},
-													"indexed": true,
-													"name": "Gallery Title"
-												},
-												"type": "Fragment"
-											},
-											{
-												"definition": {
-													"fragmentStyle": {
-														"height": "345px"
-													},
-													"indexed": true,
-													"layout": {
-														"align": "Start",
-														"contentDisplay": "FlexColumn",
-														"justify": "Center",
-														"opacity": 100,
-														"widthType": "Fluid"
-													},
-													"name": "Slider Container"
-												},
-												"pageElements": [
-													{
-														"definition": {
-															"fragment": {
-																"key": "evp-slider",
-																"siteKey": "[$GROUP_KEY$]"
-															},
-															"fragmentConfig": {
-																"numberOfSlides": 3
-															},
-															"fragmentFields": [
-																{
-																	"id": "01-image",
-																	"value": {
-																		"fragmentLink": {
-																			"value": {
-																				"href": {
-																					"value_i18n": {
-																						"en_US": ""
-																					}
-																				}
-																			}
-																		},
-																		"text": {
-																			"mapping": {
-																				"fieldKey": "FileEntry_previewImage",
-																				"itemReference": {
-																					"className": "com.liferay.portal.kernel.repository.model.FileEntry",
-																					"classPK": "[$DOCUMENT_FILE_ENTRY_ID:/site-initializer/documents/group/gallery/evp_photo1.jpg$]"
-																				}
-																			}
-																		}
-																	}
-																},
-																{
-																	"id": "02-image",
-																	"value": {
-																		"fragmentLink": {
-																		},
-																		"text": {
-																			"mapping": {
-																				"fieldKey": "FileEntry_previewImage",
-																				"itemReference": {
-																					"className": "com.liferay.portal.kernel.repository.model.FileEntry",
-																					"classPK": "[$DOCUMENT_FILE_ENTRY_ID:/site-initializer/documents/group/gallery/evp_photo2.jpg$]"
-																				}
-																			}
-																		}
-																	}
-																},
-																{
-																	"id": "03-image",
-																	"value": {
-																		"fragmentLink": {
-																		},
-																		"text": {
-																			"mapping": {
-																				"fieldKey": "FileEntry_previewImage",
-																				"itemReference": {
-																					"className": "com.liferay.portal.kernel.repository.model.FileEntry",
-																					"classPK": "[$DOCUMENT_FILE_ENTRY_ID:/site-initializer/documents/group/gallery/evp_photo3.jpg$]"
-																				}
-																			}
-																		}
-																	}
-																}
-															],
-															"indexed": true
-														},
-														"type": "Fragment"
-													}
-												],
-												"type": "Section"
-											}
-										],
-										"type": "Column"
+										"columnViewportDefinition": {},
+										"id": "tablet"
 									}
 								],
-								"type": "Row"
-							}
-						],
-						"type": "Section"
-					},
-					{
-						"definition": {
-							"fragmentStyle": {
-								"borderWidth": "0",
-								"marginBottom": "5"
+								"size": 8
 							},
-							"indexed": true,
-							"layout": {
-								"marginBottom": 4,
-								"opacity": 100,
-								"widthType": "Fluid"
-							},
-							"name": "Data on EVP Section"
-						},
-						"pageElements": [
-							{
-								"definition": {
-									"fragment": {
-										"key": "DIALECT-dialect-text"
+							"pageElements": [
+								{
+									"definition": {
+										"indexed": true,
+										"layout": {
+											"borderWidth": 0,
+											"marginBottom": 0,
+											"marginLeft": 0,
+											"marginRight": 0,
+											"marginTop": 0,
+											"opacity": 100,
+											"paddingBottom": 0,
+											"paddingLeft": 0,
+											"paddingRight": 0,
+											"paddingTop": 0,
+											"widthType": "Fluid"
+										}
 									},
-									"fragmentConfig": {
-										"textType": "h3",
-										"truncateText": false
-									},
-									"fragmentFields": [
+									"pageElements": [
 										{
-											"id": "element-text",
-											"value": {
-												"fragmentLink": {
+											"definition": {
+												"fragment": {
+													"key": "news-fragment",
+													"siteKey": "[$GROUP_ID$]"
 												},
-												"text": {
-													"value_i18n": {
-														"en_US": "Data on EVP"
+												"fragmentConfig": {},
+												"fragmentFields": [
+													{
+														"id": "news-heading",
+														"value": {
+															"fragmentLink": {},
+															"text": {
+																"value_i18n": {
+																	"en_US": "News"
+																}
+															}
+														}
+													}
+												],
+												"indexed": true,
+												"widgetInstances": [
+													{
+														"widgetConfig": {
+															"enableComments": "false",
+															"emailAssetEntryAddedBody_ja_JP": "Dear [$TO_NAME$],<br /><br />\n\nThis is an autogenerated email for the [$PORTLET_NAME$] portlet.<br /><br />\n\nThe following asset entries have been added to [$PORTLET_TITLE$]: [$ASSET_ENTRIES$].<br /><br />\n\nSincerely,<br />\n[$FROM_NAME$]<br />\n[$FROM_ADDRESS$]",
+															"enableRelatedAssets": "false",
+															"subtypeFieldsFilterEnabled": "false",
+															"emailAssetEntryAddedBody_de_DE": "Dear [$TO_NAME$],<br /><br />\n\nThis is an autogenerated email for the [$PORTLET_NAME$] portlet.<br /><br />\n\nThe following asset entries have been added to [$PORTLET_TITLE$]: [$ASSET_ENTRIES$].<br /><br />\n\nSincerely,<br />\n[$FROM_NAME$]<br />\n[$FROM_ADDRESS$]",
+															"emailAssetEntryAddedBody_fr_FR": "Dear [$TO_NAME$],<br /><br />\n\nThis is an autogenerated email for the [$PORTLET_NAME$] portlet.<br /><br />\n\nThe following asset entries have been added to [$PORTLET_TITLE$]: [$ASSET_ENTRIES$].<br /><br />\n\nSincerely,<br />\n[$FROM_NAME$]<br />\n[$FROM_ADDRESS$]",
+															"enableViewCountIncrement": "false",
+															"delta": "3",
+															"showAvailableLocales": "false",
+															"displayStyleGroupId": "[$GROUP_ID$]",
+															"assetLinkBehavior": "viewInPortlet",
+															"emailAssetEntryAddedSubject_fi_FI": "New Asset Entries Added to [$PORTLET_TITLE$]",
+															"selectionStyle": "dynamic",
+															"displayStyle": "ddmTemplate_NEWS-ENTRIES",
+															"enablePermissions": "true",
+															"enableRss": "false",
+															"emailAssetEntryAddedBody_zh_CN": "Dear [$TO_NAME$],<br /><br />\n\nThis is an autogenerated email for the [$PORTLET_NAME$] portlet.<br /><br />\n\nThe following asset entries have been added to [$PORTLET_TITLE$]: [$ASSET_ENTRIES$].<br /><br />\n\nSincerely,<br />\n[$FROM_NAME$]<br />\n[$FROM_ADDRESS$]",
+															"rssFeedType": "atom_1.0",
+															"classTypeIdsJournalArticleAssetRendererFactory": "[$DDM_STRUCTURE_ID:NEWS$]",
+															"rssDisplayStyle": "abstract",
+															"anyAssetType": "[$CLASS_NAME_ID:com.liferay.journal.model.JournalArticle$]",
+															"queryName0": "assetTags",
+															"emailAssetEntryAddedSubject_ar_SA": "New Asset Entries Added to [$PORTLET_TITLE$]",
+															"emailAssetEntryAddedSubject_de_DE": "New Asset Entries Added to [$PORTLET_TITLE$]",
+															"emailAssetEntryAddedSubject_ca_ES": "New Asset Entries Added to [$PORTLET_TITLE$]",
+															"emailAssetEntryAddedSubject_ja_JP": "New Asset Entries Added to [$PORTLET_TITLE$]",
+															"subtypeFieldsFilterEnabledJournalArticleAssetRendererFactory": "false",
+															"enableRatings": "false",
+															"orderByColumn2": "title",
+															"orderByColumn1": "publishDate",
+															"socialBookmarksTypes": "",
+															"emailAssetEntryAddedSubject_pt_BR": "New Asset Entries Added to [$PORTLET_TITLE$]",
+															"emailFromName": "Test Test",
+															"abstractLength": "200",
+															"showMetadataDescriptions": "true",
+															"enableFlags": "false",
+															"showAddContentButton": "true",
+															"emailAssetEntryAddedBody_hu_HU": "Dear [$TO_NAME$],<br /><br />\n\nThis is an autogenerated email for the [$PORTLET_NAME$] portlet.<br /><br />\n\nThe following asset entries have been added to [$PORTLET_TITLE$]: [$ASSET_ENTRIES$].<br /><br />\n\nSincerely,<br />\n[$FROM_NAME$]<br />\n[$FROM_ADDRESS$]",
+															"subtypeFieldsFilterEnabledDLFileEntryAssetRendererFactory": "false",
+															"emailAssetEntryAddedSubject_sv_SE": "New Asset Entries Added to [$PORTLET_TITLE$]",
+															"ddmStructureFieldName": "",
+															"rssName": "Asset Publisher",
+															"emailAssetEntryAddedBody_pt_BR": "Dear [$TO_NAME$],<br /><br />\n\nThis is an autogenerated email for the [$PORTLET_NAME$] portlet.<br /><br />\n\nThe following asset entries have been added to [$PORTLET_TITLE$]: [$ASSET_ENTRIES$].<br /><br />\n\nSincerely,<br />\n[$FROM_NAME$]<br />\n[$FROM_ADDRESS$]",
+															"classTypeIds": "[$DDM_STRUCTURE_ID:NEWS$]",
+															"emailAssetEntryAddedBody_ca_ES": "Dear [$TO_NAME$],<br /><br />\n\nThis is an autogenerated email for the [$PORTLET_NAME$] portlet.<br /><br />\n\nThe following asset entries have been added to [$PORTLET_TITLE$]: [$ASSET_ENTRIES$].<br /><br />\n\nSincerely,<br />\n[$FROM_NAME$]<br />\n[$FROM_ADDRESS$]",
+															"emailAssetEntryAddedSubject_zh_CN": "New Asset Entries Added to [$PORTLET_TITLE$]",
+															"showExtraInfo": "true",
+															"showOnlyLayoutAssets": "false",
+															"emailAssetEntryAddedSubject_nl_NL": "New Asset Entries Added to [$PORTLET_TITLE$]",
+															"emailAssetEntryAddedSubject_es_ES": "New Asset Entries Added to [$PORTLET_TITLE$]",
+															"mergeUrlTags": "true",
+															"queryContains0": "true",
+															"socialBookmarksDisplayStyle": "inline",
+															"classTypeIdsDLFileEntryAssetRendererFactory": "0,42913,42918",
+															"classNameIds": "[$CLASS_NAME_ID:com.liferay.journal.model.JournalArticle$]",
+															"queryAndOperator0": "true",
+															"emailAssetEntryAddedEnabled": "true",
+															"emailAssetEntryAddedBody_fi_FI": "Dear [$TO_NAME$],<br /><br />\n\nThis is an autogenerated email for the [$PORTLET_NAME$] portlet.<br /><br />\n\nThe following asset entries have been added to [$PORTLET_TITLE$]: [$ASSET_ENTRIES$].<br /><br />\n\nSincerely,<br />\n[$FROM_NAME$]<br />\n[$FROM_ADDRESS$]",
+															"rssDelta": "20",
+															"metadataFields": "author,modified-date",
+															"customUserAttributes": "",
+															"anyClassTypeJournalArticleAssetRendererFactory": "[$DDM_STRUCTURE_ID:NEWS$]",
+															"showContextLink": "true",
+															"emailAssetEntryAddedSubject_fr_FR": "New Asset Entries Added to [$PORTLET_TITLE$]",
+															"enableCommentRatings": "false",
+															"emailAssetEntryAddedSubject_hu_HU": "New Asset Entries Added to [$PORTLET_TITLE$]",
+															"emailFromAddress": "test@liferay.com",
+															"anyClassTypeDLFileEntryAssetRendererFactory": "true",
+															"emailAssetEntryAddedBody_sv_SE": "Dear [$TO_NAME$],<br /><br />\n\nThis is an autogenerated email for the [$PORTLET_NAME$] portlet.<br /><br />\n\nThe following asset entries have been added to [$PORTLET_TITLE$]: [$ASSET_ENTRIES$].<br /><br />\n\nSincerely,<br />\n[$FROM_NAME$]<br />\n[$FROM_ADDRESS$]",
+															"enablePrint": "false",
+															"emailAssetEntryAddedBody_en_US": "<p>Dear [$TO_NAME$],<br />\n<br />\nThis is an autogenerated email for the [$PORTLET_NAME$] portlet.<br />\n<br />\nThe following asset entries have been added to [$PORTLET_TITLE$]: [$ASSET_ENTRIES$].<br />\n<br />\nSincerely,<br />\n[$FROM_NAME$]<br />\n[$FROM_ADDRESS$]</p>\n",
+															"showAssetTitle": "true",
+															"orderByType1": "DESC",
+															"emailAssetEntryAddedBody_es_ES": "Dear [$TO_NAME$],<br /><br />\n\nThis is an autogenerated email for the [$PORTLET_NAME$] portlet.<br /><br />\n\nThe following asset entries have been added to [$PORTLET_TITLE$]: [$ASSET_ENTRIES$].<br /><br />\n\nSincerely,<br />\n[$FROM_NAME$]<br />\n[$FROM_ADDRESS$]",
+															"orderByType2": "ASC",
+															"enableSubscriptions": "false",
+															"paginationType": "none",
+															"emailAssetEntryAddedBody_nl_NL": "Dear [$TO_NAME$],<br /><br />\n\nThis is an autogenerated email for the [$PORTLET_NAME$] portlet.<br /><br />\n\nThe following asset entries have been added to [$PORTLET_TITLE$]: [$ASSET_ENTRIES$].<br /><br />\n\nSincerely,<br />\n[$FROM_NAME$]<br />\n[$FROM_ADDRESS$]",
+															"assetVocabularyId": "",
+															"ddmStructureFieldValue": "",
+															"emailAssetEntryAddedBody_ar_SA": "Dear [$TO_NAME$],<br /><br />\n\nThis is an autogenerated email for the [$PORTLET_NAME$] portlet.<br /><br />\n\nThe following asset entries have been added to [$PORTLET_TITLE$]: [$ASSET_ENTRIES$].<br /><br />\n\nSincerely,<br />\n[$FROM_NAME$]<br />\n[$FROM_ADDRESS$]",
+															"ddmStructureDisplayFieldValue": ""
+														},
+														"widgetName": "com_liferay_asset_publisher_web_portlet_AssetPublisherPortlet"
+													}
+												]
+											},
+											"type": "Fragment"
+										},
+										{
+											"definition": {
+												"fragment": {
+													"key": "DIALECT-dialect-button"
+												},
+												"fragmentConfig": {
+													"uppercase": false,
+													"style": "primary",
+													"type": "borderless",
+													"inverted": false,
+													"buttonSize": ""
+												},
+												"fragmentFields": [
+													{
+														"id": "link",
+														"value": {
+															"fragmentLink": {
+																"value": {
+																	"href": {
+																		"mapping": {
+																			"itemReference": {
+																				"className": "com.liferay.portal.kernel.model.Layout",
+																				"fields": [
+																					{
+																						"fieldName": "friendlyURL",
+																						"fieldValue": "/all-news"
+																					},
+																					{
+																						"fieldName": "privatePage",
+																						"fieldValue": "false"
+																					},
+																					{
+																						"fieldName": "siteKey",
+																						"fieldValue": "[$GROUP_KEY$]"
+																					}
+																				]
+																			}
+																		}
+																	}
+																}
+															},
+															"text": {
+																"value_i18n": {
+																	"en_US": "View All News"
+																}
+															}
+														}
+													}
+												],
+												"fragmentStyle": {
+													"textAlign": "center"
+												},
+												"indexed": true
+											},
+											"type": "Fragment"
+										}
+									],
+									"type": "Section"
+								}
+							],
+							"type": "Column"
+						},
+						{
+							"definition": {
+								"columnViewports": [
+									{
+										"columnViewportDefinition": {
+											"size": 12
+										},
+										"id": "landscapeMobile"
+									},
+									{
+										"columnViewportDefinition": {},
+										"id": "portraitMobile"
+									},
+									{
+										"columnViewportDefinition": {},
+										"id": "tablet"
+									}
+								],
+								"size": 4
+							},
+							"pageElements": [
+								{
+									"definition": {
+										"fragment": {
+											"key": "DIALECT-dialect-text"
+										},
+										"fragmentConfig": {
+											"textType": "h3",
+											"truncateText": false
+										},
+										"fragmentFields": [
+											{
+												"id": "element-text",
+												"value": {
+													"fragmentLink": {},
+													"text": {
+														"value_i18n": {
+															"en_US": "Gallery"
+														}
 													}
 												}
 											}
+										],
+										"fragmentStyle": {
+											"fontWeight": "fontWeightBold",
+											"marginBottom": "3",
+											"textColor": "colorNeutral10"
+										},
+										"indexed": true,
+										"name": "Gallery Title"
+									},
+									"type": "Fragment"
+								},
+								{
+									"definition": {
+										"fragmentStyle": {"height": "345px"},
+										"indexed": true,
+										"layout": {
+											"align": "Start",
+											"borderWidth": 0,
+											"contentDisplay": "FlexColumn",
+											"justify": "Center",
+											"marginBottom": 0,
+											"marginLeft": 0,
+											"marginRight": 0,
+											"marginTop": 0,
+											"opacity": 100,
+											"paddingBottom": 0,
+											"paddingLeft": 0,
+											"paddingRight": 0,
+											"paddingTop": 0,
+											"widthType": "Fluid"
+										},
+										"name": "Slider Container"
+									},
+									"pageElements": [
+										{
+											"definition": {
+												"fragment": {
+													"key": "evp-slider",
+													"siteKey": "EVP"
+												},
+												"fragmentConfig": {
+													"numberOfSlides": 3
+												},
+												"fragmentFields": [
+													{
+														"id": "01-image",
+														"value": {
+															"fragmentLink": {
+																"value": {
+																	"href": {
+																		"value_i18n": {
+																			"en_US": ""
+																		}
+																	}
+																}
+															},
+															"text": {
+																"mapping": {
+																	"fieldKey": "FileEntry_previewImage",
+																	"itemReference": {
+																		"className": "com.liferay.portal.kernel.repository.model.FileEntry",
+																		"classPK": 44149
+																	}
+																}
+															}
+														}
+													},
+													{
+														"id": "02-image",
+														"value": {
+															"fragmentLink": {},
+															"text": {
+																"mapping": {
+																	"fieldKey": "FileEntry_previewImage",
+																	"itemReference": {
+																		"className": "com.liferay.portal.kernel.repository.model.FileEntry",
+																		"classPK": 44155
+																	}
+																}
+															}
+														}
+													},
+													{
+														"id": "03-image",
+														"value": {
+															"fragmentLink": {},
+															"text": {
+																"mapping": {
+																	"fieldKey": "FileEntry_previewImage",
+																	"itemReference": {
+																		"className": "com.liferay.portal.kernel.repository.model.FileEntry",
+																		"classPK": 44161
+																	}
+																}
+															}
+														}
+													}
+												],
+												"indexed": true
+											},
+											"type": "Fragment"
 										}
 									],
-									"fragmentStyle": {
-										"fontWeight": "fontWeightBold",
-										"marginBottom": "3",
-										"textColor": "colorNeutral10"
-									},
-									"indexed": true,
-									"name": "Data Title"
+									"type": "Section"
+								}
+							],
+							"type": "Column"
+						}
+					],
+					"type": "Row"
+				}
+			],
+			"type": "Section"
+		},
+		{
+			"definition": {
+				"fragmentStyle": {"borderWidth": "0", "marginBottom": "5"},
+				"indexed": true,
+				"layout": {
+					"borderWidth": 0,
+					"marginBottom": 4,
+					"marginLeft": 0,
+					"marginRight": 0,
+					"marginTop": 0,
+					"opacity": 100,
+					"paddingBottom": 0,
+					"paddingLeft": 0,
+					"paddingRight": 0,
+					"paddingTop": 0,
+					"widthType": "Fluid"
+				},
+				"name": "Data on EVP Section"
+			},
+			"pageElements": [
+				{
+					"definition": {
+						"fragment": {"key": "DIALECT-dialect-text"},
+						"fragmentConfig": {
+							"textType": "h3",
+							"truncateText": false
+						},
+						"fragmentFields": [
+							{
+								"id": "element-text",
+								"value": {
+									"fragmentLink": {},
+									"text": {
+										"value_i18n": {"en_US": "Data on EVP"}
+									}
+								}
+							}
+						],
+						"fragmentStyle": {
+							"fontWeight": "fontWeightBold",
+							"marginBottom": "3",
+							"textColor": "colorNeutral10"
+						},
+						"indexed": true,
+						"name": "Data Title"
+					},
+					"type": "Fragment"
+				},
+				{
+					"definition": {
+						"collectionConfig": {
+							"collectionReference": {
+								"className": "com.liferay.object.internal.info.collection.provider.ObjectEntrySingleFormVariationInfoCollectionProvider_20097_C_EVPData"
+							},
+							"collectionType": "CollectionProvider"
+						},
+						"collectionViewports": [
+							{
+								"collectionViewportDefinition": {
+									"numberOfColumns": 1
 								},
-								"type": "Fragment"
+								"id": "landscapeMobile"
 							},
 							{
-								"definition": {
-									"collectionConfig": {
-										"collectionReference": {
-											"className": "com.liferay.object.internal.info.collection.provider.ObjectEntrySingleFormVariationInfoCollectionProvider_20097_C_EVPData"
+								"collectionViewportDefinition": {},
+								"id": "portraitMobile"
+							},
+							{"collectionViewportDefinition": {}, "id": "tablet"}
+						],
+						"displayAllItems": false,
+						"displayAllPages": true,
+						"listItemStyle": "",
+						"listStyle": "",
+						"numberOfColumns": 1,
+						"numberOfItems": 1,
+						"numberOfItemsPerPage": 10,
+						"numberOfPages": 5,
+						"paginationType": "None",
+						"showAllItems": false,
+						"templateKey": ""
+					},
+					"pageElements": [
+						{
+							"definition": {"collectionItemConfig": {}},
+							"pageElements": [
+								{
+									"definition": {
+										"fragmentStyle": {"borderWidth": "0"},
+										"indexed": true,
+										"layout": {
+											"align": "Center",
+											"borderWidth": 0,
+											"contentDisplay": "FlexRow",
+											"justify": "SpaceBetween",
+											"marginBottom": 0,
+											"marginLeft": 0,
+											"marginRight": 0,
+											"marginTop": 0,
+											"opacity": 100,
+											"paddingBottom": 0,
+											"paddingLeft": 0,
+											"paddingRight": 0,
+											"paddingTop": 0,
+											"widthType": "Fluid"
 										},
-										"collectionType": "CollectionProvider"
+										"name": "Data Container"
 									},
-									"collectionViewports": [
+									"pageElements": [
 										{
-											"collectionViewportDefinition": {
-												"numberOfColumns": 1
-											},
-											"id": "landscapeMobile"
-										},
-										{
-											"collectionViewportDefinition": {
-											},
-											"id": "portraitMobile"
-										},
-										{
-											"collectionViewportDefinition": {
-											},
-											"id": "tablet"
-										}
-									],
-									"displayAllItems": false,
-									"displayAllPages": true,
-									"listItemStyle": "",
-									"listStyle": "",
-									"numberOfColumns": 1,
-									"numberOfItems": 1,
-									"numberOfItemsPerPage": 10,
-									"numberOfPages": 5,
-									"paginationType": "None",
-									"showAllItems": false,
-									"templateKey": ""
-								},
-								"pageElements": [
-									{
-										"definition": {
-											"collectionItemConfig": {
-											}
-										},
-										"pageElements": [
-											{
-												"definition": {
-													"fragmentStyle": {
-														"borderWidth": "0"
-													},
-													"indexed": true,
-													"layout": {
-														"align": "Center",
-														"contentDisplay": "FlexRow",
-														"justify": "SpaceBetween",
-														"opacity": 100,
-														"widthType": "Fluid"
-													},
-													"name": "Data Container"
+											"definition": {
+												"fragmentStyle": {
+													"backgroundColor": "colorNeutral1",
+													"borderRadius": "borderRadiusLg",
+													"height": "180px",
+													"maxHeight": "180px",
+													"maxWidth": "208px",
+													"paddingTop": "4",
+													"width": "208px"
 												},
-												"pageElements": [
-													{
-														"definition": {
-															"fragmentStyle": {
-																"backgroundColor": "colorNeutral1",
-																"borderRadius": "borderRadiusLg",
-																"height": "180px",
-																"maxHeight": "180px",
-																"maxWidth": "208px",
-																"paddingTop": "4",
-																"width": "208px"
-															},
-															"indexed": true,
-															"layout": {
-																"align": "Center",
-																"contentDisplay": "FlexColumn",
-																"opacity": 100,
-																"paddingTop": 2,
-																"widthType": "Fluid"
-															},
-															"name": "Data Card"
+												"indexed": true,
+												"layout": {
+													"align": "Center",
+													"borderWidth": 0,
+													"contentDisplay": "FlexColumn",
+													"marginBottom": 0,
+													"marginLeft": 0,
+													"marginRight": 0,
+													"marginTop": 0,
+													"opacity": 100,
+													"paddingBottom": 0,
+													"paddingLeft": 0,
+													"paddingRight": 0,
+													"paddingTop": 2,
+													"widthType": "Fluid"
+												},
+												"name": "Data Card"
+											},
+											"pageElements": [
+												{
+													"definition": {
+														"fragment": {
+															"key": "BASIC_COMPONENT-image"
 														},
-														"pageElements": [
+														"fragmentConfig": {
+															"imageSize": "w-0"
+														},
+														"fragmentFields": [
 															{
-																"definition": {
-																	"fragment": {
-																		"key": "BASIC_COMPONENT-image"
-																	},
-																	"fragmentConfig": {
-																		"imageSize": "w-0"
-																	},
-																	"fragmentFields": [
-																		{
-																			"id": "image-square",
-																			"value": {
-																				"fragmentImage": {
-																					"description": {
-																						"value_i18n": {
-																							"en_US": ""
-																						}
-																					},
-																					"url": {
-																						"value_i18n": {
-																							"en_US": "/documents/d/evp/calendar_icon-svg?download=true"
-																						}
-																					}
-																				},
-																				"fragmentLink": {
-																				}
+																"id": "image-square",
+																"value": {
+																	"fragmentImage": {
+																		"description": {
+																			"value_i18n": {
+																				"en_US": ""
+																			}
+																		},
+																		"url": {
+																			"value_i18n": {
+																				"en_US": "/documents/d/evp/calendar_icon-svg?download=true"
 																			}
 																		}
-																	],
-																	"fragmentStyle": {
-																		"marginBottom": "3"
 																	},
-																	"indexed": true
-																},
-																"type": "Fragment"
-															},
-															{
-																"definition": {
-																	"fragmentStyle": {
-																	},
-																	"indexed": true,
-																	"layout": {
-																		"opacity": 100,
-																		"widthType": "Fixed"
-																	}
-																},
-																"pageElements": [
-																	{
-																		"definition": {
-																			"fragment": {
-																				"key": "DIALECT-dialect-text"
-																			},
-																			"fragmentConfig": {
-																				"textType": "h2",
-																				"truncateText": false
-																			},
-																			"fragmentFields": [
-																				{
-																					"id": "element-text",
-																					"value": {
-																						"fragmentLink": {
-																							"value": {
-																								"href": {
-																									"value_i18n": {
-																										"en_US": ""
-																									}
-																								},
-																								"target": "Self"
-																							}
-																						},
-																						"text": {
-																							"mapping": {
-																								"fieldKey": "ObjectField_yearsEVP",
-																								"itemReference": {
-																									"contextSource": "CollectionItem"
-																								}
-																							}
-																						}
-																					}
-																				}
-																			],
-																			"fragmentStyle": {
-																				"fontWeight": "fontWeightBold",
-																				"marginBottom": "2",
-																				"textAlign": "center",
-																				"textColor": "colorNeutral10"
-																			},
-																			"indexed": true
-																		},
-																		"type": "Fragment"
-																	},
-																	{
-																		"definition": {
-																			"fragment": {
-																				"key": "DIALECT-dialect-text"
-																			},
-																			"fragmentConfig": {
-																				"textType": "text-paragraph",
-																				"truncateText": false
-																			},
-																			"fragmentFields": [
-																				{
-																					"id": "element-text",
-																					"value": {
-																						"fragmentLink": {
-																						},
-																						"text": {
-																							"value_i18n": {
-																								"en_US": "Years EVP has been active"
-																							}
-																						}
-																					}
-																				}
-																			],
-																			"fragmentStyle": {
-																				"textAlign": "center"
-																			},
-																			"indexed": true
-																		},
-																		"type": "Fragment"
-																	}
-																],
-																"type": "Section"
+																	"fragmentLink": {}
+																}
 															}
 														],
-														"type": "Section"
-													},
-													{
-														"definition": {
-															"fragmentStyle": {
-																"backgroundColor": "colorNeutral1",
-																"borderRadius": "borderRadiusLg",
-																"height": "180px",
-																"maxHeight": "180px",
-																"maxWidth": "208px",
-																"paddingTop": "4",
-																"width": "208px"
-															},
-															"indexed": true,
-															"layout": {
-																"align": "Center",
-																"contentDisplay": "FlexColumn",
-																"opacity": 100,
-																"paddingTop": 2,
-																"widthType": "Fluid"
-															},
-															"name": "Data Card"
+														"fragmentStyle": {
+															"marginBottom": "3"
 														},
-														"pageElements": [
-															{
-																"definition": {
-																	"fragment": {
-																		"key": "BASIC_COMPONENT-image"
-																	},
-																	"fragmentConfig": {
-																		"imageSize": "w-0"
-																	},
-																	"fragmentFields": [
-																		{
-																			"id": "image-square",
-																			"value": {
-																				"fragmentImage": {
-																					"description": {
+														"indexed": true
+													},
+													"type": "Fragment"
+												},
+												{
+													"definition": {
+														"indexed": true,
+														"layout": {
+															"borderWidth": 0,
+															"marginBottom": 0,
+															"marginLeft": 0,
+															"marginRight": 0,
+															"marginTop": 0,
+															"opacity": 100,
+															"paddingBottom": 0,
+															"paddingLeft": 0,
+															"paddingRight": 0,
+															"paddingTop": 0,
+															"widthType": "Fixed"
+														}
+													},
+													"pageElements": [
+														{
+															"definition": {
+																"fragment": {
+																	"key": "DIALECT-dialect-text"
+																},
+																"fragmentConfig": {
+																	"textType": "h2",
+																	"truncateText": false
+																},
+																"fragmentFields": [
+																	{
+																		"id": "element-text",
+																		"value": {
+																			"fragmentLink": {
+																				"value": {
+																					"href": {
 																						"value_i18n": {
 																							"en_US": ""
 																						}
 																					},
-																					"url": {
-																						"value_i18n": {
-																							"en_US": "/documents/d/evp/watch_icon-svg?download=true"
-																						}
+																					"target": "Self"
+																				}
+																			},
+																			"text": {
+																				"mapping": {
+																					"fieldKey": "ObjectField_yearsEVP",
+																					"itemReference": {
+																						"contextSource": "CollectionItem"
 																					}
-																				},
-																				"fragmentLink": {
 																				}
 																			}
 																		}
-																	],
-																	"fragmentStyle": {
-																		"marginBottom": "3"
-																	},
-																	"indexed": true
-																},
-																"type": "Fragment"
-															},
-															{
-																"definition": {
-																	"fragmentStyle": {
-																	},
-																	"indexed": true,
-																	"layout": {
-																		"opacity": 100,
-																		"widthType": "Fixed"
-																	}
-																},
-																"pageElements": [
-																	{
-																		"definition": {
-																			"fragment": {
-																				"key": "DIALECT-dialect-text"
-																			},
-																			"fragmentConfig": {
-																				"textType": "h2",
-																				"truncateText": false
-																			},
-																			"fragmentFields": [
-																				{
-																					"id": "element-text",
-																					"value": {
-																						"fragmentLink": {
-																						},
-																						"text": {
-																							"mapping": {
-																								"fieldKey": "ObjectField_serviceHoursCompleted",
-																								"itemReference": {
-																									"contextSource": "CollectionItem"
-																								}
-																							}
-																						}
-																					}
-																				}
-																			],
-																			"fragmentStyle": {
-																				"fontWeight": "fontWeightBold",
-																				"marginBottom": "2",
-																				"textAlign": "center",
-																				"textColor": "colorNeutral10"
-																			},
-																			"indexed": true
-																		},
-																		"type": "Fragment"
-																	},
-																	{
-																		"definition": {
-																			"fragment": {
-																				"key": "DIALECT-dialect-text"
-																			},
-																			"fragmentConfig": {
-																				"textType": "text-paragraph",
-																				"truncateText": false
-																			},
-																			"fragmentFields": [
-																				{
-																					"id": "element-text",
-																					"value": {
-																						"fragmentLink": {
-																						},
-																						"text": {
-																							"value_i18n": {
-																								"en_US": "Service Hours Completed"
-																							}
-																						}
-																					}
-																				}
-																			],
-																			"fragmentStyle": {
-																				"textAlign": "center"
-																			},
-																			"indexed": true
-																		},
-																		"type": "Fragment"
 																	}
 																],
-																"type": "Section"
-															}
-														],
-														"type": "Section"
-													},
-													{
-														"definition": {
-															"fragmentStyle": {
-																"backgroundColor": "colorNeutral1",
-																"borderRadius": "borderRadiusLg",
-																"height": "180px",
-																"maxHeight": "180px",
-																"maxWidth": "208px",
-																"paddingTop": "4",
-																"width": "208px"
+																"fragmentStyle": {
+																	"fontWeight": "fontWeightBold",
+																	"marginBottom": "2",
+																	"textAlign": "center",
+																	"textColor": "colorNeutral10"
+																},
+																"indexed": true
 															},
-															"indexed": true,
-															"layout": {
-																"align": "Center",
-																"contentDisplay": "FlexColumn",
-																"opacity": 100,
-																"paddingTop": 2,
-																"widthType": "Fluid"
-															},
-															"name": "Data Card"
+															"type": "Fragment"
 														},
-														"pageElements": [
-															{
-																"definition": {
-																	"fragment": {
-																		"key": "BASIC_COMPONENT-image"
-																	},
-																	"fragmentConfig": {
-																		"imageSize": "w-0"
-																	},
-																	"fragmentFields": [
-																		{
-																			"id": "image-square",
-																			"value": {
-																				"fragmentImage": {
-																					"description": {
-																						"value_i18n": {
-																							"en_US": ""
-																						}
-																					},
-																					"url": {
-																						"value_i18n": {
-																							"en_US": "/documents/d/evp/money_icon-svg?download=true"
-																						}
-																					}
-																				},
-																				"fragmentLink": {
+														{
+															"definition": {
+																"fragment": {
+																	"key": "DIALECT-dialect-text"
+																},
+																"fragmentConfig": {
+																	"textType": "text-paragraph",
+																	"truncateText": false
+																},
+																"fragmentFields": [
+																	{
+																		"id": "element-text",
+																		"value": {
+																			"fragmentLink": {},
+																			"text": {
+																				"value_i18n": {
+																					"en_US": "Years EVP has been active"
 																				}
 																			}
 																		}
-																	],
-																	"fragmentStyle": {
-																		"marginBottom": "3"
-																	},
-																	"indexed": true
-																},
-																"type": "Fragment"
-															},
-															{
-																"definition": {
-																	"fragmentStyle": {
-																	},
-																	"indexed": true,
-																	"layout": {
-																		"opacity": 100,
-																		"widthType": "Fluid"
 																	}
+																],
+																"fragmentStyle": {
+																	"textAlign": "center"
 																},
-																"pageElements": [
-																	{
-																		"definition": {
-																			"indexed": true,
-																			"layout": {
-																				"align": "Center",
-																				"contentDisplay": "FlexRow",
-																				"justify": "Center",
-																				"opacity": 100,
-																				"widthType": "Fluid"
+																"indexed": true
+															},
+															"type": "Fragment"
+														}
+													],
+													"type": "Section"
+												}
+											],
+											"type": "Section"
+										},
+										{
+											"definition": {
+												"fragmentStyle": {
+													"backgroundColor": "colorNeutral1",
+													"borderRadius": "borderRadiusLg",
+													"height": "180px",
+													"maxHeight": "180px",
+													"maxWidth": "208px",
+													"paddingTop": "4",
+													"width": "208px"
+												},
+												"indexed": true,
+												"layout": {
+													"align": "Center",
+													"borderWidth": 0,
+													"contentDisplay": "FlexColumn",
+													"marginBottom": 0,
+													"marginLeft": 0,
+													"marginRight": 0,
+													"marginTop": 0,
+													"opacity": 100,
+													"paddingBottom": 0,
+													"paddingLeft": 0,
+													"paddingRight": 0,
+													"paddingTop": 2,
+													"widthType": "Fluid"
+												},
+												"name": "Data Card"
+											},
+											"pageElements": [
+												{
+													"definition": {
+														"fragment": {
+															"key": "BASIC_COMPONENT-image"
+														},
+														"fragmentConfig": {
+															"imageSize": "w-0"
+														},
+														"fragmentFields": [
+															{
+																"id": "image-square",
+																"value": {
+																	"fragmentImage": {
+																		"description": {
+																			"value_i18n": {
+																				"en_US": ""
 																			}
 																		},
-																		"pageElements": [
+																		"url": {
+																			"value_i18n": {
+																				"en_US": "/documents/d/evp/watch_icon-svg?download=true"
+																			}
+																		}
+																	},
+																	"fragmentLink": {}
+																}
+															}
+														],
+														"fragmentStyle": {
+															"marginBottom": "3"
+														},
+														"indexed": true
+													},
+													"type": "Fragment"
+												},
+												{
+													"definition": {
+														"indexed": true,
+														"layout": {
+															"borderWidth": 0,
+															"marginBottom": 0,
+															"marginLeft": 0,
+															"marginRight": 0,
+															"marginTop": 0,
+															"opacity": 100,
+															"paddingBottom": 0,
+															"paddingLeft": 0,
+															"paddingRight": 0,
+															"paddingTop": 0,
+															"widthType": "Fixed"
+														}
+													},
+													"pageElements": [
+														{
+															"definition": {
+																"fragment": {
+																	"key": "DIALECT-dialect-text"
+																},
+																"fragmentConfig": {
+																	"textType": "h2",
+																	"truncateText": false
+																},
+																"fragmentFields": [
+																	{
+																		"id": "element-text",
+																		"value": {
+																			"fragmentLink": {},
+																			"text": {
+																				"mapping": {
+																					"fieldKey": "ObjectField_serviceHoursCompleted",
+																					"itemReference": {
+																						"contextSource": "CollectionItem"
+																					}
+																				}
+																			}
+																		}
+																	}
+																],
+																"fragmentStyle": {
+																	"fontWeight": "fontWeightBold",
+																	"marginBottom": "2",
+																	"textAlign": "center",
+																	"textColor": "colorNeutral10"
+																},
+																"indexed": true
+															},
+															"type": "Fragment"
+														},
+														{
+															"definition": {
+																"fragment": {
+																	"key": "DIALECT-dialect-text"
+																},
+																"fragmentConfig": {
+																	"textType": "text-paragraph",
+																	"truncateText": false
+																},
+																"fragmentFields": [
+																	{
+																		"id": "element-text",
+																		"value": {
+																			"fragmentLink": {},
+																			"text": {
+																				"value_i18n": {
+																					"en_US": "Service Hours Completed"
+																				}
+																			}
+																		}
+																	}
+																],
+																"fragmentStyle": {
+																	"textAlign": "center"
+																},
+																"indexed": true
+															},
+															"type": "Fragment"
+														}
+													],
+													"type": "Section"
+												}
+											],
+											"type": "Section"
+										},
+										{
+											"definition": {
+												"fragmentStyle": {
+													"backgroundColor": "colorNeutral1",
+													"borderRadius": "borderRadiusLg",
+													"height": "180px",
+													"maxHeight": "180px",
+													"maxWidth": "208px",
+													"paddingTop": "4",
+													"width": "208px"
+												},
+												"indexed": true,
+												"layout": {
+													"align": "Center",
+													"borderWidth": 0,
+													"contentDisplay": "FlexColumn",
+													"marginBottom": 0,
+													"marginLeft": 0,
+													"marginRight": 0,
+													"marginTop": 0,
+													"opacity": 100,
+													"paddingBottom": 0,
+													"paddingLeft": 0,
+													"paddingRight": 0,
+													"paddingTop": 2,
+													"widthType": "Fluid"
+												},
+												"name": "Data Card"
+											},
+											"pageElements": [
+												{
+													"definition": {
+														"fragment": {
+															"key": "BASIC_COMPONENT-image"
+														},
+														"fragmentConfig": {
+															"imageSize": "w-0"
+														},
+														"fragmentFields": [
+															{
+																"id": "image-square",
+																"value": {
+																	"fragmentImage": {
+																		"description": {
+																			"value_i18n": {
+																				"en_US": ""
+																			}
+																		},
+																		"url": {
+																			"value_i18n": {
+																				"en_US": "/documents/d/evp/money_icon-svg?download=true"
+																			}
+																		}
+																	},
+																	"fragmentLink": {}
+																}
+															}
+														],
+														"fragmentStyle": {
+															"marginBottom": "3"
+														},
+														"indexed": true
+													},
+													"type": "Fragment"
+												},
+												{
+													"definition": {
+														"indexed": true,
+														"layout": {
+															"borderWidth": 0,
+															"marginBottom": 0,
+															"marginLeft": 0,
+															"marginRight": 0,
+															"marginTop": 0,
+															"opacity": 100,
+															"paddingBottom": 0,
+															"paddingLeft": 0,
+															"paddingRight": 0,
+															"paddingTop": 0,
+															"widthType": "Fluid"
+														}
+													},
+													"pageElements": [
+														{
+															"definition": {
+																"indexed": true,
+																"layout": {
+																	"align": "Center",
+																	"borderWidth": 0,
+																	"contentDisplay": "FlexRow",
+																	"justify": "Center",
+																	"marginBottom": 0,
+																	"marginLeft": 0,
+																	"marginRight": 0,
+																	"marginTop": 0,
+																	"opacity": 100,
+																	"paddingBottom": 0,
+																	"paddingLeft": 0,
+																	"paddingRight": 0,
+																	"paddingTop": 0,
+																	"widthType": "Fluid"
+																}
+															},
+															"pageElements": [
+																{
+																	"definition": {
+																		"cssClasses": [
+																			"grant-money"
+																		],
+																		"fragment": {
+																			"key": "DIALECT-dialect-text"
+																		},
+																		"fragmentConfig": {
+																			"textType": "h2",
+																			"truncateText": false
+																		},
+																		"fragmentFields": [
 																			{
-																				"definition": {
-																					"cssClasses": [
-																						"grant-money"
-																					],
-																					"fragment": {
-																						"key": "DIALECT-dialect-text"
-																					},
-																					"fragmentConfig": {
-																						"textType": "h2",
-																						"truncateText": false
-																					},
-																					"fragmentFields": [
-																						{
-																							"id": "element-text",
-																							"value": {
-																								"fragmentLink": {
-																								},
-																								"text": {
-																									"mapping": {
-																										"fieldKey": "ObjectField_grantMoneyDistributed",
-																										"itemReference": {
-																											"contextSource": "CollectionItem"
-																										}
-																									}
-																								}
+																				"id": "element-text",
+																				"value": {
+																					"fragmentLink": {},
+																					"text": {
+																						"mapping": {
+																							"fieldKey": "ObjectField_grantMoneyDistributed",
+																							"itemReference": {
+																								"contextSource": "CollectionItem"
 																							}
 																						}
-																					],
-																					"fragmentStyle": {
-																						"borderRadius": "",
-																						"fontWeight": "fontWeightBold",
-																						"marginBottom": "2",
-																						"marginRight": "1",
-																						"shadow": "",
-																						"textAlign": "center",
-																						"textColor": "colorNeutral10"
-																					},
-																					"indexed": true
-																				},
-																				"type": "Fragment"
-																			},
-																			{
-																				"definition": {
-																					"fragment": {
-																						"key": "DIALECT-dialect-text"
-																					},
-																					"fragmentConfig": {
-																						"textType": "h2",
-																						"truncateText": false
-																					},
-																					"fragmentFields": [
-																						{
-																							"id": "element-text",
-																							"value": {
-																								"fragmentLink": {
-																								},
-																								"text": {
-																									"mapping": {
-																										"fieldKey": "ObjectField_currency",
-																										"itemReference": {
-																											"contextSource": "CollectionItem"
-																										}
-																									}
-																								}
-																							}
-																						}
-																					],
-																					"fragmentStyle": {
-																						"fontWeight": "fontWeightBold",
-																						"marginBottom": "2",
-																						"textAlign": "center",
-																						"textColor": "colorNeutral10"
-																					},
-																					"indexed": true
-																				},
-																				"type": "Fragment"
+																					}
+																				}
 																			}
 																		],
-																		"type": "Section"
+																		"fragmentStyle": {
+																			"borderRadius": "",
+																			"fontWeight": "fontWeightBold",
+																			"marginBottom": "2",
+																			"marginRight": "1",
+																			"shadow": "",
+																			"textAlign": "center",
+																			"textColor": "colorNeutral10"
+																		},
+																		"indexed": true
 																	},
-																	{
-																		"definition": {
-																			"fragment": {
-																				"key": "DIALECT-dialect-text"
-																			},
-																			"fragmentConfig": {
-																				"textType": "text-paragraph",
-																				"truncateText": false
-																			},
-																			"fragmentFields": [
-																				{
-																					"id": "element-text",
-																					"value": {
-																						"fragmentLink": {
-																						},
-																						"text": {
-																							"value_i18n": {
-																								"en_US": "Grant Money Distributed"
+																	"type": "Fragment"
+																},
+																{
+																	"definition": {
+																		"fragment": {
+																			"key": "DIALECT-dialect-text"
+																		},
+																		"fragmentConfig": {
+																			"textType": "h2",
+																			"truncateText": false
+																		},
+																		"fragmentFields": [
+																			{
+																				"id": "element-text",
+																				"value": {
+																					"fragmentLink": {},
+																					"text": {
+																						"mapping": {
+																							"fieldKey": "ObjectField_currency",
+																							"itemReference": {
+																								"contextSource": "CollectionItem"
 																							}
 																						}
 																					}
 																				}
-																			],
-																			"fragmentStyle": {
-																				"textAlign": "center"
-																			},
-																			"indexed": true
+																			}
+																		],
+																		"fragmentStyle": {
+																			"fontWeight": "fontWeightBold",
+																			"marginBottom": "2",
+																			"textAlign": "center",
+																			"textColor": "colorNeutral10"
 																		},
-																		"type": "Fragment"
-																	}
-																],
-																"type": "Section"
-															}
-														],
-														"type": "Section"
-													},
-													{
-														"definition": {
-															"fragmentStyle": {
-																"backgroundColor": "colorNeutral1",
-																"borderRadius": "borderRadiusLg",
-																"height": "180px",
-																"maxHeight": "180px",
-																"maxWidth": "208px",
-																"paddingTop": "4",
-																"width": "208px"
-															},
-															"indexed": true,
-															"layout": {
-																"align": "Center",
-																"contentDisplay": "FlexColumn",
-																"opacity": 100,
-																"paddingTop": 2,
-																"widthType": "Fluid"
-															},
-															"name": "Data Card"
+																		"indexed": true
+																	},
+																	"type": "Fragment"
+																}
+															],
+															"type": "Section"
 														},
-														"pageElements": [
-															{
-																"definition": {
-																	"fragment": {
-																		"key": "BASIC_COMPONENT-image"
-																	},
-																	"fragmentConfig": {
-																		"imageSize": "w-0"
-																	},
-																	"fragmentFields": [
-																		{
-																			"id": "image-square",
-																			"value": {
-																				"fragmentImage": {
-																					"description": {
-																						"value_i18n": {
-																							"en_US": ""
-																						}
-																					},
-																					"url": {
-																						"value_i18n": {
-																							"en_US": "/documents/d/evp/heart_icon-svg?download=true"
-																						}
-																					}
-																				},
-																				"fragmentLink": {
+														{
+															"definition": {
+																"fragment": {
+																	"key": "DIALECT-dialect-text"
+																},
+																"fragmentConfig": {
+																	"textType": "text-paragraph",
+																	"truncateText": false
+																},
+																"fragmentFields": [
+																	{
+																		"id": "element-text",
+																		"value": {
+																			"fragmentLink": {},
+																			"text": {
+																				"value_i18n": {
+																					"en_US": "Grant Money Distributed"
 																				}
 																			}
 																		}
-																	],
-																	"fragmentStyle": {
-																		"marginBottom": "3"
-																	},
-																	"indexed": true
-																},
-																"type": "Fragment"
-															},
-															{
-																"definition": {
-																	"fragmentStyle": {
-																	},
-																	"indexed": true,
-																	"layout": {
-																		"opacity": 100,
-																		"widthType": "Fixed"
-																	}
-																},
-																"pageElements": [
-																	{
-																		"definition": {
-																			"fragment": {
-																				"key": "DIALECT-dialect-text"
-																			},
-																			"fragmentConfig": {
-																				"textType": "h2",
-																				"truncateText": false
-																			},
-																			"fragmentFields": [
-																				{
-																					"id": "element-text",
-																					"value": {
-																						"fragmentLink": {
-																						},
-																						"text": {
-																							"mapping": {
-																								"fieldKey": "ObjectField_numberOfNonprofitsServed",
-																								"itemReference": {
-																									"contextSource": "CollectionItem"
-																								}
-																							}
-																						}
-																					}
-																				}
-																			],
-																			"fragmentStyle": {
-																				"fontWeight": "fontWeightBold",
-																				"marginBottom": "2",
-																				"textAlign": "center",
-																				"textColor": "colorNeutral10"
-																			},
-																			"indexed": true
-																		},
-																		"type": "Fragment"
-																	},
-																	{
-																		"definition": {
-																			"fragment": {
-																				"key": "DIALECT-dialect-text"
-																			},
-																			"fragmentConfig": {
-																				"textType": "text-paragraph",
-																				"truncateText": false
-																			},
-																			"fragmentFields": [
-																				{
-																					"id": "element-text",
-																					"value": {
-																						"fragmentLink": {
-																						},
-																						"text": {
-																							"value_i18n": {
-																								"en_US": "Number of nonprofits served"
-																							}
-																						}
-																					}
-																				}
-																			],
-																			"fragmentStyle": {
-																				"textAlign": "center"
-																			},
-																			"indexed": true
-																		},
-																		"type": "Fragment"
 																	}
 																],
-																"type": "Section"
+																"fragmentStyle": {
+																	"textAlign": "center"
+																},
+																"indexed": true
+															},
+															"type": "Fragment"
+														}
+													],
+													"type": "Section"
+												}
+											],
+											"type": "Section"
+										},
+										{
+											"definition": {
+												"fragmentStyle": {
+													"backgroundColor": "colorNeutral1",
+													"borderRadius": "borderRadiusLg",
+													"height": "180px",
+													"maxHeight": "180px",
+													"maxWidth": "208px",
+													"paddingTop": "4",
+													"width": "208px"
+												},
+												"indexed": true,
+												"layout": {
+													"align": "Center",
+													"borderWidth": 0,
+													"contentDisplay": "FlexColumn",
+													"marginBottom": 0,
+													"marginLeft": 0,
+													"marginRight": 0,
+													"marginTop": 0,
+													"opacity": 100,
+													"paddingBottom": 0,
+													"paddingLeft": 0,
+													"paddingRight": 0,
+													"paddingTop": 2,
+													"widthType": "Fluid"
+												},
+												"name": "Data Card"
+											},
+											"pageElements": [
+												{
+													"definition": {
+														"fragment": {
+															"key": "BASIC_COMPONENT-image"
+														},
+														"fragmentConfig": {
+															"imageSize": "w-0"
+														},
+														"fragmentFields": [
+															{
+																"id": "image-square",
+																"value": {
+																	"fragmentImage": {
+																		"description": {
+																			"value_i18n": {
+																				"en_US": ""
+																			}
+																		},
+																		"url": {
+																			"value_i18n": {
+																				"en_US": "/documents/d/evp/heart_icon-svg?download=true"
+																			}
+																		}
+																	},
+																	"fragmentLink": {}
+																}
 															}
 														],
-														"type": "Section"
-													},
-													{
-														"definition": {
-															"fragmentStyle": {
-																"backgroundColor": "colorNeutral1",
-																"borderRadius": "borderRadiusLg",
-																"height": "180px",
-																"maxHeight": "180px",
-																"maxWidth": "208px",
-																"paddingTop": "4",
-																"width": "208px"
-															},
-															"indexed": true,
-															"layout": {
-																"align": "Center",
-																"contentDisplay": "FlexColumn",
-																"opacity": 100,
-																"paddingTop": 2,
-																"widthType": "Fluid"
-															},
-															"name": "Data Card"
+														"fragmentStyle": {
+															"marginBottom": "3"
 														},
-														"pageElements": [
-															{
-																"definition": {
-																	"fragment": {
-																		"key": "BASIC_COMPONENT-image"
-																	},
-																	"fragmentConfig": {
-																		"imageSize": "w-0"
-																	},
-																	"fragmentFields": [
-																		{
-																			"id": "image-square",
-																			"value": {
-																				"fragmentImage": {
-																					"description": {
-																						"value_i18n": {
-																							"en_US": ""
-																						}
-																					},
-																					"url": {
-																						"value_i18n": {
-																							"en_US": "/documents/d/evp/community_icon-svg?download=true"
-																						}
+														"indexed": true
+													},
+													"type": "Fragment"
+												},
+												{
+													"definition": {
+														"indexed": true,
+														"layout": {
+															"borderWidth": 0,
+															"marginBottom": 0,
+															"marginLeft": 0,
+															"marginRight": 0,
+															"marginTop": 0,
+															"opacity": 100,
+															"paddingBottom": 0,
+															"paddingLeft": 0,
+															"paddingRight": 0,
+															"paddingTop": 0,
+															"widthType": "Fixed"
+														}
+													},
+													"pageElements": [
+														{
+															"definition": {
+																"fragment": {
+																	"key": "DIALECT-dialect-text"
+																},
+																"fragmentConfig": {
+																	"textType": "h2",
+																	"truncateText": false
+																},
+																"fragmentFields": [
+																	{
+																		"id": "element-text",
+																		"value": {
+																			"fragmentLink": {},
+																			"text": {
+																				"mapping": {
+																					"fieldKey": "ObjectField_numberOfNonprofitsServed",
+																					"itemReference": {
+																						"contextSource": "CollectionItem"
 																					}
-																				},
-																				"fragmentLink": {
 																				}
 																			}
 																		}
-																	],
-																	"fragmentStyle": {
-																		"marginBottom": "3"
-																	},
-																	"indexed": true
-																},
-																"type": "Fragment"
-															},
-															{
-																"definition": {
-																	"fragmentStyle": {
-																	},
-																	"indexed": true,
-																	"layout": {
-																		"opacity": 100,
-																		"widthType": "Fixed"
-																	}
-																},
-																"pageElements": [
-																	{
-																		"definition": {
-																			"fragment": {
-																				"key": "DIALECT-dialect-text"
-																			},
-																			"fragmentConfig": {
-																				"textType": "h2",
-																				"truncateText": false
-																			},
-																			"fragmentFields": [
-																				{
-																					"id": "element-text",
-																					"value": {
-																						"fragmentLink": {
-																						},
-																						"text": {
-																							"mapping": {
-																								"fieldKey": "ObjectField_employeesParticipatedEVP",
-																								"itemReference": {
-																									"contextSource": "CollectionItem"
-																								}
-																							}
-																						}
-																					}
-																				}
-																			],
-																			"fragmentStyle": {
-																				"fontWeight": "fontWeightBold",
-																				"marginBottom": "2",
-																				"textAlign": "center",
-																				"textColor": "colorNeutral10"
-																			},
-																			"indexed": true
-																		},
-																		"type": "Fragment"
-																	},
-																	{
-																		"definition": {
-																			"fragment": {
-																				"key": "DIALECT-dialect-text"
-																			},
-																			"fragmentConfig": {
-																				"textType": "text-paragraph",
-																				"truncateText": false
-																			},
-																			"fragmentFields": [
-																				{
-																					"id": "element-text",
-																					"value": {
-																						"fragmentLink": {
-																						},
-																						"text": {
-																							"value_i18n": {
-																								"en_US": "Employees that participated on EVP"
-																							}
-																						}
-																					}
-																				}
-																			],
-																			"fragmentStyle": {
-																				"textAlign": "center"
-																			},
-																			"indexed": true
-																		},
-																		"type": "Fragment"
 																	}
 																],
-																"type": "Section"
+																"fragmentStyle": {
+																	"fontWeight": "fontWeightBold",
+																	"marginBottom": "2",
+																	"textAlign": "center",
+																	"textColor": "colorNeutral10"
+																},
+																"indexed": true
+															},
+															"type": "Fragment"
+														},
+														{
+															"definition": {
+																"fragment": {
+																	"key": "DIALECT-dialect-text"
+																},
+																"fragmentConfig": {
+																	"textType": "text-paragraph",
+																	"truncateText": false
+																},
+																"fragmentFields": [
+																	{
+																		"id": "element-text",
+																		"value": {
+																			"fragmentLink": {},
+																			"text": {
+																				"value_i18n": {
+																					"en_US": "Number of nonprofits served"
+																				}
+																			}
+																		}
+																	}
+																],
+																"fragmentStyle": {
+																	"textAlign": "center"
+																},
+																"indexed": true
+															},
+															"type": "Fragment"
+														}
+													],
+													"type": "Section"
+												}
+											],
+											"type": "Section"
+										},
+										{
+											"definition": {
+												"fragmentStyle": {
+													"backgroundColor": "colorNeutral1",
+													"borderRadius": "borderRadiusLg",
+													"height": "180px",
+													"maxHeight": "180px",
+													"maxWidth": "208px",
+													"paddingTop": "4",
+													"width": "208px"
+												},
+												"indexed": true,
+												"layout": {
+													"align": "Center",
+													"borderWidth": 0,
+													"contentDisplay": "FlexColumn",
+													"marginBottom": 0,
+													"marginLeft": 0,
+													"marginRight": 0,
+													"marginTop": 0,
+													"opacity": 100,
+													"paddingBottom": 0,
+													"paddingLeft": 0,
+													"paddingRight": 0,
+													"paddingTop": 2,
+													"widthType": "Fluid"
+												},
+												"name": "Data Card"
+											},
+											"pageElements": [
+												{
+													"definition": {
+														"fragment": {
+															"key": "BASIC_COMPONENT-image"
+														},
+														"fragmentConfig": {
+															"imageSize": "w-0"
+														},
+														"fragmentFields": [
+															{
+																"id": "image-square",
+																"value": {
+																	"fragmentImage": {
+																		"description": {
+																			"value_i18n": {
+																				"en_US": ""
+																			}
+																		},
+																		"url": {
+																			"value_i18n": {
+																				"en_US": "/documents/d/evp/community_icon-svg?download=true"
+																			}
+																		}
+																	},
+																	"fragmentLink": {}
+																}
 															}
 														],
-														"type": "Section"
-													}
-												],
-												"type": "Section"
-											}
-										],
-										"type": "CollectionItem"
-									}
-								],
-								"type": "Collection"
-							}
-						],
-						"type": "Section"
-					},
-					{
-						"definition": {
-							"fragmentStyle": {
-								"backgroundColor": "colorNeutral1",
-								"borderRadius": "borderRadiusLg"
-							},
-							"indexed": true,
-							"layout": {
-								"opacity": 100,
-								"widthType": "Fluid"
-							},
-							"name": "Process Section"
-						},
-						"pageElements": [
-							{
-								"definition": {
-									"gutters": false,
-									"indexed": true,
-									"modulesPerRow": 2,
-									"numberOfColumns": 2,
-									"reverseOrder": false,
-									"rowViewports": [
-										{
-											"id": "landscapeMobile",
-											"rowViewportDefinition": {
-												"modulesPerRow": 1
-											}
-										},
-										{
-											"id": "portraitMobile",
-											"rowViewportDefinition": {
-											}
-										},
-										{
-											"id": "tablet",
-											"rowViewportDefinition": {
-											}
+														"fragmentStyle": {
+															"marginBottom": "3"
+														},
+														"indexed": true
+													},
+													"type": "Fragment"
+												},
+												{
+													"definition": {
+														"indexed": true,
+														"layout": {
+															"borderWidth": 0,
+															"marginBottom": 0,
+															"marginLeft": 0,
+															"marginRight": 0,
+															"marginTop": 0,
+															"opacity": 100,
+															"paddingBottom": 0,
+															"paddingLeft": 0,
+															"paddingRight": 0,
+															"paddingTop": 0,
+															"widthType": "Fixed"
+														}
+													},
+													"pageElements": [
+														{
+															"definition": {
+																"fragment": {
+																	"key": "DIALECT-dialect-text"
+																},
+																"fragmentConfig": {
+																	"textType": "h2",
+																	"truncateText": false
+																},
+																"fragmentFields": [
+																	{
+																		"id": "element-text",
+																		"value": {
+																			"fragmentLink": {},
+																			"text": {
+																				"mapping": {
+																					"fieldKey": "ObjectField_employeesParticipatedEVP",
+																					"itemReference": {
+																						"contextSource": "CollectionItem"
+																					}
+																				}
+																			}
+																		}
+																	}
+																],
+																"fragmentStyle": {
+																	"fontWeight": "fontWeightBold",
+																	"marginBottom": "2",
+																	"textAlign": "center",
+																	"textColor": "colorNeutral10"
+																},
+																"indexed": true
+															},
+															"type": "Fragment"
+														},
+														{
+															"definition": {
+																"fragment": {
+																	"key": "DIALECT-dialect-text"
+																},
+																"fragmentConfig": {
+																	"textType": "text-paragraph",
+																	"truncateText": false
+																},
+																"fragmentFields": [
+																	{
+																		"id": "element-text",
+																		"value": {
+																			"fragmentLink": {},
+																			"text": {
+																				"value_i18n": {
+																					"en_US": "Employees that participated on EVP"
+																				}
+																			}
+																		}
+																	}
+																],
+																"fragmentStyle": {
+																	"textAlign": "center"
+																},
+																"indexed": true
+															},
+															"type": "Fragment"
+														}
+													],
+													"type": "Section"
+												}
+											],
+											"type": "Section"
 										}
 									],
-									"verticalAlignment": "middle"
-								},
-								"pageElements": [
+									"type": "Section"
+								}
+							],
+							"type": "CollectionItem"
+						}
+					],
+					"type": "Collection"
+				}
+			],
+			"type": "Section"
+		},
+		{
+			"definition": {
+				"fragmentStyle": {
+					"backgroundColor": "colorNeutral1",
+					"borderRadius": "borderRadiusLg"
+				},
+				"indexed": true,
+				"layout": {
+					"borderWidth": 0,
+					"marginBottom": 0,
+					"marginLeft": 0,
+					"marginRight": 0,
+					"marginTop": 0,
+					"opacity": 100,
+					"paddingBottom": 0,
+					"paddingLeft": 0,
+					"paddingRight": 0,
+					"paddingTop": 0,
+					"widthType": "Fluid"
+				},
+				"name": "Process Section"
+			},
+			"pageElements": [
+				{
+					"definition": {
+						"gutters": false,
+						"indexed": true,
+						"modulesPerRow": 2,
+						"numberOfColumns": 2,
+						"reverseOrder": false,
+						"rowViewports": [
+							{
+								"id": "landscapeMobile",
+								"rowViewportDefinition": {"modulesPerRow": 1}
+							},
+							{
+								"id": "portraitMobile",
+								"rowViewportDefinition": {}
+							},
+							{"id": "tablet", "rowViewportDefinition": {}}
+						],
+						"verticalAlignment": "middle"
+					},
+					"pageElements": [
+						{
+							"definition": {
+								"columnViewports": [
 									{
-										"definition": {
-											"columnViewports": [
-												{
-													"columnViewportDefinition": {
-														"size": 12
-													},
-													"id": "landscapeMobile"
-												},
-												{
-													"columnViewportDefinition": {
-													},
-													"id": "portraitMobile"
-												},
-												{
-													"columnViewportDefinition": {
-													},
-													"id": "tablet"
-												}
-											],
-											"size": 6
+										"columnViewportDefinition": {
+											"size": 12
 										},
-										"pageElements": [
-											{
-												"definition": {
-													"indexed": true,
-													"layout": {
-														"contentDisplay": "FlexColumn",
-														"opacity": 100,
-														"widthType": "Fluid"
-													},
-													"name": "Process Left Container"
-												},
-												"pageElements": [
-													{
-														"definition": {
-															"indexed": true,
-															"layout": {
-																"align": "Center",
-																"contentDisplay": "FlexRow",
-																"opacity": 100,
-																"widthType": "Fluid"
-															},
-															"name": "Process Title Container"
-														},
-														"pageElements": [
-															{
-																"definition": {
-																	"fragment": {
-																		"key": "BASIC_COMPONENT-image"
-																	},
-																	"fragmentConfig": {
-																		"imageSize": "w-0"
-																	},
-																	"fragmentFields": [
-																		{
-																			"id": "image-square",
-																			"value": {
-																				"fragmentImage": {
-																					"url": {
-																						"value_i18n": {
-																							"en_US": "/documents/d/evp/evp_process_icon-svg?download=true"
-																						}
-																					}
-																				},
-																				"fragmentLink": {
-																				}
-																			}
-																		}
-																	],
-																	"fragmentStyle": {
-																		"marginLeft": "5",
-																		"marginRight": "3"
-																	},
-																	"indexed": true,
-																	"name": "Process Icon"
-																},
-																"type": "Fragment"
-															},
-															{
-																"definition": {
-																	"fragment": {
-																		"key": "DIALECT-dialect-text"
-																	},
-																	"fragmentConfig": {
-																		"textType": "h2",
-																		"truncateText": false
-																	},
-																	"fragmentFields": [
-																		{
-																			"id": "element-text",
-																			"value": {
-																				"fragmentLink": {
-																				},
-																				"text": {
-																					"value_i18n": {
-																						"en_US": "EVP Process Steps"
-																					}
-																				}
-																			}
-																		}
-																	],
-																	"fragmentStyle": {
-																		"fontWeight": "fontWeightBold",
-																		"textColor": "colorNeutral10"
-																	},
-																	"indexed": true,
-																	"name": "Process Title"
-																},
-																"type": "Fragment"
-															}
-														],
-														"type": "Section"
-													},
-													{
-														"definition": {
-															"indexed": true,
-															"layout": {
-																"opacity": 100,
-																"widthType": "Fluid"
-															},
-															"name": "Process Description Container"
-														},
-														"pageElements": [
-															{
-																"definition": {
-																	"fragment": {
-																		"key": "DIALECT-dialect-text"
-																	},
-																	"fragmentConfig": {
-																		"textType": "text-paragraph",
-																		"truncateText": false
-																	},
-																	"fragmentFields": [
-																		{
-																			"id": "element-text",
-																			"value": {
-																				"fragmentLink": {
-																				},
-																				"text": {
-																					"value_i18n": {
-																						"en_US": "EVP is our Employee Volunteer Program, born out of Liferay's vision to see people reach their full potential to serve others.&nbsp;&nbsp;"
-																					}
-																				}
-																			}
-																		}
-																	],
-																	"fragmentStyle": {
-																		"paddingLeft": "9",
-																		"paddingRight": "5"
-																	},
-																	"indexed": true,
-																	"name": "Process Description"
-																},
-																"type": "Fragment"
-															},
-															{
-																"definition": {
-																	"fragment": {
-																		"key": "DIALECT-dialect-text"
-																	},
-																	"fragmentConfig": {
-																		"textType": "text-paragraph",
-																		"truncateText": false
-																	},
-																	"fragmentFields": [
-																		{
-																			"id": "element-text",
-																			"value": {
-																				"fragmentLink": {
-																					"value": {
-																						"href": {
-																							"mapping": {
-																								"itemReference": {
-																									"className": "com.liferay.portal.kernel.model.Layout",
-																									"fields": [
-																										{
-																											"fieldName": "friendlyURL",
-																											"fieldValue": "/my-evp"
-																										},
-																										{
-																											"fieldName": "privatePage",
-																											"fieldValue": "false"
-																										},
-																										{
-																											"fieldName": "siteKey",
-																											"fieldValue": "[$GROUP_KEY$]"
-																										}
-																									]
-																								}
-																							}
-																						}
-																					}
-																				},
-																				"text": {
-																					"value_i18n": {
-																						"en_US": "Create your request here!"
-																					}
-																				}
-																			}
-																		}
-																	],
-																	"fragmentStyle": {
-																		"marginBottom": "3",
-																		"paddingLeft": "9",
-																		"paddingRight": "5",
-																		"textColor": "colorBrandPrimaryLighten1"
-																	},
-																	"indexed": true,
-																	"name": "MyEVP Link"
-																},
-																"type": "Fragment"
-															}
-														],
-														"type": "Section"
-													},
-													{
-														"definition": {
-															"indexed": true,
-															"layout": {
-																"align": "Center",
-																"contentDisplay": "FlexColumn",
-																"opacity": 100,
-																"widthType": "Fluid"
-															},
-															"name": "Process Image Container"
-														},
-														"pageElements": [
-															{
-																"definition": {
-																	"fragment": {
-																		"key": "BASIC_COMPONENT-image"
-																	},
-																	"fragmentConfig": {
-																		"imageSize": "w-100"
-																	},
-																	"fragmentFields": [
-																		{
-																			"id": "image-square",
-																			"value": {
-																				"fragmentImage": {
-																					"fragmentImageClassPKReference": {
-																						"classPKReferences": {
-																							"en_US": {
-																								"className": "com.liferay.portal.kernel.repository.model.FileEntry",
-																								"classPK": "[$DOCUMENT_FILE_ENTRY_ID:/site-initializer/documents/group/evp_process_steps_banner.png$]"
-																							}
-																						},
-																						"fragmentImageConfiguration": {
-																							"landscapeMobile": "auto",
-																							"portraitMobile": "auto",
-																							"tablet": "auto"
-																						}
-																					},
-																					"title": {
-																						"value": "EVP Process Steps Image"
-																					}
-																				},
-																				"fragmentLink": {
-																				}
-																			}
-																		}
-																	],
-																	"fragmentStyle": {
-																		"height": "315",
-																		"width": "500px"
-																	},
-																	"indexed": true
-																},
-																"type": "Fragment"
-															}
-														],
-														"type": "Section"
-													}
-												],
-												"type": "Section"
-											}
-										],
-										"type": "Column"
+										"id": "landscapeMobile"
 									},
 									{
-										"definition": {
-											"columnViewports": [
-												{
-													"columnViewportDefinition": {
-														"size": 12
-													},
-													"id": "landscapeMobile"
-												},
-												{
-													"columnViewportDefinition": {
-													},
-													"id": "portraitMobile"
-												},
-												{
-													"columnViewportDefinition": {
-													},
-													"id": "tablet"
-												}
-											],
-											"size": 6
+										"columnViewportDefinition": {},
+										"id": "portraitMobile"
+									},
+									{
+										"columnViewportDefinition": {},
+										"id": "tablet"
+									}
+								],
+								"size": 6
+							},
+							"pageElements": [
+								{
+									"definition": {
+										"indexed": true,
+										"layout": {
+											"borderWidth": 0,
+											"contentDisplay": "FlexColumn",
+											"marginBottom": 0,
+											"marginLeft": 0,
+											"marginRight": 0,
+											"marginTop": 0,
+											"opacity": 100,
+											"paddingBottom": 0,
+											"paddingLeft": 0,
+											"paddingRight": 0,
+											"paddingTop": 0,
+											"widthType": "Fluid"
 										},
-										"pageElements": [
-											{
-												"definition": {
-													"indexed": true,
-													"layout": {
-														"align": "Center",
-														"contentDisplay": "FlexRow",
-														"justify": "Center",
-														"opacity": 100,
-														"widthType": "Fluid"
-													},
-													"name": "Process Slider Container"
+										"name": "Process Left Container"
+									},
+									"pageElements": [
+										{
+											"definition": {
+												"indexed": true,
+												"layout": {
+													"align": "Center",
+													"borderWidth": 0,
+													"contentDisplay": "FlexRow",
+													"marginBottom": 0,
+													"marginLeft": 0,
+													"marginRight": 0,
+													"marginTop": 0,
+													"opacity": 100,
+													"paddingBottom": 0,
+													"paddingLeft": 0,
+													"paddingRight": 0,
+													"paddingTop": 0,
+													"widthType": "Fluid"
 												},
-												"pageElements": [
-													{
-														"definition": {
-															"fragment": {
-																"key": "evp-process-steps-slider",
-																"siteKey": "[$GROUP_KEY$]"
-															},
-															"fragmentConfig": {
-																"numberOfSlides": 5,
-																"textColor": "#3D8CCB"
-															},
-															"fragmentFields": [
-																{
-																	"id": "02-step-number",
-																	"value": {
-																		"fragmentLink": {
-																		},
-																		"text": {
+												"name": "Process Title Container"
+											},
+											"pageElements": [
+												{
+													"definition": {
+														"fragment": {
+															"key": "BASIC_COMPONENT-image"
+														},
+														"fragmentConfig": {
+															"imageSize": "w-0"
+														},
+														"fragmentFields": [
+															{
+																"id": "image-square",
+																"value": {
+																	"fragmentImage": {
+																		"url": {
 																			"value_i18n": {
-																				"en_US": "2"
+																				"en_US": "/documents/d/evp/evp_process_icon-svg?download=true"
 																			}
 																		}
-																	}
-																},
-																{
-																	"id": "04-step-icon",
-																	"value": {
-																		"fragmentLink": {
-																		},
-																		"text": {
-																			"mapping": {
-																				"fieldKey": "FileEntry_previewImage",
-																				"itemReference": {
-																					"className": "com.liferay.portal.kernel.repository.model.FileEntry",
-																					"classPK": "[$DOCUMENT_FILE_ENTRY_ID:/site-initializer/documents/group/icons/steps/step_4.svg$]"
-																				}
-																			}
-																		}
-																	}
-																},
-																{
-																	"id": "01-step-number",
-																	"value": {
-																		"fragmentLink": {
-																		},
-																		"text": {
-																			"value_i18n": {
-																				"en_US": "1"
-																			}
-																		}
-																	}
-																},
-																{
-																	"id": "03-step-number",
-																	"value": {
-																		"fragmentLink": {
-																		},
-																		"text": {
-																			"value_i18n": {
-																				"en_US": "3"
-																			}
-																		}
-																	}
-																},
-																{
-																	"id": "04-step-description",
-																	"value": {
-																		"fragmentLink": {
-																		},
-																		"text": {
-																			"value_i18n": {
-																				"en_US": "Now it’s time to benefit a great cause through your service and giving."
-																			}
-																		}
-																	}
-																},
-																{
-																	"id": "02-step-description",
-																	"value": {
-																		"fragmentLink": {
-																		},
-																		"text": {
-																			"value_i18n": {
-																				"en_US": "Go to “My EVP” and submit a form with details about your service or grant request."
-																			}
-																		}
-																	}
-																},
-																{
-																	"id": "04-step-number",
-																	"value": {
-																		"fragmentLink": {
-																		},
-																		"text": {
-																			"value_i18n": {
-																				"en_US": "4"
-																			}
-																		}
-																	}
-																},
-																{
-																	"id": "05-step-icon",
-																	"value": {
-																		"fragmentLink": {
-																		},
-																		"text": {
-																			"mapping": {
-																				"fieldKey": "FileEntry_previewImage",
-																				"itemReference": {
-																					"className": "com.liferay.portal.kernel.repository.model.FileEntry",
-																					"classPK": "[$DOCUMENT_FILE_ENTRY_ID:/site-initializer/documents/group/icons/steps/step_5.svg$]"
-																				}
-																			}
-																		}
-																	}
-																},
-																{
-																	"id": "05-step-title",
-																	"value": {
-																		"fragmentLink": {
-																		},
-																		"text": {
-																			"value_i18n": {
-																				"en_US": "Share Your Stories"
-																			}
-																		}
-																	}
-																},
-																{
-																	"id": "02-step-icon",
-																	"value": {
-																		"fragmentLink": {
-																		},
-																		"text": {
-																			"mapping": {
-																				"fieldKey": "FileEntry_previewImage",
-																				"itemReference": {
-																					"className": "com.liferay.portal.kernel.repository.model.FileEntry",
-																					"classPK": "[$DOCUMENT_FILE_ENTRY_ID:/site-initializer/documents/group/icons/steps/step_2.svg$]"
-																				}
-																			}
-																		}
-																	}
-																},
-																{
-																	"id": "02-step-title",
-																	"value": {
-																		"fragmentLink": {
-																		},
-																		"text": {
-																			"value_i18n": {
-																				"en_US": "Submit A Request"
-																			}
-																		}
-																	}
-																},
-																{
-																	"id": "04-step-title",
-																	"value": {
-																		"fragmentLink": {
-																		},
-																		"text": {
-																			"value_i18n": {
-																				"en_US": "Serve Others/Fund A Cause"
-																			}
-																		}
-																	}
-																},
-																{
-																	"id": "05-step-number",
-																	"value": {
-																		"fragmentLink": {
-																		},
-																		"text": {
-																			"value_i18n": {
-																				"en_US": "5"
-																			}
-																		}
-																	}
-																},
-																{
-																	"id": "01-step-icon",
-																	"value": {
-																		"fragmentLink": {
-																		},
-																		"text": {
-																			"mapping": {
-																				"fieldKey": "FileEntry_previewImage",
-																				"itemReference": {
-																					"className": "com.liferay.portal.kernel.repository.model.FileEntry",
-																					"classPK": "[$DOCUMENT_FILE_ENTRY_ID:/site-initializer/documents/group/icons/steps/step_1.svg$]"
-																				}
-																			}
-																		}
-																	}
-																},
-																{
-																	"id": "03-step-description",
-																	"value": {
-																		"fragmentLink": {
-																		},
-																		"text": {
-																			"value_i18n": {
-																				"en_US": "Your EVP Team and manager will review your request, and if everything looks good,you’re approved!"
-																			}
-																		}
-																	}
-																},
-																{
-																	"id": "05-step-description",
-																	"value": {
-																		"fragmentLink": {
-																		},
-																		"text": {
-																			"value_i18n": {
-																				"en_US": "Encourage ande inspire others by sharing your experience"
-																			}
-																		}
-																	}
-																},
-																{
-																	"id": "03-step-title",
-																	"value": {
-																		"fragmentLink": {
-																		},
-																		"text": {
-																			"value_i18n": {
-																				"en_US": "Get Approved"
-																			}
-																		}
-																	}
-																},
-																{
-																	"id": "01-step-title",
-																	"value": {
-																		"fragmentLink": {
-																		},
-																		"text": {
-																			"value_i18n": {
-																				"en_US": "Find A Non-Profit"
-																			}
-																		}
-																	}
-																},
-																{
-																	"id": "01-step-description",
-																	"value": {
-																		"fragmentLink": {
-																		},
-																		"text": {
-																			"value_i18n": {
-																				"en_US": "Do you know an awesome nonprofit that you want to serve or support? Great, let’s get started!"
-																			}
-																		}
-																	}
-																},
-																{
-																	"id": "03-step-icon",
-																	"value": {
-																		"fragmentLink": {
-																		},
-																		"text": {
-																			"mapping": {
-																				"fieldKey": "FileEntry_previewImage",
-																				"itemReference": {
-																					"className": "com.liferay.portal.kernel.repository.model.FileEntry",
-																					"classPK": "[$DOCUMENT_FILE_ENTRY_ID:/site-initializer/documents/group/icons/steps/step_3.svg$]"
-																				}
-																			}
+																	},
+																	"fragmentLink": {}
+																}
+															}
+														],
+														"fragmentStyle": {
+															"marginLeft": "5",
+															"marginRight": "3"
+														},
+														"indexed": true,
+														"name": "Process Icon"
+													},
+													"type": "Fragment"
+												},
+												{
+													"definition": {
+														"fragment": {
+															"key": "DIALECT-dialect-text"
+														},
+														"fragmentConfig": {
+															"textType": "h2",
+															"truncateText": false
+														},
+														"fragmentFields": [
+															{
+																"id": "element-text",
+																"value": {
+																	"fragmentLink": {},
+																	"text": {
+																		"value_i18n": {
+																			"en_US": "EVP Process Steps"
 																		}
 																	}
 																}
-															],
-															"indexed": true
+															}
+														],
+														"fragmentStyle": {
+															"fontWeight": "fontWeightBold",
+															"textColor": "colorNeutral10"
 														},
-														"type": "Fragment"
-													}
-												],
-												"type": "Section"
-											}
-										],
-										"type": "Column"
+														"indexed": true,
+														"name": "Process Title"
+													},
+													"type": "Fragment"
+												}
+											],
+											"type": "Section"
+										},
+										{
+											"definition": {
+												"indexed": true,
+												"layout": {
+													"borderWidth": 0,
+													"marginBottom": 0,
+													"marginLeft": 0,
+													"marginRight": 0,
+													"marginTop": 0,
+													"opacity": 100,
+													"paddingBottom": 0,
+													"paddingLeft": 0,
+													"paddingRight": 0,
+													"paddingTop": 0,
+													"widthType": "Fluid"
+												},
+												"name": "Process Description Container"
+											},
+											"pageElements": [
+												{
+													"definition": {
+														"fragment": {
+															"key": "DIALECT-dialect-text"
+														},
+														"fragmentConfig": {
+															"textType": "text-paragraph",
+															"truncateText": false
+														},
+														"fragmentFields": [
+															{
+																"id": "element-text",
+																"value": {
+																	"fragmentLink": {},
+																	"text": {
+																		"value_i18n": {
+																			"en_US": "EVP is our Employee Volunteer Program, born out of Liferay's vision to see people reach their full potential to serve others.&nbsp;&nbsp;"
+																		}
+																	}
+																}
+															}
+														],
+														"fragmentStyle": {
+															"paddingLeft": "9",
+															"paddingRight": "5"
+														},
+														"indexed": true,
+														"name": "Process Description"
+													},
+													"type": "Fragment"
+												},
+												{
+													"definition": {
+														"fragment": {
+															"key": "DIALECT-dialect-text"
+														},
+														"fragmentConfig": {
+															"textType": "text-paragraph",
+															"truncateText": false
+														},
+														"fragmentFields": [
+															{
+																"id": "element-text",
+																"value": {
+																	"fragmentLink": {
+																		"value": {
+																			"href": {
+																				"mapping": {
+																					"itemReference": {
+																						"className": "com.liferay.portal.kernel.model.Layout",
+																						"fields": [
+																							{
+																								"fieldName": "friendlyURL",
+																								"fieldValue": "/my-evp"
+																							},
+																							{
+																								"fieldName": "privatePage",
+																								"fieldValue": "false"
+																							},
+																							{
+																								"fieldName": "siteKey",
+																								"fieldValue": "[$GROUP_KEY$]"
+																							}
+																						]
+																					}
+																				}
+																			}
+																		}
+																	},
+																	"text": {
+																		"value_i18n": {
+																			"en_US": "Create your request here!"
+																		}
+																	}
+																}
+															}
+														],
+														"fragmentStyle": {
+															"marginBottom": "3",
+															"paddingLeft": "9",
+															"paddingRight": "5",
+															"textColor": "colorBrandPrimaryLighten1"
+														},
+														"indexed": true,
+														"name": "MyEVP Link"
+													},
+													"type": "Fragment"
+												}
+											],
+											"type": "Section"
+										},
+										{
+											"definition": {
+												"indexed": true,
+												"layout": {
+													"align": "Center",
+													"borderWidth": 0,
+													"contentDisplay": "FlexColumn",
+													"marginBottom": 0,
+													"marginLeft": 0,
+													"marginRight": 0,
+													"marginTop": 0,
+													"opacity": 100,
+													"paddingBottom": 0,
+													"paddingLeft": 0,
+													"paddingRight": 0,
+													"paddingTop": 0,
+													"widthType": "Fluid"
+												},
+												"name": "Process Image Container"
+											},
+											"pageElements": [
+												{
+													"definition": {
+														"fragment": {
+															"key": "BASIC_COMPONENT-image"
+														},
+														"fragmentConfig": {
+															"imageSize": "w-100"
+														},
+														"fragmentFields": [
+															{
+																"id": "image-square",
+																"value": {
+																	"fragmentImage": {
+																		"url": {
+																			"value_i18n": {
+																				"en_US": "/documents/d/evp/evp_process_steps_banner-png?download=true"
+																			}
+																		}
+																	},
+																	"fragmentLink": {}
+																}
+															}
+														],
+														"fragmentStyle": {
+															"height": "315",
+															"width": "500px"
+														},
+														"indexed": true
+													},
+													"type": "Fragment"
+												}
+											],
+											"type": "Section"
+										}
+									],
+									"type": "Section"
+								}
+							],
+							"type": "Column"
+						},
+						{
+							"definition": {
+								"columnViewports": [
+									{
+										"columnViewportDefinition": {
+											"size": 12
+										},
+										"id": "landscapeMobile"
+									},
+									{
+										"columnViewportDefinition": {},
+										"id": "portraitMobile"
+									},
+									{
+										"columnViewportDefinition": {},
+										"id": "tablet"
 									}
 								],
-								"type": "Row"
-							}
-						],
-						"type": "Section"
-					},
-					{
-						"definition": {
-							"fragment": {
-								"key": "evp-data-money",
-								"siteKey": "[$GROUP_KEY$]"
+								"size": 6
 							},
-							"fragmentConfig": {
-							},
-							"fragmentFields": [
+							"pageElements": [
+								{
+									"definition": {
+										"indexed": true,
+										"layout": {
+											"align": "Center",
+											"borderWidth": 0,
+											"contentDisplay": "FlexRow",
+											"justify": "Center",
+											"marginBottom": 0,
+											"marginLeft": 0,
+											"marginRight": 0,
+											"marginTop": 0,
+											"opacity": 100,
+											"paddingBottom": 0,
+											"paddingLeft": 0,
+											"paddingRight": 0,
+											"paddingTop": 0,
+											"widthType": "Fluid"
+										},
+										"name": "Process Slider Container"
+									},
+									"pageElements": [
+										{
+											"definition": {
+												"fragment": {
+													"key": "evp-process-steps-slider",
+													"siteKey": "EVP"
+												},
+												"fragmentConfig": {
+													"numberOfSlides": 5,
+													"textColor": "#3D8CCB"
+												},
+												"fragmentFields": [
+													{
+														"id": "02-step-number",
+														"value": {
+															"fragmentLink": {},
+															"text": {
+																"value_i18n": {
+																	"en_US": "2"
+																}
+															}
+														}
+													},
+													{
+														"id": "04-step-icon",
+														"value": {
+															"fragmentLink": {},
+															"text": {
+																"mapping": {
+																	"fieldKey": "FileEntry_previewImage",
+																	"itemReference": {
+																		"className": "com.liferay.portal.kernel.repository.model.FileEntry",
+																		"classPK": 44230
+																	}
+																}
+															}
+														}
+													},
+													{
+														"id": "01-step-number",
+														"value": {
+															"fragmentLink": {},
+															"text": {
+																"value_i18n": {
+																	"en_US": "1"
+																}
+															}
+														}
+													},
+													{
+														"id": "03-step-number",
+														"value": {
+															"fragmentLink": {},
+															"text": {
+																"value_i18n": {
+																	"en_US": "3"
+																}
+															}
+														}
+													},
+													{
+														"id": "04-step-description",
+														"value": {
+															"fragmentLink": {},
+															"text": {
+																"value_i18n": {
+																	"en_US": "Now it’s time to benefit a great cause through your service and giving."
+																}
+															}
+														}
+													},
+													{
+														"id": "02-step-description",
+														"value": {
+															"fragmentLink": {},
+															"text": {
+																"value_i18n": {
+																	"en_US": "Go to “My EVP” and submit a form with details about your service or grant request."
+																}
+															}
+														}
+													},
+													{
+														"id": "04-step-number",
+														"value": {
+															"fragmentLink": {},
+															"text": {
+																"value_i18n": {
+																	"en_US": "4"
+																}
+															}
+														}
+													},
+													{
+														"id": "05-step-icon",
+														"value": {
+															"fragmentLink": {},
+															"text": {
+																"mapping": {
+																	"fieldKey": "FileEntry_previewImage",
+																	"itemReference": {
+																		"className": "com.liferay.portal.kernel.repository.model.FileEntry",
+																		"classPK": 44236
+																	}
+																}
+															}
+														}
+													},
+													{
+														"id": "05-step-title",
+														"value": {
+															"fragmentLink": {},
+															"text": {
+																"value_i18n": {
+																	"en_US": "Share Your Stories"
+																}
+															}
+														}
+													},
+													{
+														"id": "02-step-icon",
+														"value": {
+															"fragmentLink": {},
+															"text": {
+																"mapping": {
+																	"fieldKey": "FileEntry_previewImage",
+																	"itemReference": {
+																		"className": "com.liferay.portal.kernel.repository.model.FileEntry",
+																		"classPK": 44218
+																	}
+																}
+															}
+														}
+													},
+													{
+														"id": "02-step-title",
+														"value": {
+															"fragmentLink": {},
+															"text": {
+																"value_i18n": {
+																	"en_US": "Submit A Request"
+																}
+															}
+														}
+													},
+													{
+														"id": "04-step-title",
+														"value": {
+															"fragmentLink": {},
+															"text": {
+																"value_i18n": {
+																	"en_US": "Serve Others/Fund A Cause"
+																}
+															}
+														}
+													},
+													{
+														"id": "05-step-number",
+														"value": {
+															"fragmentLink": {},
+															"text": {
+																"value_i18n": {
+																	"en_US": "5"
+																}
+															}
+														}
+													},
+													{
+														"id": "01-step-icon",
+														"value": {
+															"fragmentLink": {},
+															"text": {
+																"mapping": {
+																	"fieldKey": "FileEntry_previewImage",
+																	"itemReference": {
+																		"className": "com.liferay.portal.kernel.repository.model.FileEntry",
+																		"classPK": 44212
+																	}
+																}
+															}
+														}
+													},
+													{
+														"id": "03-step-description",
+														"value": {
+															"fragmentLink": {},
+															"text": {
+																"value_i18n": {
+																	"en_US": "Your EVP Team and manager will review your request, and if everything looks good,you’re approved!"
+																}
+															}
+														}
+													},
+													{
+														"id": "05-step-description",
+														"value": {
+															"fragmentLink": {},
+															"text": {
+																"value_i18n": {
+																	"en_US": "Encourage ande inspire others by sharing your experience"
+																}
+															}
+														}
+													},
+													{
+														"id": "03-step-title",
+														"value": {
+															"fragmentLink": {},
+															"text": {
+																"value_i18n": {
+																	"en_US": "Get Approved"
+																}
+															}
+														}
+													},
+													{
+														"id": "01-step-title",
+														"value": {
+															"fragmentLink": {},
+															"text": {
+																"value_i18n": {
+																	"en_US": "Find A Non-Profit"
+																}
+															}
+														}
+													},
+													{
+														"id": "01-step-description",
+														"value": {
+															"fragmentLink": {},
+															"text": {
+																"value_i18n": {
+																	"en_US": "Do you know an awesome nonprofit that you want to serve or support? Great, let’s get started!"
+																}
+															}
+														}
+													},
+													{
+														"id": "03-step-icon",
+														"value": {
+															"fragmentLink": {},
+															"text": {
+																"mapping": {
+																	"fieldKey": "FileEntry_previewImage",
+																	"itemReference": {
+																		"className": "com.liferay.portal.kernel.repository.model.FileEntry",
+																		"classPK": 44224
+																	}
+																}
+															}
+														}
+													}
+												],
+												"indexed": true
+											},
+											"type": "Fragment"
+										}
+									],
+									"type": "Section"
+								}
 							],
-							"indexed": true
-						},
-						"type": "Fragment"
-					}
-				],
-				"type": "Section"
-			}
-		],
-		"type": "Root"
-	},
-	"settings": {
-		"masterPage": {
-			"key": "main-template"
+							"type": "Column"
+						}
+					],
+					"type": "Row"
+				}
+			],
+			"type": "Section"
+		},
+		{
+			"definition": {
+				"fragment": {"key": "evp-data-money", "siteKey": "EVP"},
+				"fragmentConfig": {},
+				"fragmentFields": [],
+				"indexed": true
+			},
+			"type": "Fragment"
 		}
-	},
-	"version": 1.1
+	],
+	"type": "Section"
 }
