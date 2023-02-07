@@ -45,7 +45,7 @@
 							"abstractLength": "200",
 							"anyAssetType": "[$CLASS_NAME_ID:com.liferay.journal.model.JournalArticle$]",
 							"anyClassTypeDLFileEntryAssetRendererFactory": "true",
-							"anyClassTypeJournalArticleAssetRendererFactory": "[$DDM_STRUCTURE_ID:ANNOUNCEMENT$]",
+							"anyClassTypeJournalArticleAssetRendererFactory": "[$DDM_STRUCTURE_ID:NEWS$]",
 							"assetLinkBehavior": "showFullContent",
 							"assetVocabularyId": "",
 							"classNameIds": "[$CLASS_NAME_ID:com.liferay.journal.model.JournalArticle$]",
@@ -171,7 +171,7 @@
 													},
 													{
 														"fieldName": "siteKey",
-														"fieldValue": "EVP"
+														"fieldValue": "[$GROUP_KEY$]"
 													}
 												]
 											}
