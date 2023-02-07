@@ -9,7 +9,7 @@
 	"label": {
 		"en_US": "Request Status"
 	},
-	"listTypeDefinitionExternalReferenceCode": "OBJECT-EVP-REQUEST-STATUS",
+	"listTypeDefinitionId": "[$LIST_TYPE_DEFINITION_ID:Request: Request Status$]",
 	"name": "requestStatus",
 	"objectDefinitionId": "[$OBJECT_DEFINITION_ID:EVPRequest$]",
 	"objectFieldSettings": [
