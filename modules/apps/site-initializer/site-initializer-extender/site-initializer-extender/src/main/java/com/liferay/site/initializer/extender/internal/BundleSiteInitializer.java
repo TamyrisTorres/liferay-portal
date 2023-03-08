@@ -1171,6 +1171,9 @@ public class BundleSiteInitializer implements SiteInitializer {
 			return objectDefinitionIdsStringUtilReplaceValues;
 		}
 
+		Map<String, ObjectDefinition> accountEntryRestrictedObjectDefinitions =
+			new HashMap<>();
+
 		List<com.liferay.object.model.ObjectDefinition> objectDefinitions =
 			_objectDefinitionLocalService.getObjectDefinitions(
 				serviceContext.getCompanyId(), true,
@@ -1191,9 +1194,6 @@ public class BundleSiteInitializer implements SiteInitializer {
 			objectDefinitionResourceBuilder.user(
 				serviceContext.fetchUser()
 			).build();
-
-		Map<String, ObjectDefinition> accountEntryRestrictedObjectDefinitions =
-			new HashMap<>();
 
 		for (String resourcePath : resourcePaths) {
 			if (resourcePath.endsWith(".object-actions.json")) {
@@ -1300,21 +1300,17 @@ public class BundleSiteInitializer implements SiteInitializer {
 		for (Map.Entry<String, ObjectDefinition> entry :
 				accountEntryRestrictedObjectDefinitions.entrySet()) {
 
-			com.liferay.object.model.ObjectDefinition
-				localServiceObjectDefinition =
-					_objectDefinitionLocalService.fetchObjectDefinition(
-						serviceContext.getCompanyId(), "C_" + entry.getKey());
-
-			com.liferay.object.model.ObjectRelationship objectRelationship =
-				_objectRelationshipLocalService.
-					getObjectRelationshipByObjectDefinitionId(
-						localServiceObjectDefinition.getObjectDefinitionId(),
-						"accountEntryTo" +
-							localServiceObjectDefinition.getShortName());
+			com.liferay.object.model.ObjectDefinition serviceObjectDefinition =
+				_objectDefinitionLocalService.fetchObjectDefinition(
+					serviceContext.getCompanyId(), "C_" + entry.getKey());
 
 			_objectDefinitionLocalService.enableAccountEntryRestricted(
-				localServiceObjectDefinition.getObjectDefinitionId(),
-				objectRelationship);
+				serviceObjectDefinition.getObjectDefinitionId(),
+				_objectRelationshipLocalService.
+					getObjectRelationshipByObjectDefinitionId(
+						serviceObjectDefinition.getObjectDefinitionId(),
+						"accountEntryTo" +
+							serviceObjectDefinition.getShortName()));
 		}
 
 		_invoke(
