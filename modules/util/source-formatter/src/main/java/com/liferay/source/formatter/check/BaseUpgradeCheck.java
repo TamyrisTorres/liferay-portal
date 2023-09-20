@@ -6,10 +6,16 @@
 package com.liferay.source.formatter.check;
 
 import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.source.formatter.check.util.JavaSourceUtil;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Nícolas Moura
@@ -36,21 +42,55 @@ public abstract class BaseUpgradeCheck extends BaseFileCheck {
 		return true;
 	}
 
-	protected String addNewImports(String newContent) {
+	protected String addNewImports(String fileName, String newContent) {
 		String[] newImports = getNewImports();
 
-		if (newImports != null) {
+		if (newImports == null) {
+			return newContent;
+		}
+
+		if (fileName.endsWith(".java")) {
 			newContent = JavaSourceUtil.addImports(newContent, newImports);
+		}
+		else if (fileName.endsWith(".jsp")) {
+			newContent = addNewImportsJSP(newContent, newImports);
 		}
 
 		return newContent;
+	}
+
+	protected String addNewImportsJSP(String newContent, String[] newImports) {
+		Arrays.sort(newImports);
+
+		Matcher includesMatcher = _includesPattern.matcher(newContent);
+
+		if (includesMatcher.find()) {
+			String jspHeader = includesMatcher.group();
+
+			return StringUtil.replaceFirst(
+				newContent, jspHeader,
+				getJspHeader(newImports, StringUtil.splitLines(jspHeader)));
+		}
+
+		Matcher copyrightMatcher = _copyrightPattern.matcher(newContent);
+
+		if (copyrightMatcher.find()) {
+			String jspHeader = copyrightMatcher.group(1);
+
+			return StringUtil.replaceFirst(
+				newContent, jspHeader,
+				getJspHeader(newImports, new String[]{ jspHeader }));
+		}
+
+		return StringBundler.concat(
+			getJspHeader(newImports, new String[]{}), newContent);
 	}
 
 	protected String afterFormat(
 		String fileName, String absolutePath, String content,
 		String newContent) {
 
-		return addNewImports(newContent);
+		return addNewImports(fileName, newContent);
 	}
 
 	@Override
@@ -76,6 +116,23 @@ public abstract class BaseUpgradeCheck extends BaseFileCheck {
 			String fileName, String absolutePath, String content)
 		throws Exception;
 
+	protected String getJspHeader(String[] newImports, String... jspHeaders) {
+		StringBundler sb = new StringBundler(4);
+
+		for (String jspHeader : jspHeaders) {
+			sb.append(jspHeader);
+			sb.append(StringPool.NEW_LINE);
+		}
+
+		for (String newImport : newImports) {
+			sb.append("<%@ page import=\"");
+			sb.append(newImport);
+			sb.append("\" %>");
+		}
+
+		return sb.toString();
+	}
+
 	protected String[] getNewImports() {
 		return null;
 	}
@@ -93,5 +150,10 @@ public abstract class BaseUpgradeCheck extends BaseFileCheck {
 
 		return false;
 	}
+
+	private static final Pattern _copyrightPattern = Pattern.compile(
+		"(<%--\\s*(\\/\\*)+(\\n|.)*(\\*\\/)+\\s*--%>)");
+	private static final Pattern _includesPattern = Pattern.compile(
+		"(<%@\\s*include\\s*(.+)%>\n)+", Pattern.MULTILINE);
 
 }
