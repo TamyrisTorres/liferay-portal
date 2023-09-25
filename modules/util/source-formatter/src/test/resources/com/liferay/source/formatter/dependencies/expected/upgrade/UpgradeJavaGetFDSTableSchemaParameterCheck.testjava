@@ -1,0 +1,12 @@
+package com.liferay.source.formatter.dependencies.upgrade;
+
+import java.util.Locale;
+
+public class UpgradeJavaGetFDSTableSchemaParameterCheck {
+
+	@Override
+	public FDSTableSchema getFDSTableSchema(Locale locale) {
+		return null;
+	}
+
+}

@@ -1,0 +1,10 @@
+package com.liferay.source.formatter.dependencies.upgrade;
+
+public class UpgradeJavaGetFDSTableSchemaParameterCheck {
+
+	@Override
+	public FDSTableSchema getFDSTableSchema() {
+		return null;
+	}
+
+}
