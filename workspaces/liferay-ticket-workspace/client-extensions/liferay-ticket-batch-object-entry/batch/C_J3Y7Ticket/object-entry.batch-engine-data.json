@@ -1,25 +1,6 @@
 {
-	"actions": {
-		"create": {
-			"href": "http://localhost:8080/o/c/j3y7tickets/",
-			"method": "POST"
-		},
-		"createBatch": {
-			"href": "http://localhost:8080/o/c/j3y7tickets/batch",
-			"method": "POST"
-		},
-		"deleteBatch": {
-			"href": "http://localhost:8080/o/c/j3y7tickets/batch",
-			"method": "DELETE"
-		},
-		"updateBatch": {
-			"href": "http://localhost:8080/o/c/j3y7tickets/batch",
-			"method": "PUT"
-		}
-	},
 	"configuration": {
 		"className": "com.liferay.object.rest.dto.v1_0.ObjectEntry",
-		"companyId": 0,
 		"parameters": {
 			"containsHeaders": "true",
 			"createStrategy": "UPSERT",
@@ -27,16 +8,12 @@
 			"taskItemDelegateName": "C_J3Y7Ticket",
 			"updateStrategy": "UPDATE"
 		},
-		"taskItemDelegateName": "C_J3Y7Ticket",
-		"userId": 0,
-		"version": "v1.0"
+		"taskItemDelegateName": "C_J3Y7Ticket"
 	},
-	"facets": [
-	],
 	"items": [
 		{
 			"attachment": {
-				"fileBase64": "MSAgIEV4YW1wbGUgb2YgYW4gYXR0YWNobWVudA0KIA==",
+				"fileBase64": "@batch_object_entry_file_base64@",
 				"name": "ticket_1.pdf"
 			},
 			"dateCreated": "2023-05-04T21:49:04Z",
@@ -68,7 +45,7 @@
 		},
 		{
 			"attachment": {
-				"fileBase64": "MSAgIEV4YW1wbGUgb2YgYW4gYXR0YWNobWVudA0KIA==",
+				"fileBase64": "@batch_object_entry_file_base64@",
 				"name": "ticket_2.pdf"
 			},
 			"dateCreated": "2023-05-04T21:49:04Z",
@@ -100,7 +77,7 @@
 		},
 		{
 			"attachment": {
-				"fileBase64": "MSAgIEV4YW1wbGUgb2YgYW4gYXR0YWNobWVudA0KIA==",
+				"fileBase64": "@batch_object_entry_file_base64@",
 				"name": "ticket_3.pdf"
 			},
 			"dateCreated": "2023-05-04T21:49:04Z",
